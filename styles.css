@@ -43,7 +43,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
-  
+  font-size: 1.3rem;
 }
 
 /*Splash Page*/
@@ -56,7 +56,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   color: var(--text);
 }
 
@@ -72,7 +72,7 @@ body {
 }
 
 .logo-text.small {
-  font-size: 2.2rem;
+  font-size: 3.2rem;
 }
 
 .tagline {
@@ -89,23 +89,43 @@ main {
 }
 
 body.signin-page main {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba (255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
   padding: 2rem 3rem;
   border-radius: 2rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 400px;
-}
-
-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.signin-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#signin-form {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 400px;
+  animation-delay: 0.5s;
+}
+
+.signin-header,
+#signin-form {
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
 }
 
 label {
   margin-top: 1rem;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 input {
@@ -129,12 +149,12 @@ input {
   background: var(--button);
   border: none;
   border-radius: 1rem;
-  margin-top: 2rem;
   padding: 0.8rem;
   font-size: 1rem;
   color: white;
   cursor: pointer;
   transition: transform 0.2s;
+  margin-top: 3rem;
 }
 
 .login-button:hover {
@@ -144,6 +164,7 @@ input {
 .or {
   text-align: center;
   margin: 1rem 0 0.5rem;
+  margin-top: 3rem;
 }
 
 .socials {
@@ -154,11 +175,12 @@ input {
 .apple-btn,
 .google-btn {
   flex: 1;
-  margin: 0.3rem;
+  margin: 1rem;
   border: none;
   padding: 0.6rem;
   cursor: pointer;
   font-size: 0.9rem;
+  margin-top: 3rem;
 }
 
 .apple-btn {

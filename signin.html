@@ -13,19 +13,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   </head>
   <body class="signin-page">
-    <header>
-      <h1 class="logo-text small" aria-label="Ever After">
-        <span class="logo-left">Ever</span>
-        <img
-          src="assets/EverAfter_Logo.png"
-          alt="Ever After Logo"
-          class="logo-img small"
-        />
-        <span class="logo-right">After</span>
-      </h1>
-    </header>
-
     <main>
+      <header class="signin-header">
+        <h1 class="logo-text small" aria-label="Ever After">
+          <span class="logo-left">Ever</span>
+          <img
+            src="assets/EverAfter_Logo.png"
+            alt="Ever After Logo"
+            class="logo-img small"
+          />
+          <span class="logo-right">After</span>
+        </h1>
+      </header>
+
       <form id="signin-form" autocomplete="on">
         <label for="username">Name</label>
         <input
@@ -35,6 +35,7 @@
           placeholder="Enter your name"
           required
         />
+        
 
         <label for="password">Password</label>
         <input
