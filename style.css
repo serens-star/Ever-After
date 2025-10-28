@@ -1,1 +1,130 @@
 @import url(https://fonts.googleapis.com/css2?family=Courgette:wght@500&display=swap);
+
+:root {
+  --bg1: #ffedd5;
+  --bg2: #ffd4e2;
+  --accent: #f9b8d3;
+  --text: #5b2431;
+  --button: #f8a8c1;
+}
+
+body {
+  font-family: "Courgette", cursive;
+  background: linear-gradient(to right, var(--bg1), var(--bg2));
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/*Splash Page*/
+.splash-page {
+  text-align: center;
+}
+
+.logo {
+  font-size: 3rem;
+  color: var(--text);
+  letter-spacing: 2px;
+}
+
+.tagline {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+/*Sign-In*/
+main {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 2rem 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+input {
+  padding: 0.6rem;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  background: transparent;
+  font-size: 1rem;
+  outline: none;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.6rem 0;
+  font-size: 0.8rem;
+}
+
+.login-button {
+  background: var(--button);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.8rem;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.login-button:hover {
+  transform: scale(1.05);
+}
+
+.or {
+  text-align: center;
+  margin: 1rem 0 0.5rem;
+}
+
+.socials {
+  display: flex;
+  justify-content: space-between;
+}
+
+.apple-btn,
+.google-btn {
+  flex: 1;
+  margin: 0.3rem;
+  border: none;
+  padding: 0.6rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.apple-btn {
+  background: #ccc;
+}
+.google-btn {
+  background: #a4dba3;
+}
+.forgot {
+  text-decoration: none;
+  color: var(--text);
+}
+
+@media (max-width: 600px) {
+  main {
+    padding: 1.5rem;
+  }
+  .logo {
+    font-size: 2rem;
+  }
+}
