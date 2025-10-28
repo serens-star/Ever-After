@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ever After | Splash Page</title>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="A dating website developed for queer people to find love"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body class="splash-page">
+    <main class="splash">
+      <h1 class="logo" aria-label="Ever After">
+        <span class="logo-left">Ever></span>
+        <span class="logo-bow" aria-hidden="true"></span>
+        <span class="logo-right">After</span>
+      </h1>
+      <p class="tagline">Your Chance at a Queerly, Happily Ever After</p>
+    </main>
+
+    <script>
+      //Splash animation
+      gsap.from(".logo span", {
+        y: 50,
+        opacity: 0,
+        stagger: 0.3,
+        ease: "back.out",
+      });
+      gsap.from(".tagline", { opacity: 0, duration: 1, delay: 1.5 });
+
+      //Redirect to sign-in
+      setTimeout(() => {
+        window.location.href = "sign-in.html";
+      }, 4000);
+    </script>
+  </body>
+</html>
