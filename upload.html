@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ever After | Upload Photo</title>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="Photo upload page for Ever After, a dating app for queer individuals."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body class="upload-page">
+    <header class="centered-header">
+      <h1 class="logo-text small">
+        <span class="logo-left">Ever</span>
+        <img
+          src="assets/EverAfter_Logo.png"
+          alt="Ever After logo"
+          class="logo-img small"
+        />
+        <span class="logo-right">After</span>
+      </h1>
+    </header>
+
+    <main>
+      <section class="upload-section">
+        <p class="upload-title">Upload Your Photo</p>
+
+        <form id="uploadForm">
+          <label for="photoInput" class="upload-label">Choose a photo:</label>
+          <input type="file" id="photoInput" accept="image/*" required />
+
+          <figure class="preview">
+            <img
+              id="previewImage"
+              src="assets/default_user.jpg"
+              alt="Preview"
+              class="profile-preview"
+            />
+            <figcaption id="uploadStatus" class="status-text">
+              No image uploaded yet
+            </figcaption>
+          </figure>
+
+          <button type="submit" class="next-btn">Next</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
