@@ -14,9 +14,13 @@
   </head>
   <body class="splash-page">
     <main class="splash">
-      <h1 class="logo" aria-label="Ever After">
-        <span class="logo-left">Ever></span>
-        <span class="logo-bow" aria-hidden="true"></span>
+      <h1 class="logo-text" aria-label="Ever After">
+        <span class="logo-left">Ever</span>
+        <img
+          src="assets/EverAfter_Logo.png"
+          alt="Ever After Logo"
+          class="logo-img"
+        />
         <span class="logo-right">After</span>
       </h1>
       <p class="tagline">Your Chance at a Queerly, Happily Ever After</p>
@@ -30,8 +34,28 @@
         stagger: 0.3,
         ease: "back.out",
       });
-      gsap.from(".tagline", { opacity: 0, duration: 1, delay: 1.5 });
 
+      gsap.from(".logo-left", {
+        x: -60,
+        opacity: 0,
+        duration: 1,
+        ease: "back.out(1.7)",
+      });
+      gsap.from(".logo-img", {
+        scale: 0.5,
+        opacity: 0,
+        duration: 1.2,
+        ease: "back.out(1.7)",
+      });
+      gsap.from(".logo-right", {
+        x: 60,
+        opacity: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: "back.out(1.7)",
+      });
+
+      gsap.from(".tagline", { opacity: 0, duration: 1, delay: 1.2 });
       //Redirect to sign-in
       setTimeout(() => {
         window.location.href = "signin.html";

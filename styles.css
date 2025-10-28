@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css2?family=Courgette:wght@500&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Courgette&family=Caveat:wght@400&;600&display=swap);
 
 :root {
   --bg1: #ffedd5;
@@ -8,8 +8,34 @@
   --button: #f8a8c1;
 }
 
+/* Logo image styling */
+.logo-img {
+  display: block;
+  margin: 3rem 0rem;
+  width: 150px;
+  height: auto;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+  animation: fadeIn 2s ease forwards;
+}
+
+.logo-image.small {
+  width: 150px;
+  margin-bottom: 3rem 0rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
-  font-family: "Courgette", cursive;
+  font-family: "Caveat", cursive;
   background: linear-gradient(to right, var(--bg1), var(--bg2));
   color: var(--text);
   display: flex;
@@ -17,6 +43,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  
 }
 
 /*Splash Page*/
@@ -24,10 +51,28 @@ body {
   text-align: center;
 }
 
+.logo-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.logo-text .logo-left,
+.logo-text .logo-right {
+  font-family: "Courgette", cursive;
+}
+
 .logo {
   font-size: 3rem;
   color: var(--text);
   letter-spacing: 2px;
+}
+
+.logo-text.small {
+  font-size: 2.2rem;
 }
 
 .tagline {
@@ -38,6 +83,12 @@ body {
 
 /*Sign-In*/
 main {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+body.signin-page main {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
   padding: 2rem 3rem;
@@ -78,6 +129,7 @@ input {
   background: var(--button);
   border: none;
   border-radius: 1rem;
+  margin-top: 2rem;
   padding: 0.8rem;
   font-size: 1rem;
   color: white;
