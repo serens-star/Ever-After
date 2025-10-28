@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ever After | Sign In</title>
-</head>
-<body>
-    
-</body>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="Sign in page for Ever After, a dating app for queer individuals."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body class="signin-page">
+    <header>
+      <h1 class="logo small" aria-label="Ever After">
+        <span class="logo-left">Ever</span>
+        <span class="logo-bow" aria-hidden="true"></span>
+        <span class="logo-right">After</span>
+      </h1>
+    </header>
+
+    <main>
+      <form id="signin-form" autocomplete="on">
+        <label for="username">Name</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your name"
+          required
+        />
+
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <section class="option">
+          <label>
+            <input type="checkbox" id="keepLoggedIn" /> Keep Me Logged In
+          </label>
+          <a href="#" class="forgot">Forgot Password?</a>
+        </section>
+
+        <button type="submit" class="login-btn">Log In</button>
+
+        <p class="or">OR Log In With</p>
+
+        <section class="socials">
+          <button
+            type="button"
+            class="apple-btn"
+            aria-label="Sign in with Apple"
+          >
+            A Apple
+          </button>
+          <button
+            type="button"
+            class="google-btn"
+            aria-label="Sign in with Google"
+          >
+            G Google
+          </button>
+        </section>
+      </form>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
 </html>
