@@ -31,3 +31,58 @@ if (form) {
       .catch((err) => console.error("API error:", err));
   });
 }
+
+// ---Photo Upload Page ---
+const uploadForm = document.getElementById("uploadForm");
+const photoInput = document.getElementById("photoInput");
+const previewImage = document.getElementById("previewImage");
+const uploadStatus = document.getElementById("uploadStatus");
+
+if (uploadForm) {
+  //Preview uploaded photo
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+        uploadStatus.textContent = "Your photo has been successfully uploaded!";
+        localStorage.setItem("userPhoto", e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  uploadForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("Photo upload successfully!");
+    window.location.href = "profile.html";
+  });
+}
+
+// ---Profile Page ---
+if (document.body.classList.contains("profile-page")) {
+  const profileImage = document.getElementById("profileImage");
+  const savedPhoto = localStorage.getItem("userPhoto");
+
+  if (savedPhoto) {
+    profileImage.src = savedPhoto;
+  }
+
+  // Mock user info from API
+  fetch("https://randomuser.me/api/")
+    .then((res) => res.json())
+    .then((data) => {
+      const user = data.results[0];
+      const name = `${(user.name, first)} ${user.name.last}`;
+      const age = user.dob.age;
+
+      document.getElementById("profileName").textContent = `${name}, ${age}`;
+      document.getElementById("profileBio").textContent = `${
+        user.gender === "female"
+          ? "Lover of art and music"
+          : "Adventurer at heart"
+      } looking for love 127775.`;
+    })
+    .catch((err) => console.error("API Error:", err));
+}
