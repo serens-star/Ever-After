@@ -25,8 +25,7 @@ if (form) {
         alert(
           `Welcome, ${username}! Found ${data.results.length} potential mathches for you.`
         );
-        //redirect placeholder
-        //window.location.href = "browse.html";
+        window.location.href = "upload.html";
       })
       .catch((err) => console.error("API error:", err));
   });
@@ -82,7 +81,7 @@ if (document.body.classList.contains("profile-page")) {
         user.gender === "female"
           ? "Lover of art and music"
           : "Adventurer at heart"
-      } looking for love 127775.`;
+      } looking for love &#127775.`;
     })
     .catch((err) => console.error("API Error:", err));
 }
