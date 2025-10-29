@@ -8,6 +8,7 @@
   --button: #f8a8c1;
 }
 
+
 /* Logo image styling */
 .logo-img {
   display: block;
@@ -204,8 +205,7 @@ input {
 }
 
 /* Upload & Profile Pages Shared Style */
-.upload-page,
-profile-page {
+.upload-page {
   background: linear-gradient(to right, var(--bg1), var(--bg2));
   font-family: "Caveat", cursive;
   color: var(--text);
@@ -267,62 +267,3 @@ input[type="file"] {
   transform: scale(1.05);
 }
 
-/* Profile Page */
-.sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 180px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin: 1rem 0;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: color 0.2s;
-}
-
-.sidebar li:hover,
-.sidebar li.active {
-  color: var(--button);
-}
-
-.profile-content {
-  margin-left: 200px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.profile-pic {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--accent);
-  margin-bottom: 1rem;
-}
-
-.profile-name {
-  font-family: "Courgette", cursive;
-  font-size: 1, 8rem;
-  color: var(--text);
-}
-
-.profile-bio {
-  font-size: 1.1rem;
-  max-width: 400px;
-  margin-top: 0.5rem;
-  opacity: 0.8;
-}

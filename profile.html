@@ -9,21 +9,27 @@
       name="description"
       content="Profile page for Ever After, a dating app for queer individuals."
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="profile.css" />
     <script src="https:cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   </head>
   <body class="profile-page">
-    <aside class="sidebar">
-      <ul>
-        <li>Home</li>
-        <li>Likes</li>
-        <li>Matches</li>
-        <li class="active">Profile</li>
-        <li>Settings</li>
+    <!-- Sidebar Nav -->
+    <nav class="sidebar">
+      <img
+        src="assets/EverAfter_Logo.png"
+        alt="Ever After Logo"
+        class="sidebar-logo"
+      />
+      <ul id="navLinks">
+        <li data-page="index.html">Home</li>
+        <li data-page="likes.html">Likes</li>
+        <li data-page="matches.html">Matches</li>
+        <li data-page="profile.html" class="active">Profile</li>
+        <li data-page="settings.html">Settings</li>
       </ul>
-    </aside>
+    </nav>
 
-    <main class="profile-content">
+    <main class="profile-wrapper">
       <section class="profile-card">
         <img
           id="profileImage"
@@ -32,10 +38,52 @@
           class="profile-pic"
         />
         <h2 id="profileName" class="profile-name">Cierra Flemming, 24</h2>
+
+        <h3 class="about-heading">About</h3>
         <p id="profileBio" class="profile-bio">
           Welcome to your Ever After profile! Customise your info and find your
           happily ever after &#127744;
         </p>
+
+        <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
+
+        <form id="editProfileForm" class="hidden">
+          <label>Name</label>
+          <input
+            type="text"
+            id="editName"
+            placeholder="Enter your name"
+            required
+          />
+
+          <label>Age</label>
+          <input
+            type="number"
+            id="editAge"
+            placeholder="Enter your age"
+            required
+          />
+
+          <label>About</label>
+          <textarea
+            id="editBio"
+            rows="3"
+            placeholder="Tell us about yourself"
+            required
+          ></textarea>
+
+          <label>Location</label>
+          <input type="text" id="editLocation" placeholder="Enter your city" />
+
+          <label>Interests</label>
+          <input
+            type="text"
+            id="editInterests"
+            placeholder="E.g. Art, Music, Hiking"
+          />
+
+          <button type="submit" class="save-btn">Save Changes</button>
+        </form>
       </section>
     </main>
 

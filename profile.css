@@ -1,0 +1,236 @@
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Caveat:wght@400;600&display=swap");
+
+:root {
+  --bg1: #ffedd5;
+  --bg2: #ffd4e2;
+  --accent: #f9b8d3;
+  --text: #5b2431;
+  --button: #f8a8c1;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Caveat", cursive;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  min-height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 250px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(15px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+/* Logo in Sidebar */
+.sidebar-logo {
+  width: 120px;
+  height: auto;
+  margin-bottom: 3rem;
+}
+
+/* Navigation List */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.sidebar li {
+  font-family: "Caveat", cursive;
+  font-size: 1.5rem;
+  margin: 1.5rem 0;
+  cursor: pointer;
+  color: var(--text);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.sidebar li:hover {
+  color: var(--accent);
+  transform: translateX(5px);
+}
+
+.sidebar li.active {
+  color: var(--button);
+  font-weight: 600;
+}
+
+.sidebar li.active::before {
+  content: "💫";
+  position: absolute;
+  left: -25px;
+  animation: twinkle 1s infinite alternate;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 0.5;
+    transform: rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(10deg);
+  }
+}
+
+/* 🌺 Profile Section Layout */
+.profile-wrapper {
+  margin-left: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: calc(100% - 250px);
+}
+
+/* Profile Card */
+.profile-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 2rem;
+  padding: 3rem 4rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 700px;
+  width: 90%;
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--accent);
+  margin-bottom: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Name */
+.profile-name {
+  font-family: "Courgette", cursive;
+  font-size: 2.5rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+/* About Heading */
+.about-heading {
+  font-family: "Courgette", cursive;
+  font-size: 1.7rem;
+  color: var(--button);
+  margin-top: 1.5rem;
+}
+
+/* Bio Text */
+.profile-bio {
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.5;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+/*  Buttons */
+.edit-btn,
+.save-btn {
+  background: var(--button);
+  border: none;
+  border-radius: 1rem;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Caveat", cursive;
+}
+
+.edit-btn:hover,
+.save-btn:hover {
+  transform: scale(1.05);
+  background: var(--accent);
+}
+
+/* Edit Form Styling */
+#editProfileForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+#editProfileForm label {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 1.1rem;
+}
+
+#editProfileForm input,
+#editProfileForm textarea {
+  width: 85%;
+  border: 2px solid var(--accent);
+  border-radius: 0.8rem;
+  padding: 0.5rem;
+  font-family: "Caveat", cursive;
+  background: rgba(255, 255, 255, 0.8);
+  outline: none;
+  resize: none;
+  font-size: 1rem;
+}
+
+/* Hide Form When Not Editing */
+.hidden {
+  display: none;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .profile-wrapper {
+    margin-left: 180px;
+  }
+
+  .profile-pic {
+    width: 180px;
+    height: 180px;
+  }
+
+  .profile-name {
+    font-size: 2rem;
+  }
+}
