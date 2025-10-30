@@ -110,131 +110,154 @@ navlinks.forEach((link) => {
   }
 });
 
-// ---Profile Page: fetch, show, edit with custom validation---
+// --- PROFILE PAGE: save handler that prevents page refresh ---
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.body.classList.contains("profile-page")) return;
 
-  //Elements
-  const profileImage = document.getElementById("profileImage");
-  const profileName = document.getElementById("profileName");
-  const profileBio = document.getElementById("profileBio");
-
-  const editProfileBtn = document.getElementById("editProfileBtn");
+  // Elements
   const editProfileForm = document.getElementById("editProfileForm");
+  if (!editProfileForm) {
+    console.error("Edit form not found: #editProfileForm");
+    return;
+  }
 
+  const saveBtn = editProfileForm.querySelector(".save-btn"); // button in the form
   const editName = document.getElementById("editName");
   const editAge = document.getElementById("editAge");
   const editBio = document.getElementById("editBio");
   const editLocation = document.getElementById("editLocation");
   const editInterests = document.getElementById("editInterests");
 
-  //Move to next input when pressing enter
-  editBio.addEventListener("keydown", (e) => {
-    //if enter is pressed without shift, go to next field
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      editLocation.focus();
-    }
-  });
+  const profileName = document.getElementById("profileName");
+  const profileBio = document.getElementById("profileBio");
 
-  //Load saved photo (from upload page) if its there
-  const savedPhoto = localStorage.getItem("userPhoto");
-  if (savedPhoto) profileImage.src = savedPhoto;
+  // --- Edit Profile Button Handler ---
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  const profileDisplay = document.getElementById("profileDisplay");
+  const profileEditSection = document.getElementById("profileEditSection");
+  const editProfileImage = document.getElementById("editProfileImage");
+  const profileImage = document.getElementById("profileImage");
 
-  //Load saved profile data (if theres any)
-  const savedProfile = localStorage.getItem("everAfterProfile");
-  if (savedProfile) {
-    try {
-      const p = JSON.parse(savedProfile);
-      if (p.name) profileName.textContent = `${p.name}, ${p.age || ""}`.trim();
-      if (p.bio) profileBio.innerHTML = p.bio;
-      //prefill edit form
-      editName.value = p.name || "";
-      editAge.value = p.age || "";
-      editBio.value = p.bioPlain || "";
-      editLocation.value = p.location || "";
-      editInterests.value = p.interests || "";
-    } catch (err) {
-      console.warn("Error loading profile data:", err);
-    }
-  } else {
-    // if no saved profile, fetch a random user to seed the display
-    fetch("https://randomuser.me/api/")
-      .then((res) => res.json())
-      .then((data) => {
-        const user = data.results[0];
-        profileName.textContent = `${user.name.first} ${user.name.last}, ${user.dob.age}`;
-        //a set bio placeholder
-        profileBio.textContent =
-          "I love art and connection, I'm looking for my happily ever after!";
-      })
-      .catch((err) => console.error("RandomUser API error:", err));
+  //when user clicks edit profile button
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener("click", () => {
+      //load saved data from localStorage if available
+      const saved = JSON.parse(
+        localStorage.getItem("everAfterProfile") || "{}"
+      );
+      if (saved.name) editName.value = saved.name;
+      if (saved.age) editAge.value = saved.age;
+      if (saved.bioPlain) editBio.value = saved.bioPlain;
+      if (saved.location) editLocation.value = saved.location;
+      if (saved.interests) editInterests.value = saved.interests;
+
+      //toggle visibility
+      profileDisplay.classList.add("hidden");
+      profileEditSection.classList.remove("hidden");
+    });
   }
 
-  //Toggle edit form visibility
-  editProfileBtn.addEventListener("click", () => {
-    editProfileForm.classList.toggle("hidden");
-    //focus on the first field when opening
-    if (!editProfileForm.classListList.contains("hidden")) {
-      editName.focus();
+  //Handle profile image upload preview
+  if (editProfileImage) {
+    editProfileImage.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        profileImage.src = reader.result;
+        localStorage.setItem("everAfterProfileImage", reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  //when page loads, show saved image if available
+  const savedImage = localStorage.getItem("everAfterProfileImage");
+  if (savedImage) profileImage.src = savedImage;
+
+  // --- Prevent Enter from submitting the form prematurely ---
+  editProfileForm.addEventListener("keydown", (e) => {
+    const tag = e.target.tagName.toLowerCase();
+
+    // Don't interfere if the user is typing inside a textarea
+    if (tag === "textarea") return;
+
+    //if enter is pressed inside any input, prevent form submit
+    if (e.key === "Enter") {
+      e.preventDefault();
+      console.log("Prevented early submit on Enter");
+
+      //Move the focus to the next input if it exists
+      const formInputs = Array.from(
+        editProfileForm.querySelectorAll("input, textarea")
+      );
+      const currentIndex = formInputs.indexOf(e.target);
+      if (currentIndex > -1 && currentIndex < formInputs.length - 1) {
+        formInputs[currentIndex + 1].focus();
+      }
     }
   });
 
-  // Custom Validation & Save handler
-  editProfileForm.addEventListener("click", () => {
-    e.preventDefault();
+  // --- SAVE HANDLER ---
+  function handleSaveSubmit(e) {
+    e.preventDefault(); // stop refresh
+    e.stopPropagation();
 
-    //Gathering required inputs inside this form
-    const requiredInputs = Array.from(
-      editProfileForm.querySelectorAll("[required]")
-    );
+    // Custom validation (required fields)
+    const nameVal = editName.value.trim();
+    const ageVal = editAge.value.trim();
+    const bioVal = editBio.value.trim();
 
-    //Checking each required field for non-empty trimmed value
-    const invalid = requiredInputs.filter((input) => {
-      //for textarea/input type=number, we still check trimmed string
-      return !(input.value && input.value.toString().trim().length > 0);
-    });
-
-    if (invalid.length > 0) {
-      alert("Please complete all required fields before saving your profile.");
-      invalid[0].focus();
+    if (!nameVal || !ageVal || !bioVal) {
+      alert("Please fill in Name, Age and About before saving.");
+      if (!nameVal) editName.focus();
+      else if (!ageVal) editAge.focus();
+      else editBio.focus();
       return;
     }
 
-    //Validation passes, trim values and save
-    const name = editName.value.trim();
-    const age = editAge.value.trim();
-    const bioPlain = editBio.value.trim();
-    const location = editLocation.value.trim();
-    const interests = editInterests.value.trim();
+    // Build display bio HTML
+    let bioHTML = bioVal.replace(/\n/g, "<br>");
+    if (editLocation.value.trim())
+      bioHTML += `<br> ${escapeHTML(editLocation.value.trim())}`;
+    if (editInterests.value.trim())
+      bioHTML += `<br> Interests: ${escapeHTML(editInterests.value.trim())}`;
 
-    //Building HTML for profileBio (keeps line breaks)
-    let bioHtml = bioPlain.replace(/\n/g, "<br>");
-    if (location) bioHtml += `<br> &#128205 ${escapeHTML(location)}`;
-    if (interests) bioHtml += `<br> &#x1F300 ${escapeHTML(interests)}`;
+    // Update the visual profile immediately
+    profileName.textContent = `${nameVal}, ${ageVal}`;
+    profileBio.innerHTML = bioHTML;
 
-    //Update UI immediately
-    profileName.textContent = `${name}, ${age}`;
-    profileBio.innerHTML = bioHtml;
-
-    //Save to localStorage so profile persists across reloads
-    const profileToSave = {
-      name,
-      age,
-      bio: bioHtml,
-      bioPlain,
-      location,
-      interests,
+    // Save structured data to localStorage
+    const profileData = {
+      name: nameVal,
+      age: ageVal,
+      bioPlain: bioVal,
+      bioHTML,
+      location: editLocation.value.trim(),
+      interests: editInterests.value.trim(),
     };
-    localStorage.setItem("everAfterProfile", JSON.stringify(profileToSave));
+    localStorage.setItem("everAfterProfile", JSON.stringify(profileData));
+    console.log("[EverAfter] Profile saved to localStorage", profileData);
 
-    //hide the form and give feedback
-    editProfileForm.classList.add("hidden");
-    //Replaceable
-    alert("Profile updated successfully! &#127801");
-  });
+    //hide form and show profile again
+    profileEditSection.classList.add("hidden");
+    profileDisplay.classList.remove("hidden");
+    alert(" Profile updated!");
+  }
 
-  //helper to avoid HTML injectionin location/interests
+  // Attach submit handler
+  editProfileForm.addEventListener("submit", handleSaveSubmit);
+
+  // Attach click handler to save button
+  if (saveBtn) {
+    saveBtn.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      handleSaveSubmit(ev);
+    });
+  }
+
+  // Helper to escape user text
   function escapeHTML(str) {
     return str.replace(
       /[&<>"']/g,
@@ -247,5 +270,14 @@ document.addEventListener("DOMContentLoaded", () => {
           "'": "&#39;",
         }[m])
     );
+  }
+
+  // Debugging: show saved profile on load (console)
+  try {
+    const saved = localStorage.getItem("everAfterProfile");
+    if (saved)
+      console.log("[EverAfter] Loaded saved profile:", JSON.parse(saved));
+  } catch (err) {
+    console.warn("[EverAfter] Could not parse saved profile:", err);
   }
 });

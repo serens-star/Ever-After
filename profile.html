@@ -30,24 +30,24 @@
     </nav>
 
     <main class="profile-wrapper">
-      <section class="profile-card">
-        <img
-          id="profileImage"
-          src="assets/default_user.png"
-          alt="Profile photo"
-          class="profile-pic"
-        />
-        <h2 id="profileName" class="profile-name">Cierra Flemming, 24</h2>
+      <section id="profileDisplay">
+        <div class="profile-header">
+          <img
+            id="profileImage"
+            src="assets/default_user.png"
+            alt="Profile photo"
+            class="profile-pic"
+          />
+          <h2 id="profileName"></h2>
 
-        <h3 class="about-heading">About</h3>
-        <p id="profileBio" class="profile-bio">
-          Welcome to your Ever After profile! Customise your info and find your
-          happily ever after &#127744;
-        </p>
-
+          <h3 class="profile-heading">About</h3>
+          <p id="profileBio" class="profile-bio"></p>
+        </div>
         <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
+      </section>
 
-        <form id="editProfileForm" class="hidden">
+      <section id="profileEditSection" class="hidden">
+        <form id="editProfileForm">
           <label>Name</label>
           <input
             type="text"
@@ -81,6 +81,10 @@
             id="editInterests"
             placeholder="E.g. Art, Music, Hiking"
           />
+
+          <!--new profile image upload-->
+          <label>Change Profile Image</label>
+          <input type="file" id="editProfileImage" accept="image/*" />
 
           <button type="submit" class="save-btn">Save Changes</button>
         </form>
