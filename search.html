@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Criteria | Ever After</title>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="Search Criteria page for Ever After, a dating app for queer individuals."
+    />
+    <link rel="stylesheet" href="search.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="search-page">
+    <main class="search-main">
+      <header class="search-header">
+        <img
+          src="assets/search_icon.png"
+          alt="Search Icon"
+          class="search-icon"
+        />
+        <h1 class="search-heading">Search Criteria</h1>
+      </header>
+
+      <form id="searchForm">
+        <fieldset>
+          <legend>Gender</legend>
+          <select id="gender" name="gender" required>
+            <option value="any">Any</option>
+            <option value="cisgender(AFAB)">Cisgender(AFAB)</option>
+            <option value="agender">Agender</option>
+            <option value="genderfluid">Genderfluid</option>
+            <option value="genderqueer">Genderqueer</option>
+            <option value="nonbinary">Non-binary</option>
+            <option value="gendernonconforming">Gender Non-conforming</option>
+            <option value="transgender(AMAB)">Transgender(AMAB)</option>
+            <option value="demigender">Demigender</option>
+            <option value="other">Other</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Pronouns</legend>
+          <select name="pronouns" id="pronouns">
+            <option value="any">Any</option>
+            <option value="she/her">She/Her</option>
+            <option value="he/him">He/Him</option>
+            <option value="they/them">They/Them</option>
+            <option value="she/they">She/They</option>
+            <option value="he/they">He/They</option>
+            <option value="other">Other</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Sexuality</legend>
+          <select name="sexuality" id="sexuality">
+            <option value="any">Any</option>
+            <option value="queer">Queer</option>
+            <option value="lesbian">Lesbian</option>
+            <option value="bisexual">Bisexual</option>
+            <option value="pansexual">Pansexual</option>
+            <option value="asexual">Asexual</option>
+            <option value="Aromantic">Aromantic</option>
+            <option value="aroace">Aro-Ace</option>
+            <option value="demisexual">Demisexual</option>
+            <option value="other">Other</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Age Range</legend>
+          <label for="ageMin" class="visually-hidden">Minimum Age</label>
+          <input type="number" id="ageMin" min="18" max="100" value="20" />
+          <span class="range-line"></span>
+          <label for="ageMax" class="visually-hidden">Maximum Age</label>
+          <input type="number" id="ageMax" min="18" max="100" value="30" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Search Area</legend>
+          <p class="toggle-area">
+            <span>Local</span>
+            <label class="switch">
+              <input type="checkbox" id="searchScope" />
+              <span class="slider"></span>
+            </label>
+            <span>Global</span>
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Relationship Style</legend>
+          <select name="relationshipStyle" id="relationshipStyle">
+            <option value="any">Any</option>
+            <option value="monogamous">Monogamous</option>
+            <option value="polyamorous">Polyamorous</option>
+            <option value="open">Open Relationship</option>
+            <option value="relationship-anarchist">
+              Relationship Anarchist
+            </option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Relationship Type</legend>
+          <select name="relationshipType" id="relationshipType">
+            <option value="any">Any</option>
+            <option value="casual">Casual</option>
+            <option value="longterm">Long-term</option>
+            <option value="friendship">Friendship</option>
+            <option value="situationship">Situationship</option>
+          </select>
+        </fieldset>
+
+        <footer>
+          <button type="submit" class="next-btn">Next</button>
+        </footer>
+      </form>
+    </main>
+
+    <script src="search.js"></script>
+  </body>
+</html>

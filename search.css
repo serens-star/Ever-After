@@ -1,0 +1,235 @@
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Caveat:wght@400;600&display=swap");
+
+:root {
+  --bg1: #ffedd5;
+  --bg2: #ffd4e2;
+  --accent: #f9b8d3;
+  --text: #5b2431;
+  --button: #f8a8c1;
+}
+
+body {
+  margin: 0;
+  font-family: "Caveat", cursive;
+  background: linear-gradient(to right, var(--bg1), var(--bg2));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Main */
+.search-main {
+  position: relative;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 30px;
+  padding: 3rem 2rem;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 25px rgba(249, 184, 211, 0.3);
+  overflow: hidden;
+}
+
+/* Logo BG */
+.search-main::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 420px;
+  height: 420px;
+  background: url("assets/EverAfter_Logo.png") no-repeat center/contain;
+  opacity: 0.15;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* Header */
+.search-header {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 2rem;
+}
+
+.search-icon {
+  width: 60px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.search-heading {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 2rem;
+  margin-top: 0.5rem;
+}
+
+/* Form Layout */
+form {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+/* fieldsets*/
+fieldset {
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1rem;
+  text-align: left;
+}
+
+legend {
+  font-weight: bold;
+  color: var(--text);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* inputs & selects */
+select,
+input[type="number"] {
+  font-family: "Caveat", cursive;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  background: transparent;
+  font-size: 1rem;
+  color: var(--text);
+  text-align: center;
+  width: 100%;
+  padding: 0.3rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+select:focus,
+input:focus {
+  border-color: var(--button);
+}
+
+/* Rangeline (between min/max ages) */
+.range-line {
+  flex: 1;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 0.5rem;
+}
+
+fieldset label {
+  font-size: 1rem;
+}
+
+/*Toggle switch (local/global)*/
+.toggle-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--accent);
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--button);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/*Button*/
+.next-btn {
+  background: var(--button);
+  color: var(--text);
+  font-family: "Caveat", cursive;
+  border: none;
+  border-radius: 25px;
+  padding: 0.6rem 2rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.3rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(249, 184, 211, 0.4);
+}
+
+.next-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+/* Form alignment fixes */
+input[type="number"] {
+  width: 70px;
+}
+
+fieldset:nth-of-type(4) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*Accessbility helpers*/
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+}
+
+/* Responsiveness */
+@media (max-width: 500px) {
+  .search-main {
+    padding: 2rem 1.5rem;
+  }
+
+  .search-heading {
+    font-size: 1.6rem;
+  }
+
+  legend {
+    font-size: 1rem;
+  }
+
+  .next-btn {
+    font-size: 1.1rem;
+  }
+}
