@@ -20,7 +20,7 @@ body {
   overflow: hidden;
 }
 
-.sidebar {
+#sidebarNav {
   position: fixed;
   left: 0;
   top: 0;
@@ -43,8 +43,8 @@ body {
   margin-bottom: 3rem;
 }
 
-/* Navigation List */
-.sidebar ul {
+/* --- Sidebar Navigation --- */
+#sidebarNav ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -52,27 +52,31 @@ body {
   text-align: center;
 }
 
-.sidebar li {
-  font-family: "Caveat", cursive;
-  font-size: 1.5rem;
+#sidebarNav li {
   margin: 1.5rem 0;
+}
+
+#sidebarNav a {
+  font-family: "Caveat", cursive;
+  font-size: 1.6rem;
   cursor: pointer;
   color: var(--text);
   position: relative;
-  transition: all 0.2s ease;
+  text-decoration: none;
+  transition: color 0.3 ease, transform 0.2s ease;
 }
 
-.sidebar li:hover {
+#sidebarNav a:hover {
   color: var(--accent);
   transform: translateX(5px);
 }
 
-.sidebar li.active {
+#sidebarNav a.active {
   color: var(--button);
   font-weight: 600;
 }
 
-.sidebar li.active::before {
+#sidebarNav a.active::before {
   content: "💫";
   position: absolute;
   left: -25px;

@@ -87,15 +87,38 @@ if (document.body.classList.contains("profile-page")) {
 }
 
 // ---Sidebar navigation logic ---
-const navlinks = document.querySelectorAll("#navLinks li");
+const navlinks = document.querySelectorAll("#sidebarNav a");
 
 //loop through each nav link
 navlinks.forEach((link) => {
-  link.addEventListener("click", () => {
-    const targetPage = link.getAttribute("data-page");
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    const page = link.dataset.page;
 
-    //Redirect to selected page
-    window.location.href = targetPage;
+    switch (page) {
+      case "home":
+        window.location.href = "index.html";
+        break;
+      case "matches":
+        window.location.href = "search.html";
+        break;
+      case "likes":
+        window.location.href = "likes.html";
+        break;
+      case "inbox":
+        window.location.href = "inbox.html";
+        break;
+      case "profile":
+        window.location.href = "profile.html";
+        break;
+      case "settings":
+        window.location.href = "settings.html";
+        break;
+      default:
+        console.warn("Unknown page:", page);
+    }
+    navlinks.forEach((link) => link.classList.remove("active"));
+    link.classList.add("active");
   });
 });
 
