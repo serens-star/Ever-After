@@ -66,7 +66,7 @@
             <option value="bisexual">Bisexual</option>
             <option value="pansexual">Pansexual</option>
             <option value="asexual">Asexual</option>
-            <option value="Aromantic">Aromantic</option>
+            <option value="aromantic">Aromantic</option>
             <option value="aroace">Aro-Ace</option>
             <option value="demisexual">Demisexual</option>
             <option value="other">Other</option>
@@ -75,23 +75,38 @@
 
         <fieldset>
           <legend>Age Range</legend>
-          <label for="ageMin" class="visually-hidden">Minimum Age</label>
-          <input type="number" id="ageMin" min="18" max="100" value="20" />
-          <span class="range-line"></span>
-          <label for="ageMax" class="visually-hidden">Maximum Age</label>
-          <input type="number" id="ageMax" min="18" max="100" value="30" />
+          <div class="age-range-container">
+            <label for="ageMin" class="visually-hidden">Minimum Age</label>
+            <input
+              type="number"
+              id="ageMin"
+              name="ageMin"
+              min="18"
+              max="100"
+              value="20"
+            />
+            <span class="range-line"></span>
+            <label for="ageMax" class="visually-hidden">Maximum Age</label>
+            <input
+              type="number"
+              id="ageMax"
+              name="ageMax"
+              min="18"
+              max="100"
+              value="30"
+            />
+          </div>
         </fieldset>
 
         <fieldset>
-          <legend>Search Area</legend>
-          <p class="toggle-area">
-            <span>Local</span>
-            <label class="switch">
-              <input type="checkbox" id="searchScope" />
-              <span class="slider"></span>
-            </label>
-            <span>Global</span>
-          </p>
+          <legend>Location</legend>
+          <select name="location" id="location">
+            <option value="any">Any Location</option>
+            <option value="johannesburg">Johannesburg</option>
+            <option value="pretoria">Pretoria</option>
+            <option value="durban">Durban</option>
+            <option value="east-london">East London</option>
+          </select>
         </fieldset>
 
         <fieldset>
@@ -118,7 +133,7 @@
           </select>
         </fieldset>
 
-        <footer>
+        <footer class="form-footer">
           <button type="submit" id="nextBtn">Next</button>
         </footer>
       </form>

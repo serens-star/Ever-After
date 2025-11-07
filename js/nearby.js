@@ -1,3 +1,6 @@
+const API_KEY = "pk.a5617e2068395ccb3921dcdc4103c28a";
+const BASE_URL = "https://api.locationiq.com/v1/search";
+
 class NearbyProfiles {
   constructor() {
     this.profilesContainer = document.getElementById("profilesContainer");
@@ -101,18 +104,44 @@ class NearbyProfiles {
       "Quinn",
       "Morgan",
     ];
-    const locations = [
-      "Cape Town",
-      "Johannesburg",
-      "Durban",
-      "Pretoria",
-      "Port Elizabeth",
+
+    // Expanded gender options to match search criteria
+    const genders = [
+      "Cisgender(AFAB)",
+      "Agender",
+      "Genderfluid",
+      "Genderqueer",
+      "Non-binary",
+      "Gender Non-conforming",
+      "Transgender(AMAB)",
+      "Demigender",
+      "Woman",
+      "Other",
     ];
-    const sexualities = ["Lesbian", "Bisexual", "Pansexual", "Queer"];
+
+    const pronounsList = [
+      "she/her",
+      "he/him",
+      "they/them",
+      "she/they",
+      "he/they",
+      "other",
+    ];
+    const sexualities = [
+      "Queer",
+      "Lesbian",
+      "Bisexual",
+      "Pansexual",
+      "Asexual",
+      "Aromantic",
+      "Aro-Ace",
+      "Demisexual",
+      "Other",
+    ];
     const relationshipStyles = [
       "Monogamous",
       "Polyamorous",
-      "Open",
+      "Open Relationship",
       "Relationship Anarchist",
     ];
     const relationshipTypes = [
@@ -121,39 +150,51 @@ class NearbyProfiles {
       "Friendship",
       "Situationship",
     ];
-    const pronouns = ["she/her", "they/them", "she/they"];
 
-    // If no criteria are set, show all profiles
-    if (Object.keys(criteria).length === 0) {
-      return Array.from({ length: 6 }, (_, i) => ({
-        id: i + 1,
-        name: names[Math.floor(Math.random() * names.length)],
-        age: Math.floor(Math.random() * 15) + 22,
-        gender: "Woman",
-        pronouns: pronouns[Math.floor(Math.random() * pronouns.length)],
-        sexuality: sexualities[Math.floor(Math.random() * sexualities.length)],
-        relationshipStyle:
-          relationshipStyles[
-            Math.floor(Math.random() * relationshipStyles.length)
-          ],
-        relationshipType:
-          relationshipTypes[
-            Math.floor(Math.random() * relationshipTypes.length)
-          ],
-        distance: (Math.random() * 15 + 1).toFixed(1),
-        location: locations[Math.floor(Math.random() * locations.length)],
-        image: `assets/Profile_Card_Icon.png`,
-      }));
-    }
+    // South African cities data with coordinates
+    const saCities = {
+      johannesburg: { city: "Johannesburg", lat: -26.2041, lon: 28.0473 },
+      pretoria: { city: "Pretoria", lat: -25.7479, lon: 28.2293 },
+      durban: { city: "Durban", lat: -29.8587, lon: 31.0218 },
+      "east-london": { city: "East London", lat: -32.9833, lon: 27.8667 },
+      any: { city: "Cape Town", lat: -33.9249, lon: 18.4241 }, // Default
+    };
 
-    // Apply criteria filters if they exist
-    const filteredProfiles = Array.from({ length: 6 }, (_, i) => {
+    // Generate profiles
+    const profiles = [];
+    const numProfiles = 8;
+
+    for (let i = 0; i < numProfiles; i++) {
+      // Determine location based on criteria
+      let locationData;
+      if (
+        criteria.location &&
+        criteria.location !== "any" &&
+        saCities[criteria.location]
+      ) {
+        // Use selected city
+        locationData = saCities[criteria.location];
+      } else {
+        // Random South African city
+        const cityKeys = Object.keys(saCities).filter((key) => key !== "any");
+        const randomCityKey =
+          cityKeys[Math.floor(Math.random() * cityKeys.length)];
+        locationData = saCities[randomCityKey];
+      }
+
+      // Add some variation to coordinates within the city
+      const variedLat = locationData.lat + (Math.random() - 0.5) * 0.1;
+      const variedLon = locationData.lon + (Math.random() - 0.5) * 0.1;
+
+      // Calculate distance from user (simplified for demo)
+      const distance = (Math.random() * 15 + 1).toFixed(1);
+
       const profile = {
         id: i + 1,
         name: names[Math.floor(Math.random() * names.length)],
-        age: Math.floor(Math.random() * 15) + 22,
-        gender: "Woman",
-        pronouns: pronouns[Math.floor(Math.random() * pronouns.length)],
+        age: Math.floor(Math.random() * 25) + 20, // 20-45 age range
+        gender: genders[Math.floor(Math.random() * genders.length)],
+        pronouns: pronounsList[Math.floor(Math.random() * pronounsList.length)],
         sexuality: sexualities[Math.floor(Math.random() * sexualities.length)],
         relationshipStyle:
           relationshipStyles[
@@ -163,92 +204,71 @@ class NearbyProfiles {
           relationshipTypes[
             Math.floor(Math.random() * relationshipTypes.length)
           ],
-        distance: (Math.random() * 15 + 1).toFixed(1),
-        location: locations[Math.floor(Math.random() * locations.length)],
+        distance: distance,
+        location: locationData.city,
+        coordinates: {
+          latitude: variedLat,
+          longitude: variedLon,
+        },
         image: `assets/Profile_Card_Icon.png`,
+        lastActive: new Date(
+          Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000
+        ).toISOString(),
       };
 
-      return this.applyCriteria(profile, criteria);
-    }).filter((profile) => profile !== null);
+      profiles.push(profile);
+    }
 
-    return filteredProfiles;
+    // Apply filters
+    const filteredProfiles = profiles.filter((profile) =>
+      this.applyCriteria(profile, criteria)
+    );
+
+    return filteredProfiles.length > 0
+      ? filteredProfiles
+      : profiles.slice(0, 3); // Fallback if all filtered out
   }
 
   applyCriteria(profile, criteria) {
     // Age filter
-    if (criteria.ageMin && profile.age < parseInt(criteria.ageMin)) return null;
-    if (criteria.ageMax && profile.age > parseInt(criteria.ageMax)) return null;
+    if (criteria.ageMin && profile.age < parseInt(criteria.ageMin))
+      return false;
+    if (criteria.ageMax && profile.age > parseInt(criteria.ageMax))
+      return false;
 
-    // Gender filter (simplified for demo)
-    if (
-      criteria.gender &&
-      criteria.gender !== "any" &&
-      criteria.gender !== "Any"
-    ) {
-      // Add your gender matching logic here
+    // Gender filter
+    if (criteria.gender && criteria.gender !== "any") {
+      if (profile.gender !== criteria.gender) return false;
+    }
+
+    // Pronouns filter
+    if (criteria.pronouns && criteria.pronouns !== "any") {
+      if (profile.pronouns !== criteria.pronouns) return false;
     }
 
     // Sexuality filter
-    if (
-      criteria.sexuality &&
-      criteria.sexuality !== "any" &&
-      criteria.sexuality !== "Any"
-    ) {
-      if (
-        profile.sexuality.toLowerCase() !== criteria.sexuality.toLowerCase()
-      ) {
-        return null;
-      }
+    if (criteria.sexuality && criteria.sexuality !== "any") {
+      if (profile.sexuality !== criteria.sexuality) return false;
     }
 
-    return profile;
-  }
+    // Location filter
+    if (criteria.location && criteria.location !== "any") {
+      if (profile.location.toLowerCase() !== criteria.location.toLowerCase())
+        return false;
+    }
 
-  displayProfiles(profiles) {
-    this.profilesContainer.innerHTML = "";
+    // Relationship Style filter
+    if (criteria.relationshipStyle && criteria.relationshipStyle !== "any") {
+      if (profile.relationshipStyle !== criteria.relationshipStyle)
+        return false;
+    }
 
-    profiles.forEach((profile) => {
-      const profileElement = this.createProfileElement(profile);
-      this.profilesContainer.appendChild(profileElement);
-    });
-  }
+    // Relationship Type filter
+    if (criteria.relationshipType && criteria.relationshipType !== "any") {
+      if (profile.relationshipType !== criteria.relationshipType) return false;
+    }
 
-  createProfileElement(profile) {
-    const article = document.createElement("article");
-    article.className = "polaroid-profile";
-    article.innerHTML = `
-            <img src="${profile.image}" alt="${profile.name}" class="profile-image" 
-                 onerror="this.src='assets/Profile_Card_Icon.png'">
-            <section class="profile-info">
-                <h2 class="name-age">
-                    ${profile.name}, ${profile.age}
-                    <svg class="diamond" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-                    </svg>
-                </h2>
-                <div class="details-grid">
-                    <div class="detail-item">
-                        <span class="detail-label">Gender</span>
-                        <span class="detail-value">${profile.gender}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Pronouns</span>
-                        <span class="detail-value">${profile.pronouns}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Sexuality</span>
-                        <span class="detail-value">${profile.sexuality}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Style</span>
-                        <span class="detail-value">${profile.relationshipStyle}</span>
-                    </div>
-                </div>
-                <div class="distance">${profile.distance} km away • ${profile.location}</div>
-            </section>
-        `;
-
-    return article;
+    return true;
   }
 
   animateProfiles() {

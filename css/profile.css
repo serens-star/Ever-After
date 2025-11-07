@@ -6,287 +6,256 @@
   --accent: #f9b8d3;
   --text: #5b2431;
   --button: #f8a8c1;
+  --white: #ffffff;
+  --shadow: rgba(91, 36, 49, 0.1);
 }
 
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
   font-family: "Caveat", cursive;
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
   color: var(--text);
-  background: linear-gradient(135deg, var(--bg1), var(--bg2));
   min-height: 100vh;
-  display: flex;
-  overflow: hidden;
 }
 
-#sidebarNav {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 250px;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(15px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 2rem;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
-  z-index: 10;
-}
-
-/* Logo in Sidebar */
-.sidebar-logo {
-  width: 120px;
-  height: auto;
-  margin-bottom: 3rem;
-}
-
-/* --- Sidebar Navigation --- */
-#sidebarNav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  text-align: center;
-}
-
-#sidebarNav li {
-  margin: 1.5rem 0;
-}
-
-#sidebarNav a {
-  font-family: "Caveat", cursive;
-  font-size: 1.6rem;
-  cursor: pointer;
-  color: var(--text);
+.edit-profile-main {
   position: relative;
-  text-decoration: none;
-  transition: color 0.3 ease, transform 0.2s ease;
+  background: rgba(255, 255, 255, 0.9);
+  min-height: 100vh;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 0 30px rgba(249, 184, 211, 0.3);
 }
 
-#sidebarNav a:hover {
-  color: var(--accent);
-  transform: translateX(5px);
-}
-
-#sidebarNav a.active {
-  color: var(--button);
-  font-weight: 600;
-}
-
-#sidebarNav a.active::before {
-  content: "💫";
-  position: absolute;
-  left: -25px;
-  animation: twinkle 1s infinite alternate;
-}
-
-@keyframes twinkle {
-  from {
-    opacity: 0.5;
-    transform: rotate(0deg);
-  }
-  to {
-    opacity: 1;
-    transform: rotate(10deg);
-  }
-}
-
-/* 🌺 Profile Section Layout */
-.profile-wrapper {
-  margin-left: 250px;
+/* Header */
+.edit-profile-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  width: calc(100% - 250px);
+  padding: 20px 0 30px 0;
+  position: relative;
+  border-bottom: 2px solid var(--accent);
+  margin-bottom: 30px;
 }
 
-/* Profile Card */
-.profile-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: 2rem;
-  padding: 3rem 4rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.back-btn {
+  position: absolute;
+  left: 0;
+  background: rgba(249, 184, 211, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: rgba(249, 184, 211, 0.5);
+  transform: scale(1.05);
+}
+
+.back-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.edit-profile-heading {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 2.2rem;
+  font-weight: 700;
   text-align: center;
-  max-width: 700px;
-  width: 90%;
-  animation: fadeIn 0.8s ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Profile Picture Section */
+.profile-picture-section {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Profile Picture */
-.profile-pic {
-  width: 250px;
-  height: 250px;
+.profile-picture-container {
+  display: inline-block;
+  position: relative;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid var(--accent);
-  margin-bottom: 1rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border: 3px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
 }
 
-/* Profile Name */
-.profile-name {
-  font-family: "Courgette", cursive;
-  font-size: 2.5rem;
+.change-photo-btn {
+  background: var(--button);
   color: var(--text);
-  margin-bottom: 1rem;
-}
-
-/* About Heading */
-.about-heading {
-  font-family: "Courgette", cursive;
-  font-size: 1.7rem;
-  color: var(--button);
-  margin-top: 1.5rem;
-}
-
-/* Bio Text */
-.profile-bio {
   font-family: "Caveat", cursive;
-  font-size: 1.2rem;
-  text-align: center;
-  line-height: 1.5;
-  opacity: 0.9;
-  margin-top: 0.5rem;
-  margin-bottom: 2rem;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/*  Buttons */
-.edit-btn,
+.change-photo-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 15px;
+  border: 1px solid var(--accent);
+}
+
+.section-heading {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 8px;
+}
+
+/* Form Fields */
+.form-fieldset {
+  border: none;
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  font-family: "Caveat", cursive;
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+  resize: vertical;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--button);
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(249, 184, 211, 0.3);
+}
+
+.form-textarea {
+  min-height: 100px;
+}
+
+/* Save Button */
 .save-btn {
   background: var(--button);
-  border: none;
-  border-radius: 1rem;
-  padding: 0.8rem 1.6rem;
-  font-size: 1rem;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: "Caveat", cursive;
-}
-
-.edit-btn:hover,
-.save-btn:hover {
-  transform: scale(1.05);
-  background: var(--accent);
-}
-
-/* Edit Form Styling */
-#editProfileForm {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-}
-
-#editProfileForm label {
-  font-family: "Courgette", cursive;
   color: var(--text);
-  font-size: 1.1rem;
-}
-
-#editProfileForm input,
-#editProfileForm textarea {
-  width: 85%;
-  border: 2px solid var(--accent);
-  border-radius: 0.8rem;
-  padding: 0.5rem;
   font-family: "Caveat", cursive;
-  background: rgba(255, 255, 255, 0.8);
-  outline: none;
-  resize: none;
-  font-size: 1rem;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
+  width: 100%;
+  display: block;
 }
 
-/* Hide Form When Not Editing */
-.hidden {
-  display: none;
+.save-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 180px;
+/* Form Layout Improvements */
+.edit-profile-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .edit-profile-main {
+    padding: 15px;
+    margin: 0;
   }
 
-  .profile-wrapper {
-    margin-left: 180px;
+  .edit-profile-heading {
+    font-size: 1.8rem;
   }
 
-  .profile-pic {
-    width: 180px;
-    height: 180px;
+  .form-section {
+    padding: 15px;
+    margin-bottom: 20px;
   }
 
-  .profile-name {
-    font-size: 2rem;
+  .section-heading {
+    font-size: 1.3rem;
+  }
+
+  .form-label {
+    font-size: 1.1rem;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 1.1rem;
+    padding: 10px 12px;
+  }
+
+  .save-btn {
+    font-size: 1.2rem;
+    padding: 10px 30px;
   }
 }
 
-#profileDisplay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  padding: 2rem;
-  transition: all 0.4s ease;
-}
+@media (max-width: 400px) {
+  .edit-profile-main {
+    padding: 10px;
+  }
 
-#profileDisplay h2 {
-  margin-top: 1rem;
-  font-family: "Courgette", cursive;
-}
+  .edit-profile-heading {
+    font-size: 1.6rem;
+  }
 
-#profileDisplay .profile-heading {
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  font-family: "Courgette", cursive;
-  font-size: 1.7rem;
-  color: var(--button);
-  text-align: center;
-}
-
-#profileBio {
-  font-family: "Caveat", cursive;
-  font-size: 1.5rem;
-  line-height: 1.7;
-  text-align: center;
-  max-width: 600px;
-}
-
-#profileDisplay img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  border: 4px solid #f3a6b8;
-  object-fit: cover;
-  margin-bottom: 1rem;
-}
-
-#profileEditSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-}
-
-.hidden {
-  display: none !important;
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+  }
 }

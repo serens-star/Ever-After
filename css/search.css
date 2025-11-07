@@ -15,20 +15,22 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 /* Main */
 .search-main {
   position: relative;
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 30px;
-  padding: 3rem 2rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 25px;
+  padding: 2.5rem 2rem;
   width: 90%;
-  max-width: 500px;
+  max-width: 450px;
   text-align: center;
-  box-shadow: 0 4px 25px rgba(249, 184, 211, 0.3);
+  box-shadow: 0 8px 30px rgba(249, 184, 211, 0.4);
   overflow: hidden;
+  border: 2px solid var(--accent);
 }
 
 /* Logo BG */
@@ -37,10 +39,10 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 420px;
-  height: 420px;
-  background: url("assets/EverAfter_Logo.png") no-repeat center/contain;
-  opacity: 0.15;
+  width: 350px;
+  height: 350px;
+  background: url("../assets/EverAfter_Logo.png") no-repeat center/contain;
+  opacity: 0.1;
   transform: translate(-50%, -50%);
   z-index: 0;
 }
@@ -50,19 +52,22 @@ body {
   position: relative;
   z-index: 2;
   margin-bottom: 2rem;
+  padding-top: 1rem;
 }
 
 .search-icon {
-  width: 60px;
+  width: 50px;
   height: auto;
   opacity: 0.9;
+  margin-bottom: 0.5rem;
 }
 
 .search-heading {
   font-family: "Courgette", cursive;
   color: var(--text);
-  font-size: 2rem;
-  margin-top: 0.5rem;
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
 }
 
 /* Form Layout */
@@ -71,145 +76,103 @@ form {
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 1.5rem;
 }
 
-/* fieldsets*/
+/* Fieldsets */
 fieldset {
   border: none;
   border-bottom: 2px solid var(--accent);
-  padding-bottom: 1rem;
+  padding: 0 0 1.2rem 0;
   text-align: left;
+  margin: 0;
 }
 
 legend {
-  font-weight: bold;
+  font-weight: 700;
   color: var(--text);
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  display: block;
+  width: 100%;
 }
 
-/* inputs & selects */
+/* Inputs & Selects */
 select,
 input[type="number"] {
   font-family: "Caveat", cursive;
-  border: none;
-  border-bottom: 2px solid var(--accent);
-  background: transparent;
-  font-size: 1rem;
+  border: 2px solid var(--accent);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 1.2rem;
   color: var(--text);
   text-align: center;
   width: 100%;
-  padding: 0.3rem;
+  padding: 0.6rem;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  font-weight: 600;
 }
 
 select:focus,
 input:focus {
   border-color: var(--button);
+  background: rgba(255, 255, 255, 0.95);
+  transform: scale(1.02);
 }
 
-/* Rangeline (between min/max ages) */
+/* Age Range Container */
+.age-range-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+}
+
 .range-line {
   flex: 1;
-  height: 2px;
+  height: 3px;
   background: var(--accent);
   margin: 0 0.5rem;
 }
 
-fieldset label {
-  font-size: 1rem;
+input[type="number"] {
+  width: 80px;
+  text-align: center;
 }
 
-/*Toggle switch (local/global)*/
-.toggle-area {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  color: var(--text);
+/* Form Footer */
+.form-footer {
+  border: none !important;
+  padding-top: 1rem !important;
+  text-align: center;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 46px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--accent);
-  transition: 0.4s;
-  border-radius: 24px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--button);
-}
-
-input:checked + .slider:before {
-  transform: translateX(22px);
-}
-
-/*Button*/
+/* Button */
 #nextBtn {
   background: var(--button);
   color: var(--text);
   font-family: "Caveat", cursive;
   border: none;
   border-radius: 25px;
-  padding: 0.6rem 2rem;
-  margin-top: 1.5rem;
+  padding: 0.8rem 3rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1.3rem;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(249, 184, 211, 0.4);
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
 }
 
-#nextBtn :hover {
+#nextBtn:hover {
   background: var(--accent);
   transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
 }
 
-/* Form alignment fixes */
-input[type="number"] {
-  width: 70px;
-}
-
-fieldset:nth-of-type(4) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/*Accessbility helpers*/
+/* Accessibility helpers */
 .visually-hidden {
   position: absolute;
   left: -9999px;
@@ -217,19 +180,45 @@ fieldset:nth-of-type(4) {
 
 /* Responsiveness */
 @media (max-width: 500px) {
+  body {
+    padding: 15px;
+  }
+  
   .search-main {
     padding: 2rem 1.5rem;
   }
 
   .search-heading {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 
   legend {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
-  .next-btn {
+  select, input[type="number"] {
     font-size: 1.1rem;
+    padding: 0.5rem;
+  }
+
+  #nextBtn {
+    font-size: 1.3rem;
+    padding: 0.7rem 2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .search-main {
+    padding: 1.5rem 1rem;
+  }
+  
+  .age-range-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .range-line {
+    width: 80%;
+    margin: 0.5rem auto;
   }
 }

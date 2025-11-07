@@ -3,95 +3,200 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ever After | Profile</title>
+    <title>Edit Profile | Ever After</title>
     <meta name="author" content="Seren Mafunda" />
-    <meta
-      name="description"
-      content="Profile page for Ever After, a dating app for queer individuals."
-    />
+    <meta name="description" content="Edit your Ever After profile" />
     <link rel="stylesheet" href="css/profile.css" />
-    <script src="https:cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="profile-page">
-    <!-- Sidebar Nav -->
-    <nav id="sidebarNav">
-      <img
-        src="assets/EverAfter_Logo.png"
-        alt="Ever After Logo"
-        class="sidebar-logo"
-      />
-      <ul>
-        <li><a href="#" data-page="home">Home</a></li>
-        <li><a href="#" data-page="matches">Matches</a></li>
-        <li><a href="#" data-page="likes">Likes</a></li>
-        <li><a href="#" data-page="inbox">Inbox</a></li>
-        <li><a href="#" data-page="profile" class="active">Profile</a></li>
-        <li><a href="#" data-page="settings">Settings</a></li>
-      </ul>
-    </nav>
+  <body class="edit-profile-page">
+    <main class="edit-profile-main">
+      <header class="edit-profile-header">
+        <a href="profile.html" class="back-btn">
+          <img src="assets/back_icon.png" alt="Back" class="back-icon" />
+        </a>
+        <h1 class="edit-profile-heading">Edit Profile</h1>
+      </header>
 
-    <main class="profile-wrapper">
-      <section id="profileDisplay">
-        <div class="profile-header">
-          <img
-            id="profileImage"
-            src="assets/default_user.png"
-            alt="Profile photo"
-            class="profile-pic"
-          />
-          <h2 id="profileName"></h2>
+      <form id="editProfileForm" class="edit-profile-form">
+        <!-- Profile Picture Section -->
+        <section class="profile-picture-section">
+          <div class="profile-picture-container">
+            <img
+              src="assets/default_profile.png"
+              alt="Profile Picture"
+              class="profile-picture"
+              id="profilePicture"
+            />
+            <button type="button" class="change-photo-btn" id="changePhotoBtn">
+              Change Photo
+            </button>
+          </div>
+        </section>
 
-          <h3 class="profile-heading">About</h3>
-          <p id="profileBio" class="profile-bio"></p>
-        </div>
-        <button id="editProfileBtn" class="edit-btn">Edit Profile</button>
-      </section>
+        <!-- Basic Information -->
+        <section class="form-section">
+          <h2 class="section-heading">Basic Information</h2>
 
-      <section id="profileEditSection" class="hidden">
-        <form id="editProfileForm">
-          <label>Name</label>
-          <input
-            type="text"
-            id="editName"
-            placeholder="Enter your name"
-            required
-          />
+          <fieldset class="form-fieldset">
+            <label for="profileName" class="form-label">Display Name</label>
+            <input
+              type="text"
+              id="profileName"
+              name="name"
+              class="form-input"
+              placeholder="Enter your display name"
+            />
+          </fieldset>
 
-          <label>Age</label>
-          <input
-            type="number"
-            id="editAge"
-            placeholder="Enter your age"
-            required
-          />
+          <fieldset class="form-fieldset">
+            <label for="profileAge" class="form-label">Age</label>
+            <input
+              type="number"
+              id="profileAge"
+              name="age"
+              class="form-input"
+              placeholder="Enter your age"
+              min="18"
+              max="100"
+            />
+          </fieldset>
 
-          <label>About</label>
-          <textarea
-            id="editBio"
-            rows="3"
-            placeholder="Tell us about yourself"
-            required
-          ></textarea>
+          <fieldset class="form-fieldset">
+            <label for="profileBio" class="form-label">Bio</label>
+            <textarea
+              id="profileBio"
+              name="bio"
+              class="form-textarea"
+              placeholder="Tell others about yourself..."
+              rows="4"
+            ></textarea>
+          </fieldset>
+        </section>
 
-          <label>Location</label>
-          <input type="text" id="editLocation" placeholder="Enter your city" />
+        <!-- Identity Information -->
+        <section class="form-section">
+          <h2 class="section-heading">Identity</h2>
 
-          <label>Interests</label>
-          <input
-            type="text"
-            id="editInterests"
-            placeholder="E.g. Art, Music, Hiking"
-          />
+          <fieldset class="form-fieldset">
+            <label for="profileGender" class="form-label">Gender</label>
+            <select id="profileGender" name="gender" class="form-select">
+              <option value="">Select your gender</option>
+              <option value="cisgender(AFAB)">Cisgender (AFAB)</option>
+              <option value="agender">Agender</option>
+              <option value="genderfluid">Genderfluid</option>
+              <option value="genderqueer">Genderqueer</option>
+              <option value="nonbinary">Non-binary</option>
+              <option value="gendernonconforming">Gender Non-conforming</option>
+              <option value="transgender(AMAB)">Transgender (AMAB)</option>
+              <option value="demigender">Demigender</option>
+              <option value="other">Other</option>
+            </select>
+          </fieldset>
 
-          <!--new profile image upload-->
-          <label>Change Profile Image</label>
-          <input type="file" id="editProfileImage" accept="image/*" />
+          <fieldset class="form-fieldset">
+            <label for="profilePronouns" class="form-label">Pronouns</label>
+            <select id="profilePronouns" name="pronouns" class="form-select">
+              <option value="">Select your pronouns</option>
+              <option value="she/her">She/Her</option>
+              <option value="he/him">He/Him</option>
+              <option value="they/them">They/Them</option>
+              <option value="she/they">She/They</option>
+              <option value="he/they">He/They</option>
+              <option value="other">Other</option>
+            </select>
+          </fieldset>
 
-          <button type="submit" class="save-btn">Save Changes</button>
-        </form>
-      </section>
+          <fieldset class="form-fieldset">
+            <label for="profileSexuality" class="form-label">Sexuality</label>
+            <select id="profileSexuality" name="sexuality" class="form-select">
+              <option value="">Select your sexuality</option>
+              <option value="queer">Queer</option>
+              <option value="lesbian">Lesbian</option>
+              <option value="bisexual">Bisexual</option>
+              <option value="pansexual">Pansexual</option>
+              <option value="asexual">Asexual</option>
+              <option value="aromantic">Aromantic</option>
+              <option value="aroace">Aro-Ace</option>
+              <option value="demisexual">Demisexual</option>
+              <option value="other">Other</option>
+            </select>
+          </fieldset>
+        </section>
+
+        <!-- Relationship Preferences -->
+        <section class="form-section">
+          <h2 class="section-heading">Relationship Preferences</h2>
+
+          <fieldset class="form-fieldset">
+            <label for="profileRelationshipStyle" class="form-label"
+              >Relationship Style</label
+            >
+            <select
+              id="profileRelationshipStyle"
+              name="relationshipStyle"
+              class="form-select"
+            >
+              <option value="">Select preferred style</option>
+              <option value="monogamous">Monogamous</option>
+              <option value="polyamorous">Polyamorous</option>
+              <option value="open">Open Relationship</option>
+              <option value="relationship-anarchist">
+                Relationship Anarchist
+              </option>
+            </select>
+          </fieldset>
+
+          <fieldset class="form-fieldset">
+            <label for="profileRelationshipType" class="form-label"
+              >Relationship Type</label
+            >
+            <select
+              id="profileRelationshipType"
+              name="relationshipType"
+              class="form-select"
+            >
+              <option value="">Select preferred type</option>
+              <option value="casual">Casual</option>
+              <option value="longterm">Long-term</option>
+              <option value="friendship">Friendship</option>
+              <option value="situationship">Situationship</option>
+            </select>
+          </fieldset>
+        </section>
+
+        <!-- Location Information -->
+        <section class="form-section">
+          <h2 class="section-heading">Location</h2>
+
+          <fieldset class="form-fieldset">
+            <label for="profileLocation" class="form-label">City</label>
+            <select id="profileLocation" name="location" class="form-select">
+              <option value="">Select your city</option>
+              <option value="johannesburg">Johannesburg</option>
+              <option value="pretoria">Pretoria</option>
+              <option value="durban">Durban</option>
+              <option value="east-london">East London</option>
+              <option value="cape-town">Cape Town</option>
+              <option value="other">Other</option>
+            </select>
+          </fieldset>
+        </section>
+
+        <!-- Submit Button -->
+        <section class="form-section">
+          <button type="submit" class="save-btn" id="saveProfileBtn">
+            Save Profile
+          </button>
+        </section>
+      </form>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/search.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
