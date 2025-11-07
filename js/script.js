@@ -1,5 +1,10 @@
-const API_KEY = "pk.a5617e2068395ccb3921dcdc4103c28a";
-const BASE_URL = "https://api.locationiq.com/v1/search";
+if (typeof API_KEY === "undefined") {
+  const API_KEY = "pk.a5617e2068395ccb3921dcdc4103c28a";
+}
+
+if (typeof BASE_URL === "undefined") {
+  const BASE_URL = "https://api.locationiq.com/v1/search";
+}
 
 const form = document.getElementById("signin-form");
 if (form) {
@@ -11,12 +16,15 @@ if (form) {
 
     if (!username || !password) {
       alert("Please fill in all fields.");
-      WebGLSampler.form(".login-btn", {
-        x: -10,
-        yoyo: true,
-        repeat: 5,
-        duration: 0.5,
-      });
+      // Fixed the typo in WebGLSampler to gsap
+      if (typeof gsap !== "undefined") {
+        gsap.to(".login-btn", {
+          x: -10,
+          yoyo: true,
+          repeat: 5,
+          duration: 0.5,
+        });
+      }
       return;
     }
 
@@ -26,7 +34,7 @@ if (form) {
       .then((data) => {
         console.log("Mock dating API results:", data.results);
         alert(
-          `Welcome, ${username}! Found ${data.results.length} potential mathches for you.`
+          `Welcome, ${username}! Found ${data.results.length} potential matches for you.`
         );
         window.location.href = "upload.html";
       })
@@ -62,13 +70,16 @@ if (uploadForm) {
   });
 }
 
-// --- ORIGINAL PROFILE PAGE FUNCTIONALITY ---
+// --- PROFILE PAGE FUNCTIONALITY ---
 if (document.body.classList.contains("profile-page")) {
   const profileImage = document.getElementById("profileImage");
   const savedPhoto = localStorage.getItem("userPhoto");
 
   if (savedPhoto) {
     profileImage.src = savedPhoto;
+  } else {
+    // Use a default image if no saved photo
+    profileImage.src = "assets/default_profile.png";
   }
 
   // Load and display profile data
@@ -83,17 +94,21 @@ if (document.body.classList.contains("profile-page")) {
   if (savedProfile.name || savedEnhancedProfile.name) {
     const name = savedProfile.name || savedEnhancedProfile.name;
     const age = savedProfile.age || savedEnhancedProfile.age;
-    document.getElementById("profileName").textContent = `${name}, ${age}`;
+    if (document.getElementById("profileName")) {
+      document.getElementById("profileName").textContent = `${name}, ${age}`;
+    }
   }
 
   // Display bio - prioritize the enhanced bio format
-  if (savedProfile.bioHTML) {
-    document.getElementById("profileBio").innerHTML = savedProfile.bioHTML;
-  } else if (savedEnhancedProfile.bio) {
-    document.getElementById("profileBio").textContent =
-      savedEnhancedProfile.bio;
-  } else if (savedProfile.bioPlain) {
-    document.getElementById("profileBio").textContent = savedProfile.bioPlain;
+  const profileBioElement = document.getElementById("profileBio");
+  if (profileBioElement) {
+    if (savedProfile.bioHTML) {
+      profileBioElement.innerHTML = savedProfile.bioHTML;
+    } else if (savedEnhancedProfile.bio) {
+      profileBioElement.textContent = savedEnhancedProfile.bio;
+    } else if (savedProfile.bioPlain) {
+      profileBioElement.textContent = savedProfile.bioPlain;
+    }
   }
 
   // Display enhanced profile fields if they exist
@@ -140,67 +155,156 @@ function displayEnhancedProfileFields(profile) {
   }
 }
 
-// --- ORIGINAL SIDEBAR NAVIGATION LOGIC ---
+// --- SIDEBAR NAVIGATION LOGIC ---
 document.addEventListener("DOMContentLoaded", function () {
   const navlinks = document.querySelectorAll("#sidebarNav a");
 
-  // Loop through each nav link
-  navlinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = link.dataset.page;
+  // Only run if sidebar nav exists
+  if (navlinks.length > 0) {
+    // Loop through each nav link
+    navlinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const page = link.dataset.page;
 
-      switch (page) {
-        case "home":
-          window.location.href = "index.html";
-          break;
-        case "matches":
-          window.location.href = "search.html";
-          break;
-        case "likes":
-          window.location.href = "likes.html";
-          break;
-        case "inbox":
-          window.location.href = "inbox.html";
-          break;
-        case "profile":
-          window.location.href = "profile.html";
-          break;
-        case "settings":
-          window.location.href = "settings.html";
-          break;
-        default:
-          console.warn("Unknown page:", page);
-      }
+        switch (page) {
+          case "home":
+            window.location.href = "index.html";
+            break;
+          case "matches":
+            window.location.href = "search.html";
+            break;
+          case "likes":
+            window.location.href = "likes.html";
+            break;
+          case "inbox":
+            window.location.href = "inbox.html";
+            break;
+          case "profile":
+            window.location.href = "profile.html";
+            break;
+          case "settings":
+            window.location.href = "settings.html";
+            break;
+          default:
+            console.warn("Unknown page:", page);
+        }
 
-      // Update active state
-      navlinks.forEach((link) => link.classList.remove("active"));
-      link.classList.add("active");
+        // Update active state
+        navlinks.forEach((navLink) => navLink.classList.remove("active"));
+        link.classList.add("active");
+      });
     });
-  });
 
-  // Automatically highlight the current page
-  const currentPage = window.location.pathname.split("/").pop();
-  navlinks.forEach((link) => {
-    if (
-      link.getAttribute("href") === currentPage ||
-      link.getAttribute("data-page") === currentPage.replace(".html", "")
-    ) {
-      link.classList.add("active");
-    } else {
-      link.classList.remove("active");
-    }
-  });
+    // Automatically highlight the current page
+    const currentPage = window.location.pathname.split("/").pop();
+    navlinks.forEach((link) => {
+      const linkPage = link.getAttribute("data-page");
+      if (
+        linkPage === currentPage.replace(".html", "") ||
+        link.getAttribute("href") === currentPage
+      ) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
 });
 
-// --- ENHANCED PROFILE PAGE: save handler with new fields ---
+// --- PROFILE PAGE EDIT FUNCTIONALITY ---
+// Add this to your existing script.js file - replace the entire profile section
+
+// --- PROFILE PAGE FUNCTIONALITY ---
+if (document.body.classList.contains("profile-page")) {
+  const profileImage = document.getElementById("profileImage");
+  const savedPhoto = localStorage.getItem("userPhoto");
+
+  if (savedPhoto) {
+    profileImage.src = savedPhoto;
+  }
+
+  // Load and display profile data
+  const savedProfile = JSON.parse(
+    localStorage.getItem("everAfterProfile") || "{}"
+  );
+  const savedEnhancedProfile = JSON.parse(
+    localStorage.getItem("everAfterUserProfile") || "{}"
+  );
+
+  // Use profile data if available
+  if (savedProfile.name || savedEnhancedProfile.name) {
+    const name = savedProfile.name || savedEnhancedProfile.name;
+    const age = savedProfile.age || savedEnhancedProfile.age;
+    if (document.getElementById("profileName")) {
+      document.getElementById("profileName").textContent = `${name}, ${age}`;
+    }
+  }
+
+  // Display bio - prioritize the enhanced bio format
+  const profileBioElement = document.getElementById("profileBio");
+  if (profileBioElement) {
+    if (savedProfile.bioHTML) {
+      profileBioElement.innerHTML = savedProfile.bioHTML;
+    } else if (savedEnhancedProfile.bio) {
+      profileBioElement.textContent = savedEnhancedProfile.bio;
+    } else if (savedProfile.bioPlain) {
+      profileBioElement.textContent = savedProfile.bioPlain;
+    }
+  }
+
+  // Display enhanced profile fields if they exist
+  displayEnhancedProfileFields(savedEnhancedProfile);
+}
+
+// Function to display enhanced profile fields
+function displayEnhancedProfileFields(profile) {
+  // Identity Section
+  if (profile.gender) {
+    const genderElement = document.getElementById("displayGender");
+    if (genderElement) genderElement.textContent = profile.gender;
+  }
+
+  if (profile.pronouns) {
+    const pronounsElement = document.getElementById("displayPronouns");
+    if (pronounsElement) pronounsElement.textContent = profile.pronouns;
+  }
+
+  if (profile.sexuality) {
+    const sexualityElement = document.getElementById("displaySexuality");
+    if (sexualityElement) sexualityElement.textContent = profile.sexuality;
+  }
+
+  // Relationship Preferences Section
+  if (profile.relationshipStyle) {
+    const styleElement = document.getElementById("displayRelationshipStyle");
+    if (styleElement) styleElement.textContent = profile.relationshipStyle;
+  }
+
+  if (profile.relationshipType) {
+    const typeElement = document.getElementById("displayRelationshipType");
+    if (typeElement) typeElement.textContent = profile.relationshipType;
+  }
+
+  if (profile.location) {
+    const locationElement = document.getElementById("displayLocation");
+    if (locationElement) {
+      const formattedLocation =
+        profile.location.charAt(0).toUpperCase() +
+        profile.location.slice(1).replace("-", " ");
+      locationElement.textContent = formattedLocation;
+    }
+  }
+}
+
+// --- PROFILE PAGE EDIT FUNCTIONALITY ---
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.body.classList.contains("profile-page")) return;
 
-  // Elements
+  // Elements - with null checks
   const editProfileForm = document.getElementById("editProfileForm");
   if (!editProfileForm) {
-    console.error("Edit form not found: #editProfileForm");
+    console.log("Edit profile form not found on this page");
     return;
   }
 
@@ -222,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "editRelationshipStyle"
   );
   const editRelationshipType = document.getElementById("editRelationshipType");
-  const editProfileLocation = document.getElementById("editProfileLocation");
 
   // --- Edit Profile Button Handler ---
   const editProfileBtn = document.getElementById("editProfileBtn");
@@ -230,9 +333,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const profileEditSection = document.getElementById("profileEditSection");
   const editProfileImage = document.getElementById("editProfileImage");
   const profileImage = document.getElementById("profileImage");
+  const editProfilePicture = document.getElementById("editProfilePicture");
+  const changePhotoBtn = document.getElementById("changePhotoBtn");
+  const backToProfileBtn = document.getElementById("backToProfileBtn");
 
   // When user clicks edit profile button
-  if (editProfileBtn) {
+  if (editProfileBtn && profileDisplay && profileEditSection) {
     editProfileBtn.addEventListener("click", () => {
       // Load saved data from localStorage if available
       const saved = JSON.parse(
@@ -243,14 +349,15 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       // Basic fields - use enhanced data as fallback
-      if (saved.name || enhancedSaved.name)
+      if (editName && (saved.name || enhancedSaved.name))
         editName.value = saved.name || enhancedSaved.name;
-      if (saved.age || enhancedSaved.age)
+      if (editAge && (saved.age || enhancedSaved.age))
         editAge.value = saved.age || enhancedSaved.age;
-      if (saved.bioPlain || enhancedSaved.bio)
+      if (editBio && (saved.bioPlain || enhancedSaved.bio))
         editBio.value = saved.bioPlain || enhancedSaved.bio;
-      if (saved.location) editLocation.value = saved.location;
-      if (saved.interests) editInterests.value = saved.interests;
+      if (editLocation && saved.location) editLocation.value = saved.location;
+      if (editInterests && saved.interests)
+        editInterests.value = saved.interests;
 
       // Enhanced fields
       if (enhancedSaved.gender && editGender)
@@ -263,8 +370,12 @@ document.addEventListener("DOMContentLoaded", () => {
         editRelationshipStyle.value = enhancedSaved.relationshipStyle;
       if (enhancedSaved.relationshipType && editRelationshipType)
         editRelationshipType.value = enhancedSaved.relationshipType;
-      if (enhancedSaved.location && editProfileLocation)
-        editProfileLocation.value = enhancedSaved.location;
+
+      // Load profile pictures
+      const savedPhoto = localStorage.getItem("userPhoto");
+      if (savedPhoto && editProfilePicture) {
+        editProfilePicture.src = savedPhoto;
+      }
 
       // Toggle visibility
       profileDisplay.classList.add("hidden");
@@ -272,16 +383,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Handle profile image upload preview - ORIGINAL FUNCTIONALITY
-  if (editProfileImage) {
+  // Back button functionality
+  if (backToProfileBtn && profileDisplay && profileEditSection) {
+    backToProfileBtn.addEventListener("click", () => {
+      profileEditSection.classList.add("hidden");
+      profileDisplay.classList.remove("hidden");
+    });
+  }
+
+  // Handle profile image upload preview
+  if (
+    editProfileImage &&
+    profileImage &&
+    editProfilePicture &&
+    changePhotoBtn
+  ) {
+    changePhotoBtn.addEventListener("click", () => {
+      editProfileImage.click();
+    });
+
     editProfileImage.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
       reader.onload = () => {
+        // Update both edit mode and view mode images
+        editProfilePicture.src = reader.result;
         profileImage.src = reader.result;
-        localStorage.setItem("everAfterProfileImage", reader.result);
+        localStorage.setItem("userPhoto", reader.result);
 
         // Also update enhanced profile
         const enhancedProfile = JSON.parse(
@@ -297,131 +427,124 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // When page loads, show saved image if available - ORIGINAL FUNCTIONALITY
-  const savedImage = localStorage.getItem("everAfterProfileImage");
-  if (savedImage) {
+  // When page loads, show saved image if available
+  const savedImage = localStorage.getItem("userPhoto");
+  if (savedImage && profileImage) {
     profileImage.src = savedImage;
-
-    // Also ensure enhanced profile has the image
-    const enhancedProfile = JSON.parse(
-      localStorage.getItem("everAfterUserProfile") || "{}"
-    );
-    if (!enhancedProfile.profilePicture) {
-      enhancedProfile.profilePicture = savedImage;
-      localStorage.setItem(
-        "everAfterUserProfile",
-        JSON.stringify(enhancedProfile)
-      );
-    }
   }
 
   // --- Prevent Enter from submitting the form prematurely ---
-  editProfileForm.addEventListener("keydown", (e) => {
-    const tag = e.target.tagName.toLowerCase();
+  if (editProfileForm) {
+    editProfileForm.addEventListener("keydown", (e) => {
+      const tag = e.target.tagName.toLowerCase();
 
-    // Don't interfere if the user is typing inside a textarea
-    if (tag === "textarea") return;
+      // Don't interfere if the user is typing inside a textarea
+      if (tag === "textarea") return;
 
-    // If enter is pressed inside any input, prevent form submit
-    if (e.key === "Enter") {
-      e.preventDefault();
-      console.log("Prevented early submit on Enter");
+      // If enter is pressed inside any input, prevent form submit
+      if (e.key === "Enter") {
+        e.preventDefault();
 
-      // Move the focus to the next input if it exists
-      const formInputs = Array.from(
-        editProfileForm.querySelectorAll("input, textarea, select")
-      );
-      const currentIndex = formInputs.indexOf(e.target);
-      if (currentIndex > -1 && currentIndex < formInputs.length - 1) {
-        formInputs[currentIndex + 1].focus();
+        // Move the focus to the next input if it exists
+        const formInputs = Array.from(
+          editProfileForm.querySelectorAll("input, textarea, select")
+        );
+        const currentIndex = formInputs.indexOf(e.target);
+        if (currentIndex > -1 && currentIndex < formInputs.length - 1) {
+          formInputs[currentIndex + 1].focus();
+        }
       }
-    }
-  });
-
-  // --- ENHANCED SAVE HANDLER - FIXED BIO SAVING ---
-  function handleSaveSubmit(e) {
-    e.preventDefault(); // stop refresh
-    e.stopPropagation();
-
-    // Custom validation (required fields)
-    const nameVal = editName.value.trim();
-    const ageVal = editAge.value.trim();
-    const bioVal = editBio.value.trim();
-
-    if (!nameVal || !ageVal || !bioVal) {
-      alert("Please fill in Name, Age and About before saving.");
-      if (!nameVal) editName.focus();
-      else if (!ageVal) editAge.focus();
-      else editBio.focus();
-      return;
-    }
-
-    // Build display bio HTML - ORIGINAL FORMAT
-    let bioHTML = bioVal.replace(/\n/g, "<br>");
-    if (editLocation.value.trim())
-      bioHTML += `<br>📍 ${escapeHTML(editLocation.value.trim())}`;
-    if (editInterests.value.trim())
-      bioHTML += `<br>🎯 Interests: ${escapeHTML(editInterests.value.trim())}`;
-
-    // Update the visual profile immediately - ORIGINAL FUNCTIONALITY
-    profileName.textContent = `${nameVal}, ${ageVal}`;
-    profileBio.innerHTML = bioHTML;
-
-    // Save structured data to localStorage (basic profile) - ORIGINAL FORMAT
-    const profileData = {
-      name: nameVal,
-      age: ageVal,
-      bioPlain: bioVal,
-      bioHTML: bioHTML,
-      location: editLocation.value.trim(),
-      interests: editInterests.value.trim(),
-    };
-    localStorage.setItem("everAfterProfile", JSON.stringify(profileData));
-
-    // Save enhanced profile data to separate storage
-    const enhancedProfileData = {
-      name: nameVal,
-      age: ageVal,
-      bio: bioVal,
-      gender: editGender ? editGender.value : "",
-      pronouns: editPronouns ? editPronouns.value : "",
-      sexuality: editSexuality ? editSexuality.value : "",
-      relationshipStyle: editRelationshipStyle
-        ? editRelationshipStyle.value
-        : "",
-      relationshipType: editRelationshipType ? editRelationshipType.value : "",
-      location: editProfileLocation
-        ? editProfileLocation.value
-        : editLocation.value.trim() || "",
-      profilePicture: profileImage.src,
-      lastUpdated: new Date().toISOString(),
-    };
-    localStorage.setItem(
-      "everAfterUserProfile",
-      JSON.stringify(enhancedProfileData)
-    );
-
-    console.log("[EverAfter] Basic profile saved:", profileData);
-    console.log("[EverAfter] Enhanced profile saved:", enhancedProfileData);
-
-    // Update enhanced profile display fields
-    displayEnhancedProfileFields(enhancedProfileData);
-
-    // Hide form and show profile again
-    profileEditSection.classList.add("hidden");
-    profileDisplay.classList.remove("hidden");
-    alert("Profile updated successfully!");
-  }
-
-  // Attach submit handler
-  editProfileForm.addEventListener("submit", handleSaveSubmit);
-
-  // Attach click handler to save button
-  if (saveBtn) {
-    saveBtn.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      handleSaveSubmit(ev);
     });
+
+    // --- ENHANCED SAVE HANDLER - FIXED BIO SAVING ---
+    function handleSaveSubmit(e) {
+      e.preventDefault(); // stop refresh
+      e.stopPropagation();
+
+      // Custom validation (required fields)
+      const nameVal = editName ? editName.value.trim() : "";
+      const ageVal = editAge ? editAge.value.trim() : "";
+      const bioVal = editBio ? editBio.value.trim() : "";
+
+      if (!nameVal || !ageVal || !bioVal) {
+        alert("Please fill in Name, Age and About before saving.");
+        if (!nameVal && editName) editName.focus();
+        else if (!ageVal && editAge) editAge.focus();
+        else if (editBio) editBio.focus();
+        return;
+      }
+
+      // Build display bio HTML - ORIGINAL FORMAT
+      let bioHTML = bioVal.replace(/\n/g, "<br>");
+      if (editLocation && editLocation.value.trim())
+        bioHTML += `<br>📍 ${escapeHTML(editLocation.value.trim())}`;
+      if (editInterests && editInterests.value.trim())
+        bioHTML += `<br>🎯 Interests: ${escapeHTML(
+          editInterests.value.trim()
+        )}`;
+
+      // Update the visual profile immediately - ORIGINAL FUNCTIONALITY
+      if (profileName) profileName.textContent = `${nameVal}, ${ageVal}`;
+      if (profileBio) profileBio.innerHTML = bioHTML;
+
+      // Save structured data to localStorage (basic profile) - ORIGINAL FORMAT
+      const profileData = {
+        name: nameVal,
+        age: ageVal,
+        bioPlain: bioVal,
+        bioHTML: bioHTML,
+        location: editLocation ? editLocation.value.trim() : "",
+        interests: editInterests ? editInterests.value.trim() : "",
+      };
+      localStorage.setItem("everAfterProfile", JSON.stringify(profileData));
+
+      // Save enhanced profile data to separate storage
+      const enhancedProfileData = {
+        name: nameVal,
+        age: ageVal,
+        bio: bioVal,
+        gender: editGender ? editGender.value : "",
+        pronouns: editPronouns ? editPronouns.value : "",
+        sexuality: editSexuality ? editSexuality.value : "",
+        relationshipStyle: editRelationshipStyle
+          ? editRelationshipStyle.value
+          : "",
+        relationshipType: editRelationshipType
+          ? editRelationshipType.value
+          : "",
+        location: editLocation ? editLocation.value.trim() : "",
+        profilePicture: profileImage ? profileImage.src : "",
+        lastUpdated: new Date().toISOString(),
+      };
+      localStorage.setItem(
+        "everAfterUserProfile",
+        JSON.stringify(enhancedProfileData)
+      );
+
+      console.log("[EverAfter] Basic profile saved:", profileData);
+      console.log("[EverAfter] Enhanced profile saved:", enhancedProfileData);
+
+      // Update enhanced profile display fields
+      displayEnhancedProfileFields(enhancedProfileData);
+
+      // Hide form and show profile again
+      if (profileEditSection && profileDisplay) {
+        profileEditSection.classList.add("hidden");
+        profileDisplay.classList.remove("hidden");
+      }
+      alert("Profile updated successfully!");
+    }
+
+    // Attach submit handler
+    editProfileForm.addEventListener("submit", handleSaveSubmit);
+
+    // Attach click handler to save button
+    if (saveBtn) {
+      saveBtn.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        handleSaveSubmit(ev);
+      });
+    }
   }
 
   // Helper to escape user text
@@ -437,20 +560,5 @@ document.addEventListener("DOMContentLoaded", () => {
           "'": "&#39;",
         }[m])
     );
-  }
-
-  // Debugging: show saved profile on load (console)
-  try {
-    const saved = localStorage.getItem("everAfterProfile");
-    const enhancedSaved = localStorage.getItem("everAfterUserProfile");
-    if (saved)
-      console.log("[EverAfter] Loaded basic profile:", JSON.parse(saved));
-    if (enhancedSaved)
-      console.log(
-        "[EverAfter] Loaded enhanced profile:",
-        JSON.parse(enhancedSaved)
-      );
-  } catch (err) {
-    console.warn("[EverAfter] Could not parse saved profile:", err);
   }
 });
