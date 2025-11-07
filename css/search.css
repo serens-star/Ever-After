@@ -178,7 +178,7 @@ input:checked + .slider:before {
 }
 
 /*Button*/
-.next-btn {
+#nextBtn {
   background: var(--button);
   color: var(--text);
   font-family: "Caveat", cursive;
@@ -193,7 +193,7 @@ input:checked + .slider:before {
   box-shadow: 0 2px 6px rgba(249, 184, 211, 0.4);
 }
 
-.next-btn:hover {
+#nextBtn :hover {
   background: var(--accent);
   transform: scale(1.05);
 }

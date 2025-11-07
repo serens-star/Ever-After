@@ -40,10 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     localStorage.setItem("everAfterSearchPrefs", JSON.stringify(prefs));
-    alert("Preferences saved successfully!");
 
     //Redirect to nearby screen
-    window.location.href = "nearby.html";
+    gsap.to("body", {
+      opacity: 0,
+      duration: 0.6,
+      onComplete: () => {
+        window.location.href = "nearby.html";
+      },
+    });
   });
 
   //Example placeholder API for user data
@@ -53,4 +58,39 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("[EverAfter API] Sample user data", data.users.slice(0, 5));
     })
     .catch((err) => console.error("[EverAfter API] Error:", err));
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchForm = document.getElementById("searchForm");
+
+  if (searchForm) {
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const preferences = {
+        gender:
+          document.querySelector('input[name="gender"]:checked')?.value || "",
+        pronouns: document.getElementById("pronouns")?.value || "",
+        sexuality: document.getElementById("sexuality")?.value || "",
+        relationshipStyle:
+          document.getElementById("relationshipStyle")?.value || "",
+        relationshipType:
+          document.getElementById("relationshipType")?.value || "",
+        ageRange: document.getElementById("ageRange")?.value || "",
+        searchArea:
+          document.querySelector('input[name="searchArea"]:checked')?.value ||
+          "",
+      };
+
+      localStorage.setItem("searchPreferences", JSON.stringify(preferences));
+
+      gsap.to("body", {
+        opacity: 0,
+        duration: 0.6,
+        onComplete: () => {
+          window.location.href = "nearby.html";
+        },
+      });
+    });
+  }
 });

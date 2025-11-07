@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nearby | Ever After</title>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="Discover nearby queer women on Ever After"
+    />
+    <link rel="stylesheet" href="css/nearby.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="nearby-page">
+    <header class="nearby-header">
+      <button class="settings-btn" aria-label="Search criteria settings">
+        <img src="assets/Settings_Icon.png" alt="Settings" class="icon" />
+      </button>
+      <h1 class="nearby-title">People Near You!</h1>
+      <button class="matches-btn" aria-label="View matches">
+        <img
+          src="assets/EverAfter_Logo.png"
+          alt="Matches"
+          class="icon matches-icon"
+        />
+      </button>
+    </header>
+
+    <main class="nearby-main">
+      <section class="search-section">
+        <div class="search-bar">
+          <img src="assets/search_icon.png" alt="Search" class="search-icon" />
+          <input type="text" placeholder="Search..." class="search-input" />
+        </div>
+      </section>
+
+      <section class="profiles-container" id="profilesContainer">
+        <!-- Profiles will be dynamically here -->
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-page="nearby">
+        <img src="assets/Card_Swipe_Icon.png" alt="Discover" class="nav-icon" />
+        <span class="nav-label">Card Swipe</span>
+      </button>
+      <button class="nav-btn" data-page="inbox">
+        <img src="assets/Inbox_Icon.png" alt="Inbox" class="nav-icon" />
+        <span class="nav-label">Inbox</span>
+      </button>
+      <button class="nav-btn" data-page="profile">
+        <img src="assets/Profile_Icon.png" alt="Profile" class="nav-icon" />
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/nearby.js"></script>
+  </body>
+</html>
