@@ -7,7 +7,7 @@ class NearbyProfiles {
     this.settingsBtn = document.querySelector(".settings-btn");
     this.matchesBtn = document.querySelector(".matches-btn");
     this.searchInput = document.querySelector(".search-input");
-    this.navBtns = document.querySelectorAll(".nav-btn");
+    //this.navBtns = document.querySelectorAll(".nav-btn");
 
     this.init();
   }
@@ -35,12 +35,12 @@ class NearbyProfiles {
     });
 
     // Navigation buttons
-    this.navBtns.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const page = e.currentTarget.dataset.page;
-        this.navigateToPage(page);
-      });
-    });
+    //this.navBtns.forEach((btn) => {
+    //btn.addEventListener("click", (e) => {
+    //const page = e.currentTarget.dataset.page;
+    //this.navigateToPage(page);
+    //});
+    //});
   }
 
   checkSearchCriteria() {
@@ -270,6 +270,47 @@ class NearbyProfiles {
 
     return true;
   }
+  displayProfiles(profiles) {
+    this.profilesContainer.innerHTML = "";
+
+    profiles.forEach((profile) => {
+      const profileElement = this.createProfileElement(profile);
+      this.profilesContainer.appendChild(profileElement);
+    });
+  }
+
+  createProfileElement(profile) {
+    const profileDiv = document.createElement("div");
+    profileDiv.className = "polaroid-profile";
+    profileDiv.innerHTML = `
+    <img src="${profile.image}" alt="${profile.name}" class="profile-image">
+    <div class="profile-info">
+      <div class="name-age">
+        <span>${profile.name}, ${profile.age}</span>
+      </div>
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label">Gender</span>
+          <span class="detail-value">${profile.gender}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Pronouns</span>
+          <span class="detail-value">${profile.pronouns}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Sexuality</span>
+          <span class="detail-value">${profile.sexuality}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Looking for</span>
+          <span class="detail-value">${profile.relationshipType}</span>
+        </div>
+      </div>
+      <div class="distance">${profile.distance} miles away • ${profile.location}</div>
+    </div>
+  `;
+    return profileDiv;
+  }
 
   animateProfiles() {
     const profiles = document.querySelectorAll(".polaroid-profile");
@@ -384,7 +425,7 @@ class NearbyProfiles {
           case "inbox":
             window.location.href = "inbox.html";
             break;
-          case "card-swipe":
+          case "cardswipe": // Changed from "card-swipe" to "cardswipe"
             window.location.href = "cardswipe.html";
             break;
           case "nearby":
@@ -396,7 +437,7 @@ class NearbyProfiles {
       },
     });
   }
-}
+} // close NearbyProfiles class
 
 // Initialize when DOM is loaded
 let nearbyProfiles;

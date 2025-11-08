@@ -17,88 +17,113 @@
 }
 
 body {
-  background-color: var(--bg1);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   font-family: "Caveat", cursive;
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
   color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
 }
 
-header {
-  background-color: var(--bg2);
-  padding: 1rem;
+.cardswipe-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 10px var(--shadow);
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--accent);
 }
 
-header h1 {
+.cardswipe-title {
   font-family: "Courgette", cursive;
-  font-size: 1.8rem;
   color: var(--text);
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
 }
 
-.settings-btn {
-  width: 2.5rem;
-  height: 2.5rem;
+.settings-btn,
+.matches-btn {
+  background: rgba(249, 184, 211, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
 }
 
-.settings-btn img {
-  width: 100%;
-  height: auto;
+.settings-btn:hover,
+.matches-btn:hover {
+  background: rgba(249, 184, 211, 0.5);
+  transform: scale(1.05);
 }
 
-main {
-  flex: 1;
-  padding: 1.5rem;
+.icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.matches-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.cardswipe-main {
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .subtitle-section {
-  width: 100%;
+  margin-bottom: 30px;
   text-align: center;
-  margin-bottom: 1.5rem;
 }
 
 .subtitle-section h2 {
   font-family: "Courgette", cursive;
   font-size: 1.5rem;
   color: var(--text);
+  font-weight: 600;
 }
 
-.card-container {
-  width: 100%;
-  max-width: 350px;
+.swipe-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 30px;
+  max-width: 350px;
+  width: 100%;
 }
 
-.polaroid-frame {
+.polaroid-card {
   position: relative;
   width: 100%;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 15px var(--shadow);
+  background: var(--white);
   border-radius: 8px;
+  box-shadow: 0 8px 25px var(--shadow);
+  border: 1px solid var(--accent);
+  overflow: hidden;
 }
 
-.polaroid-template {
+.card-image {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 8px;
 }
 
-.profile-info {
+.card-info {
   position: absolute;
-  bottom: 40px; /* Pushed down further to not cover the image */
+  bottom: 40px; /* Adjusted to not cover the image */
   left: 0;
   right: 0;
   text-align: center;
@@ -107,100 +132,177 @@ main {
 
 .profile-name {
   font-family: "Courgette", cursive;
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
   color: var(--text);
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .distance-info {
-  font-size: 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  color: var(--white); /* White text like in your screenshot */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Better readability on images */
+  gap: 2px;
+  font-size: 1.1rem;
+  color: var(--white);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
 }
 
-.action-buttons {
+.swipe-buttons {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 40px;
   width: 100%;
 }
 
-.btn {
+.swipe-btn {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   border: none;
-  font-size: 1.8rem;
   cursor: pointer;
-  box-shadow: 0 4px 10px var(--shadow);
   transition: all 0.3s ease;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: var(--white);
+  justify-content: center;
+  background: var(--white);
+  box-shadow: 0 4px 15px var(--shadow);
+  border: 2px solid transparent;
 }
 
-.btn-reject {
+.swipe-icon {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.reject-btn {
   color: #ff4757;
 }
 
-.btn-accept {
+.reject-btn:hover {
+  background: #ff4757;
+  color: white;
+  transform: scale(1.1);
+  border-color: #ff4757;
+}
+
+.accept-btn {
   color: #2ed573;
 }
 
-.btn:hover {
+.accept-btn:hover {
+  background: #2ed573;
+  color: white;
   transform: scale(1.1);
-  box-shadow: 0 6px 15px var(--shadow);
+  border-color: #2ed573;
 }
 
-.btn:active {
+.swipe-btn:active {
   transform: scale(0.95);
 }
 
-footer {
-  background-color: var(--bg2);
-  padding: 0.5rem 0;
-  box-shadow: 0 -2px 10px var(--shadow);
-}
-
-nav {
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  padding: 15px 0;
+  border-top: 2px solid var(--accent);
+  z-index: 1000;
 }
 
 .nav-btn {
+  background: none;
+  border: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  color: var(--text);
-  font-family: "Caveat", cursive;
-  font-size: 0.9rem;
+  gap: 6px;
+  cursor: pointer;
+  padding: 8px 20px;
+  border-radius: 25px;
   transition: all 0.3s ease;
-}
-
-.nav-btn img {
-  width: 2rem;
-  height: 2rem;
-  margin-bottom: 0.2rem;
+  opacity: 0.6;
+  font-family: "Caveat", cursive;
+  text-decoration: none; 
+  color: var(--text); 
 }
 
 .nav-btn.active {
-  color: var(--accent);
-  transform: scale(1.1);
+  opacity: 1;
+  background: rgba(249, 184, 211, 0.2);
+  transform: translateY(-2px);
 }
 
 .nav-btn:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  text-decoration: none; 
+  color: var(--text);
+}
+
+.nav-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.nav-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  color: var(--text);
+  font-size: 1.4rem;
+  padding: 60px 20px;
+  font-family: "Courgette", cursive;
+}
+
+.error-message {
+  text-align: center;
+  color: var(--text);
+  font-size: 1.2rem;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 15px;
+  margin: 20px;
+}
+
+.retry-btn {
+  background: var(--button);
+  color: var(--text);
+  font-family: "Caveat", cursive;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 25px;
+  margin-top: 15px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+  background: var(--accent);
   transform: scale(1.05);
 }
 
-/* Responsive adjustments */
 @media (max-width: 480px) {
-  header h1 {
+  .cardswipe-main {
+    padding: 15px;
+  }
+
+  .cardswipe-title {
     font-size: 1.5rem;
   }
 
@@ -208,22 +310,20 @@ nav {
     font-size: 1.3rem;
   }
 
-  .profile-name {
-    font-size: 1.2rem;
+  .swipe-container {
+    max-width: 280px;
   }
 
-  .btn {
+  .profile-name {
+    font-size: 1.4rem;
+  }
+
+  .swipe-btn {
     width: 60px;
     height: 60px;
-    font-size: 1.5rem;
   }
 
-  .nav-btn {
-    font-size: 0.8rem;
-  }
-
-  .nav-btn img {
-    width: 1.8rem;
-    height: 1.8rem;
+  .swipe-icon {
+    font-size: 1.7rem;
   }
 }

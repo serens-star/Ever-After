@@ -1,26 +1,77 @@
-// Location API integration for card swipe page
-document.addEventListener("DOMContentLoaded", function () {
-  // Elements to update with location data
-  const distanceText = document.getElementById("distance-text");
-  const locationText = document.getElementById("location-text");
+class CardSwipe {
+  constructor() {
+    this.distanceText = document.getElementById("distance-text");
+    this.locationText = document.getElementById("location-text");
+    this.settingsBtn = document.querySelector(".settings-btn");
+    this.matchesBtn = document.querySelector(".matches-btn");
+    //this.navBtns = document.querySelectorAll(".nav-btn");
+    this.rejectBtn = document.querySelector(".reject-btn");
+    this.acceptBtn = document.querySelector(".accept-btn");
 
-  // Get user's location and calculate distance
-  getLocationAndCalculateDistance();
+    this.init();
+  }
 
-  // Button event listeners
-  document.querySelector(".btn-reject").addEventListener("click", function () {
-    handleSwipeAction("reject");
-  });
+  init() {
+    this.setupEventListeners();
+    this.getLocationAndCalculateDistance();
+    this.animateCard();
+  }
 
-  document.querySelector(".btn-accept").addEventListener("click", function () {
-    handleSwipeAction("accept");
-  });
+  setupEventListeners() {
+    // Settings button - go to search criteria
+    this.settingsBtn.addEventListener("click", () => {
+      this.navigateToPage("search-criteria");
+    });
 
-  // Function to get user's location and calculate distance
-  function getLocationAndCalculateDistance() {
+    // Matches button - refresh page
+    this.matchesBtn.addEventListener("click", () => {
+      location.reload();
+    });
+
+    // Navigation buttons
+    //this.navBtns.forEach((btn) => {
+    //btn.addEventListener("click", (e) => {
+    //const page = e.currentTarget.dataset.page;
+    //this.navigateToPage(page);
+    //});
+    //});
+
+    // Swipe buttons
+    this.rejectBtn.addEventListener("click", () => {
+      this.handleSwipeAction("reject");
+    });
+
+    this.acceptBtn.addEventListener("click", () => {
+      this.handleSwipeAction("accept");
+    });
+  }
+
+  animateCard() {
+    const card = document.querySelector(".polaroid-card");
+
+    gsap.fromTo(
+      card,
+      {
+        opacity: 0,
+        y: 60,
+        rotationY: -15,
+        scale: 0.8,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        rotationY: 0,
+        scale: 1,
+        duration: 0.8,
+        ease: "back.out(1.4)",
+      }
+    );
+  }
+
+  getLocationAndCalculateDistance() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        function (position) {
+        (position) => {
           const userLat = position.coords.latitude;
           const userLon = position.coords.longitude;
 
@@ -29,31 +80,30 @@ document.addEventListener("DOMContentLoaded", function () {
           const profileLon = 28.0473;
 
           // Calculate distance
-          const distance = calculateDistance(
+          const distance = this.calculateDistance(
             userLat,
             userLon,
             profileLat,
             profileLon
           );
 
-          // Update UI with distance - format like your screenshot
-          distanceText.textContent = `${distance} miles away`;
+          // Update UI with distance
+          this.distanceText.textContent = `${distance} miles away`;
 
           // Get location name using LocationIQ API
-          getLocationName(userLat, userLon);
+          this.getLocationName(userLat, userLon);
         },
-        function (error) {
+        (error) => {
           console.error("Error getting location:", error);
-          distanceText.textContent = "Location unavailable";
+          this.distanceText.textContent = "Location unavailable";
         }
       );
     } else {
-      distanceText.textContent = "Geolocation not supported";
+      this.distanceText.textContent = "Geolocation not supported";
     }
   }
 
-  // Calculate distance between two coordinates using Haversine formula
-  function calculateDistance(lat1, lon1, lat2, lon2) {
+  calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 3959; // Earth's radius in miles
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
@@ -68,8 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return Math.round(distance);
   }
 
-  // Get location name using LocationIQ API
-  function getLocationName(lat, lon) {
+  getLocationName(lat, lon) {
     const apiKey = "pk.a5617e2068395ccb3921dcdc4103c28a";
     const url = `https://api.locationiq.com/v1/reverse?key=${apiKey}&lat=${lat}&lon=${lon}&format=json`;
 
@@ -81,43 +130,44 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then((data) => {
-        // Extract city name from response
         const city =
           data.address.city ||
           data.address.town ||
           data.address.village ||
           "Unknown location";
-        locationText.textContent = `(${city})`;
+        this.locationText.textContent = `(${city})`;
       })
       .catch((error) => {
         console.error("Error fetching location name:", error);
-        locationText.textContent = "(Location unknown)";
+        this.locationText.textContent = "(Location unknown)";
       });
   }
 
-  // Handle swipe actions
-  function handleSwipeAction(action) {
-    // Add animation to the card
-    const polaroidFrame = document.querySelector(".polaroid-frame");
-    polaroidFrame.style.transition = "transform 0.5s ease";
+  handleSwipeAction(action) {
+    const card = document.querySelector(".polaroid-card");
 
-    if (action === "reject") {
-      polaroidFrame.style.transform = "translateX(-100%) rotate(-15deg)";
-    } else {
-      polaroidFrame.style.transform = "translateX(100%) rotate(15deg)";
-    }
+    // Add swipe animation
+    gsap.to(card, {
+      x: action === "reject" ? -500 : 500,
+      rotation: action === "reject" ? -30 : 30,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => {
+        // Reset card position
+        gsap.set(card, {
+          x: 0,
+          rotation: 0,
+          opacity: 0,
+        });
 
-    // After animation, reset and load next card
-    setTimeout(() => {
-      polaroidFrame.style.transition = "none";
-      polaroidFrame.style.transform = "translateX(0) rotate(0)";
+        // Get new location data
+        this.getLocationAndCalculateDistance();
 
-      // In a real app, you would load the next profile here
-      // For demo purposes, we'll just update the distance
-      setTimeout(() => {
-        getLocationAndCalculateDistance();
-      }, 100);
-    }, 500);
+        // Animate card back in
+        this.animateCard();
+      },
+    });
 
     // Send action to backend (in a real app)
     // fetch('/api/swipe', {
@@ -131,4 +181,39 @@ document.addEventListener("DOMContentLoaded", function () {
     //     })
     // });
   }
+
+  navigateToPage(page) {
+    // Add smooth page transition
+    gsap.to("body", {
+      opacity: 0,
+      duration: 0.5,
+      onComplete: () => {
+        switch (page) {
+          case "search-criteria":
+            window.location.href = "search.html";
+            break;
+          case "profile":
+            window.location.href = "profile.html";
+            break;
+          case "inbox":
+            window.location.href = "inbox.html";
+            break;
+          case "nearby":
+            window.location.href = "nearby.html";
+            break;
+          case "cardswipe":
+            // Already on cardswipe page
+            break;
+          default:
+            console.log("Navigation to", page, "not implemented");
+        }
+      },
+    });
+  }
+}
+
+// Initialize when DOM is loaded
+let cardSwipe;
+document.addEventListener("DOMContentLoaded", () => {
+  cardSwipe = new CardSwipe();
 });

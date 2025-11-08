@@ -5,28 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Card Swipe - Ever After</title>
     <link rel="stylesheet" href="css/cardswipe.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
-    <header>
-      <h1>Cardswipe Screen</h1>
-      <a href="search.html" class="settings-btn">
-        <img src="assets/Settings_Icon.png" alt="Settings" />
-      </a>
+  <body class="cardswipe-page">
+    <header class="cardswipe-header">
+      <button class="settings-btn" aria-label="Search criteria settings">
+        <img src="assets/Settings_Icon.png" alt="Settings" class="icon" />
+      </button>
+      <h1 class="cardswipe-title">Cardswipe Screen</h1>
+      <button class="matches-btn" aria-label="View matches">
+        <img
+          src="assets/Card_Swipe_Icon.png"
+          alt="Card Swipe"
+          class="icon matches-icon"
+        />
+      </button>
     </header>
 
-    <main>
+    <main class="cardswipe-main">
       <section class="subtitle-section">
         <h2>All Your Connections!</h2>
       </section>
 
-      <section class="card-container">
-        <div class="polaroid-frame">
+      <section class="swipe-container">
+        <div class="polaroid-card">
           <img
             src="assets/Card_Swipe.png"
-            alt="Card Swipe Template"
-            class="polaroid-template"
+            alt="Profile Card"
+            class="card-image"
           />
-          <div class="profile-info">
+          <div class="card-info">
             <h3 class="profile-name">Elaina (She/They), 23</h3>
             <p class="distance-info">
               <span id="distance-text">Calculating distance...</span>
@@ -35,30 +46,37 @@
           </div>
         </div>
 
-        <div class="action-buttons">
-          <button class="btn btn-reject">✕</button>
-          <button class="btn btn-accept">♥</button>
+        <div class="swipe-buttons">
+          <button class="swipe-btn reject-btn" aria-label="Reject">
+            <span class="swipe-icon">✕</span>
+          </button>
+          <button class="swipe-btn accept-btn" aria-label="Accept">
+            <span class="swipe-icon">♥</span>
+          </button>
         </div>
       </section>
     </main>
 
-    <footer>
-      <nav>
-        <a href="nearby.html" class="nav-btn">
-          <img src="assets/EverAfter_Logo.png" alt="Matches" />
-          <span>Matches</span>
-        </a>
-        <a href="cardswipe.html" class="nav-btn active">
-          <img src="assets/Card_Swipe_Icon.png" alt="Card Swipe" />
-          <span>Card Swipe</span>
-        </a>
-        <a href="profile.html" class="nav-btn">
-          <img src="assets/Profile_Icon.png" alt="Profile" />
-          <span>Profile</span>
-        </a>
-      </nav>
-    </footer>
+    <nav class="bottom-nav">
+      <a href="nearby.html" class="nav-btn">
+        <img src="assets/EverAfter_Logo.png" alt="Matches" class="nav-icon" />
+        <span class="nav-label">Matches</span>
+      </a>
+      <a href="cardswipe.html" class="nav-btn active">
+        <img
+          src="assets/Card_Swipe_Icon.png"
+          alt="Card Swipe"
+          class="nav-icon"
+        />
+        <span class="nav-label">Card Swipe</span>
+      </a>
+      <a href="profile.html" class="nav-btn">
+        <img src="assets/Profile_Icon.png" alt="Profile" class="nav-icon" />
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="js/cardswipe.js"></script>
   </body>
 </html>
