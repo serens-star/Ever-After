@@ -126,21 +126,21 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.setItem("everAfterKeepLoggedIn", "false");
         }
 
-        // Mock dating API using RandomUser
-        fetch("https://randomuser.me/api/?results=3")
-          .then((res) => res.json())
-          .then((data) => {
-            console.log("Mock dating API results:", data.results);
-            alert(
-              `Welcome back, ${username}! Found ${data.results.length} potential matches for you.`
-            );
-            window.location.href = "upload.html";
-          })
-          .catch((err) => {
-            console.error("API error:", err);
-            // Fallback - still redirect to upload page
-            window.location.href = "upload.html";
-          });
+        // Get user preferences and find compatible matches
+        const userPreferences = {
+          seekingRelationshipStyle: savedUser.seekingRelationshipStyle || "",
+          seekingRelationshipType: savedUser.seekingRelationshipType || "",
+          preferredLocation: savedUser.preferredLocation || "",
+          age: savedUser.age || "25",
+        };
+
+        const compatibleMatches = getCompatibleMatches(userPreferences);
+
+        console.log("Compatible matches found:", compatibleMatches);
+        alert(
+          `Welcome back, ${username}! Found ${compatibleMatches.length} compatible matches for you based on your preferences.`
+        );
+        window.location.href = "upload.html";
       } else {
         alert("Invalid username or password. Please try again.");
         highlightField("username");
@@ -265,7 +265,132 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   }
 });
-// ==================== END AUTHENTICATION FUNCTIONALITY ====================
+// === END AUTHENTICATION FUNCTIONALITY ===
+
+// ==================== MATCHING ALGORITHM ====================
+function getCompatibleMatches(userPreferences) {
+  // Sample database of potential matches (in real app, this would come from a server)
+  const potentialMatches = [
+    {
+      id: 1,
+      name: "Alex",
+      age: 28,
+      gender: "Non-binary",
+      pronouns: "They/them",
+      sexuality: "Pansexual",
+      relationshipStyle: "Monogamous",
+      relationshipType: "Serious Relationship",
+      location: "New York",
+      bio: "Artist and nature lover looking for meaningful connections",
+      profilePicture: "assets/profile1.jpg",
+    },
+    {
+      id: 2,
+      name: "Sam",
+      age: 25,
+      gender: "Trans Man",
+      pronouns: "He/him",
+      sexuality: "Queer",
+      relationshipStyle: "Polyamorous",
+      relationshipType: "Casual Dating",
+      location: "Los Angeles",
+      bio: "Musician and coffee enthusiast",
+      profilePicture: "assets/profile2.jpg",
+    },
+    {
+      id: 3,
+      name: "Riley",
+      age: 30,
+      gender: "Genderfluid",
+      pronouns: "They/them",
+      sexuality: "Bisexual",
+      relationshipStyle: "Monogamous",
+      relationshipType: "Serious Relationship",
+      location: "Chicago",
+      bio: "Bookworm and adventure seeker",
+      profilePicture: "assets/profile3.jpg",
+    },
+    {
+      id: 4,
+      name: "Jordan",
+      age: 26,
+      gender: "Non-binary",
+      pronouns: "They/them",
+      sexuality: "Pansexual",
+      relationshipStyle: "Open to different styles",
+      relationshipType: "Friendship first",
+      location: "New York",
+      bio: "Yoga instructor and plant parent",
+      profilePicture: "assets/profile4.jpg",
+    },
+    {
+      id: 5,
+      name: "Casey",
+      age: 29,
+      gender: "Trans Woman",
+      pronouns: "She/her",
+      sexuality: "Lesbian",
+      relationshipStyle: "Monogamous",
+      relationshipType: "Serious Relationship",
+      location: "Boston",
+      bio: "Software developer and gamer",
+      profilePicture: "assets/profile5.jpg",
+    },
+  ];
+
+  // Filter matches based on user preferences
+  const compatibleMatches = potentialMatches.filter((match) => {
+    let score = 0;
+
+    // Relationship Style Match (40% weight)
+    if (
+      userPreferences.seekingRelationshipStyle &&
+      match.relationshipStyle
+        .toLowerCase()
+        .includes(userPreferences.seekingRelationshipStyle.toLowerCase())
+    ) {
+      score += 40;
+    } else if (
+      userPreferences.seekingRelationshipStyle &&
+      match.relationshipStyle === "Open to different styles"
+    ) {
+      score += 20;
+    }
+
+    // Relationship Type Match (30% weight)
+    if (
+      userPreferences.seekingRelationshipType &&
+      match.relationshipType === userPreferences.seekingRelationshipType
+    ) {
+      score += 30;
+    }
+
+    // Location Match (20% weight) - in real app, this would use geolocation
+    if (
+      userPreferences.preferredLocation &&
+      match.location
+        .toLowerCase()
+        .includes(userPreferences.preferredLocation.toLowerCase())
+    ) {
+      score += 20;
+    }
+
+    // Age compatibility (10% weight) - within 5 years
+    const userAge = parseInt(userPreferences.age) || 25;
+    const matchAge = match.age;
+    if (Math.abs(userAge - matchAge) <= 5) {
+      score += 10;
+    }
+
+    match.compatibilityScore = score;
+    return score >= 30; // Only show matches with at least 30% compatibility
+  });
+
+  // Sort by compatibility score (highest first)
+  return compatibleMatches.sort(
+    (a, b) => b.compatibilityScore - a.compatibilityScore
+  );
+}
 
 // ---Photo Upload Page ---
 const uploadForm = document.getElementById("uploadForm");
@@ -691,11 +816,15 @@ document.addEventListener("DOMContentLoaded", () => {
         location: editLocation ? editLocation.value.trim() : "",
         profilePicture: profileImage ? profileImage.src : "",
         lastUpdated: new Date().toISOString(),
+        // Add these preference fields for matching
+        seekingRelationshipStyle: editRelationshipStyle
+          ? editRelationshipStyle.value
+          : "",
+        seekingRelationshipType: editRelationshipType
+          ? editRelationshipType.value
+          : "",
+        preferredLocation: editLocation ? editLocation.value.trim() : "",
       };
-      localStorage.setItem(
-        "everAfterUserProfile",
-        JSON.stringify(enhancedProfileData)
-      );
 
       console.log("[EverAfter] Basic profile saved:", profileData);
       console.log("[EverAfter] Enhanced profile saved:", enhancedProfileData);

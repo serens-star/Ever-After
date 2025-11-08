@@ -109,39 +109,20 @@
           </article>
         </section>
 
-        <!-- Matches Tab Content -->
+        <!-- Inbox.html - Update the matches tab content section -->
         <section class="tab-content" id="matches-content">
-          <article class="notification-card">
-            <img
-              src="assets/default_user.png"
-              alt="Profile"
-              class="notification-avatar"
-            />
-            <section class="notification-content">
-              <h3 class="notification-name">Riley Chen</h3>
-              <p class="notification-text">
-                It's a match! Start a conversation
-              </p>
-              <span class="notification-distance">3 miles away</span>
-            </section>
-            <time class="notification-time">14:13</time>
-          </article>
+          <!-- Dynamic matches will be loaded here by JavaScript -->
+          <div class="matches-container" id="matchesContainer">
+            <!-- Matches will be populated here -->
+          </div>
 
-          <article class="notification-card">
-            <img
-              src="assets/default_user.png"
-              alt="Profile"
-              class="notification-avatar"
-            />
-            <section class="notification-content">
-              <h3 class="notification-name">Morgan Taylor</h3>
-              <p class="notification-text">
-                You both liked each other's profiles
-              </p>
-              <span class="notification-distance">7 miles away</span>
-            </section>
-            <time class="notification-time">2 days ago</time>
-          </article>
+          <!-- Fallback content (will be hidden when matches exist) -->
+          <div class="empty-state" id="noMatchesMessage">
+            <div class="empty-state-icon">💝</div>
+            <h3>No matches yet</h3>
+            <p>Swipe right on people you're interested in to start matching!</p>
+            <a href="cardswipe.html" class="swipe-now-btn">Start Swiping</a>
+          </div>
         </section>
       </section>
     </main>

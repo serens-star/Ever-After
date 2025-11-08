@@ -247,6 +247,102 @@ body {
   box-shadow: 0 6px 20px var(--shadow);
 }
 
+/* Match Cards Styling */
+.match-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.match-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+  border-color: var(--button);
+}
+
+.match-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--button);
+  flex-shrink: 0;
+}
+
+.match-info {
+  flex: 1;
+}
+
+.match-name {
+  font-family: "Courgette", cursive;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.match-details {
+  font-size: 1rem;
+  color: var(--text);
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.match-location {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.match-time {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.match-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-btn {
+  background: var(--button);
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-btn:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.unread-indicator {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 12px;
+  height: 12px;
+  background: #ff4757;
+  border-radius: 50%;
+}
+
 .notification-avatar {
   width: 50px;
   height: 50px;
@@ -346,17 +442,88 @@ body {
   color: var(--text);
 }
 
-/* Empty State */
+/* Empty State Styling */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
   color: var(--text);
+  display: block;
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
 }
 
 .empty-state p {
-  font-size: 1.2rem;
-  opacity: 0.7;
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.swipe-now-btn {
+  background: var(--button);
+  color: var(--text);
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
   font-family: "Courgette", cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: inline-block;
+}
+
+.swipe-now-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+  border-color: var(--text);
+  text-decoration: none;
+  color: var(--text);
+}
+
+/* Animation for new matches */
+@keyframes newMatchGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(249, 184, 211, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(249, 184, 211, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(249, 184, 211, 0);
+  }
+}
+
+.new-match {
+  animation: newMatchGlow 2s ease-out;
+}
+
+/* Tab Badge */
+.tab-badge {
+  background: #ff4757;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  margin-left: 5px;
+  vertical-align: super;
+}
+
+/* Chat Simulation */
+.chat-simulation {
+  font-family: "Caveat", cursive;
 }
 
 /* Responsive Design */

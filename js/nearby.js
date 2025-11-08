@@ -371,8 +371,12 @@ class NearbyProfiles {
   createProfileElement(profile) {
     const profileDiv = document.createElement("div");
     profileDiv.className = "polaroid-profile";
+
+    // Use random image for each profile
+    const randomImage = profileImages.getRandomImage();
+
     profileDiv.innerHTML = `
-    <img src="${profile.image}" alt="${profile.name}" class="profile-image">
+    <img src="${randomImage}" alt="${profile.name}" class="profile-image">
     <div class="profile-info">
       <div class="name-age">
         <span>${profile.name}, ${profile.age}</span>

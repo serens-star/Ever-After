@@ -4,39 +4,38 @@ class CardSwipe {
     this.locationText = document.getElementById("location-text");
     this.settingsBtn = document.querySelector(".settings-btn");
     this.matchesBtn = document.querySelector(".matches-btn");
-    //this.navBtns = document.querySelectorAll(".nav-btn");
     this.rejectBtn = document.querySelector(".reject-btn");
     this.acceptBtn = document.querySelector(".accept-btn");
+    this.cardImage = document.querySelector(".card-image");
+    this.profileName = document.querySelector(".profile-name");
+
+    this.currentProfiles = [];
+    this.currentProfileIndex = 0;
+    this.swipesToday = 0;
+    this.maxSwipes = 6; // Configurable limit
+    this.swipeResetTime = 3 * 60 * 1000; // 3 minutes in milliseconds
+    this.lastSwipeTime = null;
 
     this.init();
   }
 
   init() {
     this.setupEventListeners();
-    this.getLocationAndCalculateDistance();
-    this.animateCard();
+    this.loadSwipeData();
+    this.generateProfiles();
+    this.showCurrentProfile();
+    this.updateSwipeCounter();
   }
 
   setupEventListeners() {
-    // Settings button - go to search criteria
     this.settingsBtn.addEventListener("click", () => {
       this.navigateToPage("search-criteria");
     });
 
-    // Matches button - refresh page
     this.matchesBtn.addEventListener("click", () => {
       location.reload();
     });
 
-    // Navigation buttons
-    //this.navBtns.forEach((btn) => {
-    //btn.addEventListener("click", (e) => {
-    //const page = e.currentTarget.dataset.page;
-    //this.navigateToPage(page);
-    //});
-    //});
-
-    // Swipe buttons
     this.rejectBtn.addEventListener("click", () => {
       this.handleSwipeAction("reject");
     });
@@ -44,6 +43,317 @@ class CardSwipe {
     this.acceptBtn.addEventListener("click", () => {
       this.handleSwipeAction("accept");
     });
+
+    // Add keyboard support
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") this.handleSwipeAction("reject");
+      if (e.key === "ArrowRight") this.handleSwipeAction("accept");
+    });
+  }
+
+  loadSwipeData() {
+    const swipeData = JSON.parse(
+      localStorage.getItem("everAfterSwipeData") || "{}"
+    );
+
+    // Check if reset time has passed
+    if (
+      swipeData.lastSwipeTime &&
+      Date.now() - swipeData.lastSwipeTime > this.swipeResetTime
+    ) {
+      this.swipesToday = 0;
+      this.lastSwipeTime = null;
+    } else {
+      this.swipesToday = swipeData.swipesToday || 0;
+      this.lastSwipeTime = swipeData.lastSwipeTime || null;
+    }
+  }
+
+  saveSwipeData() {
+    const swipeData = {
+      swipesToday: this.swipesToday,
+      lastSwipeTime: this.lastSwipeTime,
+    };
+    localStorage.setItem("everAfterSwipeData", JSON.stringify(swipeData));
+  }
+
+  generateProfiles() {
+    // Generate 10 random profiles for swiping
+    this.currentProfiles = [];
+
+    const names = [
+      "Alex",
+      "Sam",
+      "Taylor",
+      "Jordan",
+      "Casey",
+      "Riley",
+      "Quinn",
+      "Morgan",
+      "Elaina",
+      "Skyler",
+    ];
+    const pronounsList = [
+      "she/her",
+      "he/him",
+      "they/them",
+      "she/they",
+      "he/they",
+    ];
+    const locations = [
+      "Johannesburg",
+      "Pretoria",
+      "Durban",
+      "East London",
+      "Cape Town",
+    ];
+
+    for (let i = 0; i < 10; i++) {
+      const profile = {
+        id: i + 1,
+        name: names[Math.floor(Math.random() * names.length)],
+        age: Math.floor(Math.random() * 15) + 20, // 20-35 age range
+        pronouns: pronounsList[Math.floor(Math.random() * pronounsList.length)],
+        location: locations[Math.floor(Math.random() * locations.length)],
+        image: profileImages.getRandomImage(),
+        coordinates: this.getRandomCoordinates(),
+        bio: "Looking for meaningful connections and shared adventures.",
+      };
+      this.currentProfiles.push(profile);
+    }
+  }
+
+  getRandomCoordinates() {
+    // South African coordinates bounds
+    const southAfricaBounds = {
+      minLat: -35,
+      maxLat: -22,
+      minLon: 16,
+      maxLon: 33,
+    };
+
+    return {
+      lat:
+        southAfricaBounds.minLat +
+        Math.random() * (southAfricaBounds.maxLat - southAfricaBounds.minLat),
+      lon:
+        southAfricaBounds.minLon +
+        Math.random() * (southAfricaBounds.maxLon - southAfricaBounds.minLon),
+    };
+  }
+
+  showCurrentProfile() {
+    if (this.currentProfileIndex >= this.currentProfiles.length) {
+      this.showNoMoreProfiles();
+      return;
+    }
+
+    const profile = this.currentProfiles[this.currentProfileIndex];
+
+    // Update card content
+    this.cardImage.src = profile.image;
+    this.cardImage.alt = profile.name;
+    this.profileName.textContent = `${profile.name} (${profile.pronouns}), ${profile.age}`;
+
+    // Calculate and display distance
+    this.calculateAndDisplayDistance(profile);
+
+    // Animate card entrance
+    this.animateCard();
+  }
+
+  calculateAndDisplayDistance(profile) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLon = position.coords.longitude;
+
+          const distance = this.calculateDistance(
+            userLat,
+            userLon,
+            profile.coordinates.lat,
+            profile.coordinates.lon
+          );
+
+          this.distanceText.textContent = `${distance} miles away`;
+          this.getLocationName(userLat, userLon);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          this.distanceText.textContent = "Location unavailable";
+          this.locationText.textContent = `(${profile.location})`;
+        }
+      );
+    } else {
+      this.distanceText.textContent = "Geolocation not supported";
+      this.locationText.textContent = `(${profile.location})`;
+    }
+  }
+
+  handleSwipeAction(action) {
+    // Check swipe limit
+    if (this.swipesToday >= this.maxSwipes) {
+      this.showSwipeLimitMessage();
+      return;
+    }
+
+    const card = document.querySelector(".polaroid-card");
+    const currentProfile = this.currentProfiles[this.currentProfileIndex];
+
+    // Update swipe counter
+    this.swipesToday++;
+    this.lastSwipeTime = Date.now();
+    this.saveSwipeData();
+    this.updateSwipeCounter();
+
+    // Show animation based on action
+    if (action === "accept") {
+      this.showHeartAnimation();
+      this.addToMatches(currentProfile);
+    } else {
+      this.showBrokenHeartAnimation();
+    }
+
+    // Swipe card out
+    gsap.to(card, {
+      x: action === "reject" ? -500 : 500,
+      rotation: action === "reject" ? -30 : 30,
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => {
+        // Move to next profile
+        this.currentProfileIndex++;
+
+        if (this.currentProfileIndex < this.currentProfiles.length) {
+          // Reset card position and show next profile
+          gsap.set(card, { x: 0, rotation: 0, opacity: 0 });
+          this.showCurrentProfile();
+        } else {
+          this.showNoMoreProfiles();
+        }
+      },
+    });
+  }
+
+  showHeartAnimation() {
+    this.createSwipeAnimation("❤️", "#2ed573", "Match Made!");
+  }
+
+  showBrokenHeartAnimation() {
+    this.createSwipeAnimation("💔", "#ff4757", "");
+  }
+
+  createSwipeAnimation(emoji, color, text) {
+    const animation = document.createElement("div");
+    animation.className = "swipe-animation";
+    animation.innerHTML = `
+      <div class="animation-emoji">${emoji}</div>
+      <div class="animation-text">${text}</div>
+    `;
+
+    document.querySelector(".swipe-container").appendChild(animation);
+
+    gsap.fromTo(
+      animation,
+      { scale: 0, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.5,
+        ease: "back.out(1.4)",
+        onComplete: () => {
+          gsap.to(animation, {
+            scale: 1.2,
+            opacity: 0,
+            duration: 0.3,
+            delay: 0.5,
+            onComplete: () => animation.remove(),
+          });
+        },
+      }
+    );
+  }
+
+  addToMatches(profile) {
+    const matches = JSON.parse(
+      localStorage.getItem("everAfterMatches") || "[]"
+    );
+
+    // Check if already matched
+    const existingMatch = matches.find((match) => match.id === profile.id);
+    if (!existingMatch) {
+      matches.push({
+        ...profile,
+        matchedAt: new Date().toISOString(),
+        unread: true,
+      });
+      localStorage.setItem("everAfterMatches", JSON.stringify(matches));
+    }
+  }
+
+  updateSwipeCounter() {
+    const remainingSwipes = this.maxSwipes - this.swipesToday;
+    const counter =
+      document.querySelector(".swipe-counter") || this.createSwipeCounter();
+    counter.textContent = `Swipes remaining: ${remainingSwipes}`;
+
+    if (remainingSwipes === 0) {
+      counter.style.color = "#ff4757";
+    } else {
+      counter.style.color = "var(--text)";
+    }
+  }
+
+  createSwipeCounter() {
+    const counter = document.createElement("div");
+    counter.className = "swipe-counter";
+    document.querySelector(".subtitle-section").appendChild(counter);
+    return counter;
+  }
+
+  showSwipeLimitMessage() {
+    const resetTime = new Date(this.lastSwipeTime + this.swipeResetTime);
+    const timeUntilReset = resetTime - Date.now();
+    const minutesLeft = Math.ceil(timeUntilReset / (60 * 1000));
+
+    alert(
+      `You've reached your daily swipe limit! You can swipe again in ${minutesLeft} minutes.`
+    );
+  }
+
+  showNoMoreProfiles() {
+    const swipeContainer = document.querySelector(".swipe-container");
+    swipeContainer.innerHTML = `
+      <div class="no-profiles-message">
+        <h3>That's all for now! 🎉</h3>
+        <p>Come back later to discover more amazing people.</p>
+        <p>Swipes reset in: <span id="reset-timer">3:00</span></p>
+        <button class="retry-btn" onclick="location.reload()">Check for New Profiles</button>
+      </div>
+    `;
+
+    this.startResetTimer();
+  }
+
+  startResetTimer() {
+    const timerElement = document.getElementById("reset-timer");
+    let timeLeft = 180; // 3 minutes in seconds
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = timeLeft % 60;
+      timerElement.textContent = `${minutes}:${seconds
+        .toString()
+        .padStart(2, "0")}`;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        timerElement.textContent = "Ready!";
+      }
+    }, 1000);
   }
 
   animateCard() {
@@ -68,48 +378,8 @@ class CardSwipe {
     );
   }
 
-  // Function to get user's location and calculate distance
-  async getLocationAndCalculateDistance() {
-    const profile = this.getRandomProfile();
-
-    // Update profile info
-    document.querySelector(
-      ".profile-name"
-    ).textContent = `${profile.name} (${profile.pronouns}), ${profile.age}`;
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const userLat = position.coords.latitude;
-          const userLon = position.coords.longitude;
-
-          // Use profile's actual coordinates
-          const profileLat = profile.coordinates?.lat || -26.2041;
-          const profileLon = profile.coordinates?.lon || 28.0473;
-
-          const distance = this.calculateDistance(
-            userLat,
-            userLon,
-            profileLat,
-            profileLon
-          );
-          this.distanceText.textContent = `${distance} miles away`;
-
-          // Get location name using LocationIQ API
-          this.getLocationName(userLat, userLon);
-        },
-        function (error) {
-          console.error("Error getting location:", error);
-          distanceText.textContent = "Location unavailable";
-        }
-      );
-    } else {
-      distanceText.textContent = "Geolocation not supported";
-    }
-  }
-
   calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 3959; // Earth's radius in miles
+    const R = 3959;
     const dLat = ((lat2 - lat1) * Math.PI) / 180;
     const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
@@ -148,47 +418,7 @@ class CardSwipe {
       });
   }
 
-  handleSwipeAction(action) {
-    const card = document.querySelector(".polaroid-card");
-
-    // Add swipe animation
-    gsap.to(card, {
-      x: action === "reject" ? -500 : 500,
-      rotation: action === "reject" ? -30 : 30,
-      opacity: 0,
-      duration: 0.5,
-      ease: "power2.out",
-      onComplete: () => {
-        // Reset card position
-        gsap.set(card, {
-          x: 0,
-          rotation: 0,
-          opacity: 0,
-        });
-
-        // Get new location data
-        this.getLocationAndCalculateDistance();
-
-        // Animate card back in
-        this.animateCard();
-      },
-    });
-
-    // Send action to backend (in a real app)
-    // fetch('/api/swipe', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         profileId: 'current-profile-id',
-    //         action: action
-    //     })
-    // });
-  }
-
   navigateToPage(page) {
-    // Add smooth page transition
     gsap.to("body", {
       opacity: 0,
       duration: 0.5,
@@ -206,35 +436,11 @@ class CardSwipe {
           case "nearby":
             window.location.href = "nearby.html";
             break;
-          case "cardswipe":
-            // Already on cardswipe page
-            break;
           default:
             console.log("Navigation to", page, "not implemented");
         }
       },
     });
-  }
-
-  getRandomProfile() {
-    const registeredUsers = JSON.parse(
-      localStorage.getItem("everAfterUsers") || "[]"
-    );
-
-    if (registeredUsers.length > 0) {
-      // Get a random registered user
-      const randomIndex = Math.floor(Math.random() * registeredUsers.length);
-      return registeredUsers[randomIndex];
-    }
-
-    // Fallback to demo profile
-    return {
-      name: "Elaina",
-      age: 23,
-      pronouns: "She/They",
-      location: "Johannesburg",
-      coordinates: { lat: -26.2041, lon: 28.0473 },
-    };
   }
 }
 

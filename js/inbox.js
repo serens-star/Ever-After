@@ -5,6 +5,8 @@ class InboxPage {
     this.navBtns = document.querySelectorAll(".nav-btn");
     this.inboxTabs = document.querySelectorAll(".inbox-tab");
     this.tabContents = document.querySelectorAll(".tab-content");
+    this.matchesContainer = document.getElementById("matchesContainer");
+    this.noMatchesMessage = document.getElementById("noMatchesMessage");
 
     this.init();
   }
@@ -12,7 +14,7 @@ class InboxPage {
   init() {
     this.setupEventListeners();
     this.setupTabSwitching();
-    this.loadLocationBasedContent();
+    this.loadMatches();
     this.animatePageLoad();
   }
 
@@ -53,10 +55,199 @@ class InboxPage {
           }
         });
 
+        // Load matches when matches tab is selected
+        if (targetTab === "matches") {
+          this.loadMatches();
+        }
+
         // Animate content transition
         this.animateTabTransition(targetTab);
       });
     });
+  }
+
+  loadMatches() {
+    const matches = this.getMatchesFromStorage();
+
+    if (matches.length === 0) {
+      this.showNoMatches();
+    } else {
+      this.displayMatches(matches);
+    }
+  }
+
+  getMatchesFromStorage() {
+    // Get matches from localStorage (saved from card swipe)
+    const matches = JSON.parse(
+      localStorage.getItem("everAfterMatches") || "[]"
+    );
+
+    // Sort by most recent first
+    return matches.sort(
+      (a, b) => new Date(b.matchedAt) - new Date(a.matchedAt)
+    );
+  }
+
+  displayMatches(matches) {
+    // Hide no matches message
+    if (this.noMatchesMessage) {
+      this.noMatchesMessage.classList.add("hidden");
+    }
+
+    // Clear container
+    this.matchesContainer.innerHTML = "";
+
+    // Add each match card
+    matches.forEach((match, index) => {
+      const matchCard = this.createMatchCard(match, index);
+      this.matchesContainer.appendChild(matchCard);
+    });
+
+    // Animate matches entrance
+    this.animateMatchesEntrance();
+  }
+
+  createMatchCard(match, index) {
+    const matchCard = document.createElement("div");
+    matchCard.className = `match-card ${match.unread ? "new-match" : ""}`;
+    matchCard.innerHTML = `
+      <img src="${match.image || "assets/default_user.png"}" alt="${
+      match.name
+    }" class="match-avatar">
+      <div class="match-info">
+        <h3 class="match-name">${match.name}, ${match.age}</h3>
+        <p class="match-details">${match.pronouns}</p>
+        <p class="match-location">📍 ${match.location}</p>
+        <p class="match-time">Matched ${this.formatTimeAgo(match.matchedAt)}</p>
+      </div>
+      <div class="match-actions">
+        <button class="chat-btn" onclick="inboxPage.startChat(${
+          match.id
+        })" title="Start chat">💬</button>
+      </div>
+      ${match.unread ? '<div class="unread-indicator"></div>' : ""}
+    `;
+
+    return matchCard;
+  }
+
+  showNoMatches() {
+    if (this.noMatchesMessage) {
+      this.noMatchesMessage.classList.remove("hidden");
+    }
+    this.matchesContainer.innerHTML = "";
+  }
+
+  formatTimeAgo(timestamp) {
+    const now = new Date();
+    const matchTime = new Date(timestamp);
+    const diffInMs = now - matchTime;
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInHours < 1) {
+      const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+      return diffInMinutes < 1 ? "just now" : `${diffInMinutes}m ago`;
+    }
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    if (diffInDays < 7) return `${diffInDays}d ago`;
+
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    return `${diffInWeeks}w ago`;
+  }
+
+  startChat(matchId) {
+    // Mark match as read
+    const matches = this.getMatchesFromStorage();
+    const matchIndex = matches.findIndex((match) => match.id === matchId);
+
+    if (matchIndex !== -1) {
+      matches[matchIndex].unread = false;
+      localStorage.setItem("everAfterMatches", JSON.stringify(matches));
+
+      // Update the UI
+      const matchCard = document.querySelector(
+        `.match-card:nth-child(${matchIndex + 1})`
+      );
+      if (matchCard) {
+        matchCard.classList.remove("new-match");
+        const unreadIndicator = matchCard.querySelector(".unread-indicator");
+        if (unreadIndicator) unreadIndicator.remove();
+      }
+    }
+
+    // In a real app, you'd open a chat interface
+    // For now, show a message and simulate opening chat
+    this.simulateChatOpening(matchId);
+  }
+
+  simulateChatOpening(matchId) {
+    const matches = this.getMatchesFromStorage();
+    const match = matches.find((m) => m.id === matchId);
+
+    if (match) {
+      // Create a simple chat simulation
+      const chatWindow = document.createElement("div");
+      chatWindow.className = "chat-simulation";
+      chatWindow.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 1000;
+        max-width: 300px;
+        width: 90%;
+        text-align: center;
+        border: 3px solid var(--accent);
+      `;
+
+      chatWindow.innerHTML = `
+        <h3 style="font-family: 'Courgette', cursive; color: var(--text); margin-bottom: 15px;">
+          Chat with ${match.name}
+        </h3>
+        <p style="margin-bottom: 20px; color: var(--text);">
+          This would open a real chat interface where you can message ${match.name}.
+        </p>
+        <button onclick="this.parentElement.remove()" 
+                style="background: var(--button); 
+                       color: var(--text); 
+                       border: none; 
+                       padding: 10px 20px; 
+                       border-radius: 20px; 
+                       cursor: pointer;
+                       font-family: 'Caveat', cursive;
+                       font-size: 1.1rem;">
+          Close
+        </button>
+      `;
+
+      document.body.appendChild(chatWindow);
+    }
+  }
+
+  animateMatchesEntrance() {
+    const matchCards = document.querySelectorAll(".match-card");
+
+    gsap.fromTo(
+      matchCards,
+      {
+        opacity: 0,
+        y: 30,
+        scale: 0.9,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "back.out(1.2)",
+      }
+    );
   }
 
   animateTabTransition(tab) {
@@ -110,102 +301,16 @@ class InboxPage {
     );
   }
 
-  async loadLocationBasedContent() {
-    const realUsers = this.getRealUsersForNotifications();
+  // Method to check for new matches (could be called periodically)
+  checkForNewMatches() {
+    const matches = this.getMatchesFromStorage();
+    const newMatches = matches.filter((match) => match.unread);
 
-    // Update notification cards with real user data
-    this.updateNotificationCards(realUsers);
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLon = position.coords.longitude;
-
-          this.updateNotificationDistances(userLat, userLon, realUsers);
-          this.getUserLocationName(userLat, userLon);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          this.updateNotificationDistances(null, null, realUsers);
-        }
-      );
-    } else {
-      this.updateNotificationDistances(null, null, realUsers);
+    if (newMatches.length > 0 && this.inboxTabs[2]) {
+      // Matches tab
+      // Add notification badge to matches tab
+      this.inboxTabs[2].innerHTML = `Matches <span class="tab-badge">${newMatches.length}</span>`;
     }
-  }
-
-  updateNotificationDistances(userLat = null, userLon = null, realUsers = []) {
-    const distanceElements = document.querySelectorAll(
-      ".notification-distance"
-    );
-
-    distanceElements.forEach((element, index) => {
-      if (userLat && userLon && realUsers[index]) {
-        // Calculate real distance for actual users
-        const user = realUsers[index];
-        const profileLat =
-          user.coordinates?.lat || this.getCityCoordinates(user.location).lat;
-        const profileLon =
-          user.coordinates?.lon || this.getCityCoordinates(user.location).lon;
-
-        const distance = this.calculateDistance(
-          userLat,
-          userLon,
-          profileLat,
-          profileLon
-        );
-        element.textContent = `${Math.round(distance)} miles away`;
-      } else if (userLat && userLon) {
-        // Calculate realistic distances based on user location
-        const distance = this.calculateRandomDistance(userLat, userLon);
-        element.textContent = `${distance} miles away`;
-      } else {
-        // Use random distances as fallback
-        const randomDistance = Math.floor(Math.random() * 20) + 1;
-        element.textContent = `${randomDistance} miles away`;
-      }
-    });
-  }
-
-  calculateRandomDistance(userLat, userLon) {
-    // Generate realistic distances within a reasonable range
-    const baseDistance = Math.floor(Math.random() * 15) + 1;
-
-    // Add some variation based on location (simulated)
-    const locationVariation = Math.floor(Math.random() * 5);
-
-    return baseDistance + locationVariation;
-  }
-
-  getUserLocationName(lat, lon) {
-    const apiKey = "pk.a5617e2068395ccb3921dcdc4103c28a";
-    const url = `https://api.locationiq.com/v1/reverse?key=${apiKey}&lat=${lat}&lon=${lon}&format=json`;
-
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Location API request failed");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        // Extract city name from response
-        const city =
-          data.address.city ||
-          data.address.town ||
-          data.address.village ||
-          "your area";
-
-        // You could use this to personalize the inbox content
-        console.log(`Showing connections near ${city}`);
-
-        // Example: Update page title or add location context
-        // document.querySelector('.connections-title').textContent = `Connections in ${city}`;
-      })
-      .catch((error) => {
-        console.error("Error fetching location name:", error);
-      });
   }
 
   navigateToPage(page) {
@@ -236,115 +341,6 @@ class InboxPage {
       },
     });
   }
-
-  // Method to simulate receiving new messages (for demo purposes)
-  simulateNewMessage() {
-    const inboxContent = document.getElementById("inbox-content");
-    const newMessage = document.createElement("article");
-    newMessage.className = "message-card";
-    newMessage.innerHTML = `
-      <span class="message-status unread"></span>
-      <section class="message-content">
-        <h3 class="sender-name">New Connection</h3>
-        <p class="message-preview">Just liked your profile!</p>
-        <time class="message-time">Just now</time>
-      </section>
-    `;
-
-    inboxContent.insertBefore(newMessage, inboxContent.firstChild);
-
-    // Animate new message
-    gsap.fromTo(
-      newMessage,
-      {
-        opacity: 0,
-        y: -20,
-        scale: 0.8,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: "back.out(1.2)",
-      }
-    );
-  }
-
-  //HELPER METHODS:
-
-  getRealUsersForNotifications() {
-    const registeredUsers = JSON.parse(
-      localStorage.getItem("everAfterUsers") || "[]"
-    );
-
-    if (registeredUsers.length > 0) {
-      // Get random users for notifications
-      return registeredUsers
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3)
-        .map((user) => ({
-          name: user.name,
-          location: this.formatLocationName(user.location),
-          coordinates: user.coordinates,
-        }));
-    }
-
-    // Fallback to demo names
-    return [
-      { name: "Alex Morgan", location: "Johannesburg" },
-      { name: "Taylor Kim", location: "Pretoria" },
-      { name: "Jordan Lee", location: "Durban" },
-    ];
-  }
-
-  updateNotificationCards(realUsers) {
-    const notificationCards = document.querySelectorAll(".notification-card");
-    const nameElements = document.querySelectorAll(".notification-name");
-
-    nameElements.forEach((element, index) => {
-      if (realUsers[index]) {
-        element.textContent = realUsers[index].name;
-      }
-    });
-  }
-
-  formatLocationName(location) {
-    const locationMap = {
-      johannesburg: "Johannesburg",
-      pretoria: "Pretoria",
-      durban: "Durban",
-      "east-london": "East London",
-      "cape-town": "Cape Town",
-    };
-    return locationMap[location] || location;
-  }
-
-  getCityCoordinates(location) {
-    const cityCoordinates = {
-      johannesburg: { lat: -26.2041, lon: 28.0473 },
-      pretoria: { lat: -25.7479, lon: 28.2293 },
-      durban: { lat: -29.8587, lon: 31.0218 },
-      "east-london": { lat: -32.9833, lon: 27.8667 },
-      "cape-town": { lat: -33.9249, lon: 18.4241 },
-    };
-    return cityCoordinates[location] || cityCoordinates.johannesburg;
-  }
-
-  calculateDistance(lat1, lon1, lat2, lon2) {
-    const R = 3959; // Earth's radius in miles
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
-    return Math.round(distance);
-  }
 }
 
 // Initialize when DOM is loaded
@@ -352,8 +348,8 @@ let inboxPage;
 document.addEventListener("DOMContentLoaded", () => {
   inboxPage = new InboxPage();
 
-  // Demo: Simulate receiving a new message after 5 seconds
-  setTimeout(() => {
-    inboxPage.simulateNewMessage();
-  }, 5000);
+  // Check for new matches every 10 seconds
+  setInterval(() => {
+    inboxPage.checkForNewMatches();
+  }, 10000);
 });
