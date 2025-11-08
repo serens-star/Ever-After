@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Swipe - Ever After</title>
+    <link rel="stylesheet" href="css/cardswipe.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Cardswipe Screen</h1>
+      <a href="search.html" class="settings-btn">
+        <img src="assets/Settings_Icon.png" alt="Settings" />
+      </a>
+    </header>
+
+    <main>
+      <section class="subtitle-section">
+        <h2>All Your Connections!</h2>
+      </section>
+
+      <section class="card-container">
+        <div class="polaroid-frame">
+          <img
+            src="assets/Card_Swipe.png"
+            alt="Card Swipe Template"
+            class="polaroid-template"
+          />
+          <div class="profile-info">
+            <h3 class="profile-name">Elaina (She/They), 23</h3>
+            <p class="distance-info">
+              <span id="distance-text">Calculating distance...</span>
+              <span id="location-text"></span>
+            </p>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-reject">✕</button>
+          <button class="btn btn-accept">♥</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <nav>
+        <a href="nearby.html" class="nav-btn">
+          <img src="assets/EverAfter_Logo.png" alt="Matches" />
+          <span>Matches</span>
+        </a>
+        <a href="cardswipe.html" class="nav-btn active">
+          <img src="assets/Card_Swipe_Icon.png" alt="Card Swipe" />
+          <span>Card Swipe</span>
+        </a>
+        <a href="profile.html" class="nav-btn">
+          <img src="assets/Profile_Icon.png" alt="Profile" />
+          <span>Profile</span>
+        </a>
+      </nav>
+    </footer>
+
+    <script src="js/cardswipe.js"></script>
+  </body>
+</html>

@@ -384,6 +384,9 @@ class NearbyProfiles {
           case "inbox":
             window.location.href = "inbox.html";
             break;
+          case "card-swipe":
+            window.location.href = "cardswipe.html";
+            break;
           case "nearby":
             // Already on nearby page
             break;
