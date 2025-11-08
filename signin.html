@@ -3,61 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ever After | Sign In</title>
+    <title>Ever After | Welcome</title>
     <meta name="author" content="Seren Mafunda" />
     <meta
       name="description"
-      content="Sign in page for Ever After, a dating app for queer individuals."
+      content="Welcome to Ever After, a dating app for queer individuals."
     />
     <link rel="stylesheet" href="css/styles.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   </head>
-  <body class="signin-page">
+  <body class="welcome-page">
     <main>
-      <header class="signin-header">
-        <h1 class="logo-text small" aria-label="Ever After">
+      <header class="welcome-header">
+        <h1 class="logo-text" aria-label="Ever After">
           <span class="logo-left">Ever</span>
           <img
             src="assets/EverAfter_Logo.png"
             alt="Ever After Logo"
-            class="logo-img small"
+            class="logo-img"
           />
           <span class="logo-right">After</span>
         </h1>
+        
       </header>
 
-      <form id="signin-form" autocomplete="on">
-        <label for="username">Name</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Enter your name"
-          required
-        />
+      <section class="welcome-actions">
+        <div class="action-section">
+          <h2>Don't Have an Account?</h2>
+          <a href="signup.html" class="action-btn signup-btn">Sign Up</a>
+        </div>
 
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Enter your password"
-          required
-        />
+        <div class="action-section">
+          <h2>Already Have an Account?</h2>
 
-        <section class="option">
-          <label>
-            <input type="checkbox" id="keepLoggedIn" /> Keep Me Logged In
-          </label>
-          <a href="#" class="forgot">Forgot Password?</a>
-        </section>
-
-        <button type="submit" class="login-btn">Log In</button>
-      </form>
-
-      <section class="signup-section">
-        <p>Don't have an account?</p>
-        <a href="register.html" class="signup-link">Create Your Profile</a>
+          <a href="login.html" class="action-btn login-btn">Log In</a>
+        </div>
       </section>
     </main>
 

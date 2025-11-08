@@ -81,160 +81,358 @@ body {
   opacity: 0.85;
 }
 
-/*Sign-In*/
-main {
-  background: none;
-  box-shadow: none;
-  padding: 0;
-}
-
-body.signin-page main {
+/* Welcome Page Styles */
+.welcome-page main {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 2rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: auto;
-  padding: 2rem;
-}
-
-.signin-header {
   text-align: center;
-  margin-bottom: 1rem;
 }
 
-#signin-form {
+.welcome-header {
+  margin-bottom: 3rem;
+}
+
+.welcome-actions {
   display: flex;
   flex-direction: column;
-  width: 90%;
-  max-width: 400px;
-  animation-delay: 0.5s;
-  margin-bottom: 1.5rem;
+  gap: 2.5rem;
+  width: 100%;
 }
 
-.signin-header,
-#signin-form {
-  opacity: 0;
-  animation: fadeIn 1s ease forwards;
-}
-
-.signup-section {
-  text-align: center;
-  margin-top: 1.5rem;
-  padding: 20px;
+.action-section {
   background: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
   border-radius: 20px;
   border: 2px solid var(--accent);
-  box-shadow: 0 4px 15px var(--shadow);
-  width: 100%;
-  box-sizing: border-box;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.signup-section p {
-  font-size: 1.3rem;
-  margin-bottom: 15px;
+.action-section h2 {
+  font-family: "Courgette", cursive;
   color: var(--text);
-  font-family: "Caveat", cursive;
-  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
-.signup-link {
-  background: var(--button);
-  color: var(--text);
-  padding: 12px 30px;
+.action-section p {
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.action-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
   border-radius: 25px;
   text-decoration: none;
   font-family: "Courgette", cursive;
   font-size: 1.3rem;
   font-weight: 600;
   transition: all 0.3s ease;
-  display: inline-block;
   border: 2px solid transparent;
+  width: 200px;
+  text-align: center;
+}
+
+.signup-btn {
+  background: var(--button);
+  color: var(--text);
   box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
 }
 
-.signup-link:hover {
+.login-btn {
   background: var(--accent);
+  color: var(--text);
+  box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
+}
+
+.action-btn:hover {
   transform: scale(1.05);
   border-color: var(--text);
   box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
 }
 
-label {
+/* Form Pages Styles */
+.signup-page main,
+.login-page main {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.form-title {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 1.8rem;
   margin-top: 1rem;
-  font-size: 1.3rem;
 }
 
-input {
-  padding: 0.6rem;
-  border: none;
-  border-bottom: 2px solid var(--accent);
-  background: transparent;
-  font-size: 1rem;
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-family: "Courgette", cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0;
+}
+
+.form-group input {
+  padding: 1rem;
+  border: 2px solid var(--accent);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
   outline: none;
+  border-color: var(--text);
+  box-shadow: 0 0 0 3px rgba(249, 184, 211, 0.3);
 }
 
-.option {
+.submit-btn {
+  background: var(--button);
+  color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Courgette", cursive;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background: var(--accent);
+  transform: scale(1.02);
+}
+
+/* Form Options */
+.form-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 1rem 0;
-  font-size: 0.9rem;
 }
 
-.login-btn {
-  background: var(--button);
-  border: none;
-  border-radius: 1rem;
-  padding: 0.8rem;
-  font-size: 1rem;
-  color: white;
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s;
-  margin-top: 1.5rem;
   font-family: "Caveat", cursive;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 
-.login-btn:hover {
-  transform: scale(1.05);
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
 }
 
-.forgot {
-  text-decoration: none;
+.forgot-btn {
+  background: none;
+  border: none;
   color: var(--text);
-  font-size: 0.9rem;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
+  padding: 0;
 }
 
+.forgot-btn:hover {
+  color: var(--accent);
+}
+
+.back-link {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.back-link a {
+  color: var(--text);
+  text-decoration: none;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+/* Modals */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  margin-bottom: 1.5rem;
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.okay-btn,
+.cancel-btn {
+  padding: 0.8rem 2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.okay-btn {
+  background: var(--button);
+  color: white;
+}
+
+.okay-btn:hover {
+  background: var(--accent);
+}
+
+.cancel-btn {
+  background: #ccc;
+  color: var(--text);
+}
+
+.cancel-btn:hover {
+  background: #bbb;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.modal-actions .submit-btn {
+  margin: 0;
+  flex: 1;
+}
+
+.modal-actions .cancel-btn {
+  margin: 0;
+  flex: 1;
+}
+
+/* Responsive Design */
 @media (max-width: 600px) {
-  body.signin-page main {
-    padding: 1.5rem;
+  .welcome-page main,
+  .signup-page main,
+  .login-page main {
+    padding: 2rem 1.5rem;
     margin: 1rem;
   }
 
-  .logo-img {
-    margin: 1rem 0rem;
-    width: 120px;
+  .welcome-actions {
+    gap: 2rem;
+  }
+
+  .action-section {
+    padding: 1.5rem;
+  }
+
+  .action-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .form-options {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 400px) {
+  .welcome-page main,
+  .signup-page main,
+  .login-page main {
+    padding: 1.5rem 1rem;
   }
 
   .logo-text.small {
     font-size: 2.5rem;
   }
 
-  .signup-section {
-    padding: 15px;
-    margin-top: 1rem;
-  }
-
-  .signup-link {
-    padding: 10px 25px;
-    font-size: 1.2rem;
+  .logo-img.small {
+    width: 100px;
   }
 }
 

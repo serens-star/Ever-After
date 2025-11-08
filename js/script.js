@@ -6,41 +6,266 @@ if (typeof BASE_URL === "undefined") {
   const BASE_URL = "https://api.locationiq.com/v1/search";
 }
 
-const form = document.getElementById("signin-form");
-if (form) {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
+// ==================== AUTHENTICATION FUNCTIONALITY ====================
+document.addEventListener("DOMContentLoaded", function () {
+  // Welcome page - no specific functionality needed
 
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
+  // Sign Up Page
+  const signupForm = document.getElementById("signup-form");
+  const emailModal = document.getElementById("emailModal");
+  const okayBtn = document.getElementById("okayBtn");
 
-    if (!username || !password) {
-      alert("Please fill in all fields.");
-      // Fixed the typo in WebGLSampler to gsap
-      if (typeof gsap !== "undefined") {
-        gsap.to(".login-btn", {
-          x: -10,
-          yoyo: true,
-          repeat: 5,
-          duration: 0.5,
-        });
+  if (signupForm) {
+    signupForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const confirmEmail = document
+        .getElementById("confirm-email")
+        .value.trim();
+      const password = document.getElementById("signup-password").value.trim();
+      const confirmPassword = document
+        .getElementById("confirm-password")
+        .value.trim();
+
+      // Validation
+      if (!name || !email || !confirmEmail || !password || !confirmPassword) {
+        alert("Please fill in all fields.");
+        return;
       }
-      return;
-    }
 
-    //Mock dating API using RandomUser
-    fetch("https://randomuser.me/api/?results=3")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Mock dating API results:", data.results);
-        alert(
-          `Welcome, ${username}! Found ${data.results.length} potential matches for you.`
-        );
-        window.location.href = "upload.html";
-      })
-      .catch((err) => console.error("API error:", err));
+      if (email !== confirmEmail) {
+        alert("Email addresses do not match.");
+        highlightField("confirm-email");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        highlightField("confirm-password");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        highlightField("signup-password");
+        return;
+      }
+
+      // Save user data
+      const userData = {
+        name: name,
+        email: email,
+        password: password,
+        createdAt: new Date().toISOString(),
+        emailConfirmed: false,
+      };
+
+      localStorage.setItem("everAfterUser", JSON.stringify(userData));
+
+      // Show email confirmation modal
+      if (emailModal) {
+        emailModal.style.display = "flex";
+      }
+
+      // Simulate sending confirmation email
+      console.log("Confirmation email sent to:", email);
+
+      // In a real app, you would actually send an email here
+      simulateEmailConfirmation(email);
+    });
+  }
+
+  // Login Page
+  const loginForm = document.getElementById("login-form");
+  const forgotPasswordModal = document.getElementById("forgotPasswordModal");
+  const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+  const sendResetBtn = document.getElementById("sendResetBtn");
+  const cancelResetBtn = document.getElementById("cancelResetBtn");
+  const keepLoggedIn = document.getElementById("keepLoggedIn");
+
+  if (loginForm) {
+    // Load saved credentials if "Keep me logged in" was checked
+    loadSavedCredentials();
+
+    loginForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !password) {
+        alert("Please fill in all fields.");
+        highlightField(!username ? "username" : "password");
+        return;
+      }
+
+      // Check if user exists and credentials match
+      const savedUser = JSON.parse(
+        localStorage.getItem("everAfterUser") || "{}"
+      );
+
+      if (savedUser.name === username && savedUser.password === password) {
+        // Check if email is confirmed (in real app, this would be server-side)
+        if (!savedUser.emailConfirmed) {
+          alert(
+            "Please confirm your email before logging in. Check your inbox for the confirmation email."
+          );
+          return;
+        }
+
+        // Save credentials if "Keep me logged in" is checked
+        if (keepLoggedIn && keepLoggedIn.checked) {
+          localStorage.setItem("everAfterUsername", username);
+          localStorage.setItem("everAfterPassword", password);
+          localStorage.setItem("everAfterKeepLoggedIn", "true");
+        } else {
+          localStorage.removeItem("everAfterUsername");
+          localStorage.removeItem("everAfterPassword");
+          localStorage.setItem("everAfterKeepLoggedIn", "false");
+        }
+
+        // Mock dating API using RandomUser
+        fetch("https://randomuser.me/api/?results=3")
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Mock dating API results:", data.results);
+            alert(
+              `Welcome back, ${username}! Found ${data.results.length} potential matches for you.`
+            );
+            window.location.href = "upload.html";
+          })
+          .catch((err) => {
+            console.error("API error:", err);
+            // Fallback - still redirect to upload page
+            window.location.href = "upload.html";
+          });
+      } else {
+        alert("Invalid username or password. Please try again.");
+        highlightField("username");
+        highlightField("password");
+
+        if (typeof gsap !== "undefined") {
+          gsap.to(".submit-btn", {
+            x: -10,
+            yoyo: true,
+            repeat: 5,
+            duration: 0.5,
+          });
+        }
+      }
+    });
+  }
+
+  // Modal handlers for signup page
+  if (okayBtn) {
+    okayBtn.addEventListener("click", function () {
+      if (emailModal) {
+        emailModal.style.display = "none";
+      }
+      // Redirect to login page after email confirmation
+      window.location.href = "login.html";
+    });
+  }
+
+  // Forgot password functionality for login page
+  if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener("click", function () {
+      if (forgotPasswordModal) {
+        forgotPasswordModal.style.display = "flex";
+      }
+    });
+  }
+
+  if (sendResetBtn) {
+    sendResetBtn.addEventListener("click", function () {
+      const resetEmail = document.getElementById("reset-email").value.trim();
+
+      if (!resetEmail) {
+        alert("Please enter your email address.");
+        return;
+      }
+
+      // Check if email exists in system
+      const savedUser = JSON.parse(
+        localStorage.getItem("everAfterUser") || "{}"
+      );
+      if (savedUser.email !== resetEmail) {
+        alert("No account found with that email address.");
+        return;
+      }
+
+      // Simulate sending password reset email
+      console.log("Password reset email sent to:", resetEmail);
+      alert("Password reset link has been sent to your email!");
+
+      if (forgotPasswordModal) {
+        forgotPasswordModal.style.display = "none";
+      }
+    });
+  }
+
+  if (cancelResetBtn) {
+    cancelResetBtn.addEventListener("click", function () {
+      if (forgotPasswordModal) {
+        forgotPasswordModal.style.display = "none";
+      }
+    });
+  }
+
+  // Close modals when clicking outside
+  window.addEventListener("click", function (e) {
+    if (emailModal && e.target === emailModal) {
+      emailModal.style.display = "none";
+    }
+    if (forgotPasswordModal && e.target === forgotPasswordModal) {
+      forgotPasswordModal.style.display = "none";
+    }
   });
-}
+
+  // Helper functions
+  function loadSavedCredentials() {
+    const savedUsername = localStorage.getItem("everAfterUsername");
+    const savedPassword = localStorage.getItem("everAfterPassword");
+    const keepLoggedIn = localStorage.getItem("everAfterKeepLoggedIn");
+
+    if (keepLoggedIn === "true" && savedUsername && savedPassword) {
+      document.getElementById("username").value = savedUsername;
+      document.getElementById("password").value = savedPassword;
+      if (document.getElementById("keepLoggedIn")) {
+        document.getElementById("keepLoggedIn").checked = true;
+      }
+    }
+  }
+
+  function highlightField(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.style.borderColor = "#ff6b6b";
+      field.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.3)";
+
+      setTimeout(() => {
+        field.style.borderColor = "";
+        field.style.boxShadow = "";
+      }, 2000);
+    }
+  }
+
+  function simulateEmailConfirmation(email) {
+    // In a real app, this would be handled by your backend
+    // For demo purposes, we'll automatically "confirm" the email after a delay
+    setTimeout(() => {
+      const userData = JSON.parse(
+        localStorage.getItem("everAfterUser") || "{}"
+      );
+      userData.emailConfirmed = true;
+      localStorage.setItem("everAfterUser", JSON.stringify(userData));
+      console.log("Email confirmed for:", email);
+    }, 2000);
+  }
+});
+// ==================== END AUTHENTICATION FUNCTIONALITY ====================
 
 // ---Photo Upload Page ---
 const uploadForm = document.getElementById("uploadForm");
@@ -205,8 +430,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-// --- PROFILE PAGE EDIT FUNCTIONALITY ---
-// Add this to your existing script.js file - replace the entire profile section
 
 // --- PROFILE PAGE FUNCTIONALITY ---
 if (document.body.classList.contains("profile-page")) {
@@ -248,46 +471,6 @@ if (document.body.classList.contains("profile-page")) {
 
   // Display enhanced profile fields if they exist
   displayEnhancedProfileFields(savedEnhancedProfile);
-}
-
-// Function to display enhanced profile fields
-function displayEnhancedProfileFields(profile) {
-  // Identity Section
-  if (profile.gender) {
-    const genderElement = document.getElementById("displayGender");
-    if (genderElement) genderElement.textContent = profile.gender;
-  }
-
-  if (profile.pronouns) {
-    const pronounsElement = document.getElementById("displayPronouns");
-    if (pronounsElement) pronounsElement.textContent = profile.pronouns;
-  }
-
-  if (profile.sexuality) {
-    const sexualityElement = document.getElementById("displaySexuality");
-    if (sexualityElement) sexualityElement.textContent = profile.sexuality;
-  }
-
-  // Relationship Preferences Section
-  if (profile.relationshipStyle) {
-    const styleElement = document.getElementById("displayRelationshipStyle");
-    if (styleElement) styleElement.textContent = profile.relationshipStyle;
-  }
-
-  if (profile.relationshipType) {
-    const typeElement = document.getElementById("displayRelationshipType");
-    if (typeElement) typeElement.textContent = profile.relationshipType;
-  }
-
-  if (profile.location) {
-    const locationElement = document.getElementById("displayLocation");
-    if (locationElement) {
-      const formattedLocation =
-        profile.location.charAt(0).toUpperCase() +
-        profile.location.slice(1).replace("-", " ");
-      locationElement.textContent = formattedLocation;
-    }
-  }
 }
 
 // --- PROFILE PAGE EDIT FUNCTIONALITY ---

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ever After | Sign Up</title>
+    <meta name="author" content="Seren Mafunda" />
+    <meta
+      name="description"
+      content="Sign up for Ever After, a dating app for queer individuals."
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  </head>
+  <body class="signup-page">
+    <main>
+      <header class="form-header">
+        <h1 class="logo-text small" aria-label="Ever After">
+          <span class="logo-left">Ever</span>
+          <img
+            src="assets/EverAfter_Logo.png"
+            alt="Ever After Logo"
+            class="logo-img small"
+          />
+          <span class="logo-right">After</span>
+        </h1>
+        <h2 class="form-title">Create Your Account</h2>
+      </header>
+
+      <form id="signup-form" class="auth-form" autocomplete="on">
+        <div class="form-group">
+          <label for="signup-name">Name</label>
+          <input
+            type="text"
+            id="signup-name"
+            name="signup-name"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input
+            type="email"
+            id="signup-email"
+            name="signup-email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-email">Confirm Email</label>
+          <input
+            type="email"
+            id="confirm-email"
+            name="confirm-email"
+            placeholder="Confirm your email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input
+            type="password"
+            id="signup-password"
+            name="signup-password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            placeholder="Confirm your password"
+            required
+          />
+        </div>
+
+        <button type="submit" class="submit-btn">Sign Up</button>
+      </form>
+
+      <div class="back-link">
+        <a href="signin.html">← Back to Welcome</a>
+      </div>
+    </main>
+
+    <!-- Email Confirmation Modal -->
+    <div id="emailModal" class="modal">
+      <div class="modal-content">
+        <h3>You've Signed Up!</h3>
+        <p>You May Now Log Into Your Account! Enjoy!</p>
+        <button id="okayBtn" class="okay-btn">Okay</button>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
