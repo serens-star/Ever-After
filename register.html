@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join Ever After</title>
+    <link rel="stylesheet" href="css/register.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="register-page">
+    <header class="register-header">
+      <h1>Join Ever After</h1>
+      <p>Create your profile and start connecting</p>
+    </header>
+
+    <main class="register-main">
+      <form id="registrationForm" class="registration-form">
+        <!-- Profile Picture -->
+        <section class="form-section">
+          <div class="profile-picture-section">
+            <img
+              src="assets/default_user.png"
+              alt="Profile"
+              class="profile-picture-preview"
+              id="profilePreview"
+            />
+            <input
+              type="file"
+              id="profilePicture"
+              accept="image/*"
+              class="hidden"
+            />
+            <button type="button" class="upload-btn" id="uploadBtn">
+              Upload Photo
+            </button>
+          </div>
+        </section>
+
+        <!-- Basic Information -->
+        <section class="form-section">
+          <h2>Basic Information</h2>
+
+          <div class="form-fieldset">
+            <label for="regName" class="form-label">Display Name *</label>
+            <input
+              type="text"
+              id="regName"
+              name="name"
+              class="form-input"
+              required
+              placeholder="Enter your name"
+            />
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regAge" class="form-label">Age *</label>
+            <input
+              type="number"
+              id="regAge"
+              name="age"
+              class="form-input"
+              min="18"
+              max="100"
+              required
+              placeholder="Your age"
+            />
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regLocation" class="form-label">City *</label>
+            <select
+              id="regLocation"
+              name="location"
+              class="form-select"
+              required
+            >
+              <option value="">Select your city</option>
+              <option value="johannesburg">Johannesburg</option>
+              <option value="pretoria">Pretoria</option>
+              <option value="durban">Durban</option>
+              <option value="east-london">East London</option>
+              <option value="cape-town">Cape Town</option>
+            </select>
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regBio" class="form-label">About Me *</label>
+            <textarea
+              id="regBio"
+              name="bio"
+              class="form-textarea"
+              required
+              placeholder="Tell others about yourself..."
+              rows="4"
+            ></textarea>
+          </div>
+        </section>
+
+        <!-- Identity Information -->
+        <section class="form-section">
+          <h2>Identity</h2>
+
+          <div class="form-fieldset">
+            <label for="regGender" class="form-label">Gender</label>
+            <select id="regGender" name="gender" class="form-select">
+              <option value="">Select your gender</option>
+              <option value="cisgender(AFAB)">Cisgender (AFAB)</option>
+              <option value="agender">Agender</option>
+              <option value="genderfluid">Genderfluid</option>
+              <option value="genderqueer">Genderqueer</option>
+              <option value="nonbinary">Non-binary</option>
+              <option value="gendernonconforming">Gender Non-conforming</option>
+              <option value="transgender(AMAB)">Transgender (AMAB)</option>
+              <option value="demigender">Demigender</option>
+              <option value="woman">Woman</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regPronouns" class="form-label">Pronouns</label>
+            <select id="regPronouns" name="pronouns" class="form-select">
+              <option value="">Select your pronouns</option>
+              <option value="she/her">She/Her</option>
+              <option value="he/him">He/Him</option>
+              <option value="they/them">They/Them</option>
+              <option value="she/they">She/They</option>
+              <option value="he/they">He/They</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regSexuality" class="form-label">Sexuality</label>
+            <select id="regSexuality" name="sexuality" class="form-select">
+              <option value="">Select your sexuality</option>
+              <option value="queer">Queer</option>
+              <option value="lesbian">Lesbian</option>
+              <option value="bisexual">Bisexual</option>
+              <option value="pansexual">Pansexual</option>
+              <option value="asexual">Asexual</option>
+              <option value="aromantic">Aromantic</option>
+              <option value="aroace">Aro-Ace</option>
+              <option value="demisexual">Demisexual</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Relationship Preferences -->
+        <section class="form-section">
+          <h2>Relationship Preferences</h2>
+
+          <div class="form-fieldset">
+            <label for="regRelationshipStyle" class="form-label"
+              >Relationship Style</label
+            >
+            <select
+              id="regRelationshipStyle"
+              name="relationshipStyle"
+              class="form-select"
+            >
+              <option value="">Select preferred style</option>
+              <option value="monogamous">Monogamous</option>
+              <option value="polyamorous">Polyamorous</option>
+              <option value="open">Open Relationship</option>
+              <option value="relationship-anarchist">
+                Relationship Anarchist
+              </option>
+            </select>
+          </div>
+
+          <div class="form-fieldset">
+            <label for="regRelationshipType" class="form-label"
+              >Relationship Type</label
+            >
+            <select
+              id="regRelationshipType"
+              name="relationshipType"
+              class="form-select"
+            >
+              <option value="">Select preferred type</option>
+              <option value="casual">Casual</option>
+              <option value="longterm">Long-term</option>
+              <option value="friendship">Friendship</option>
+              <option value="situationship">Situationship</option>
+            </select>
+          </div>
+        </section>
+
+        <button type="submit" class="submit-btn">
+          Create Profile & Start Matching
+        </button>
+      </form>
+    </main>
+
+    <script src="js/register.js"></script>
+  </body>
+</html>

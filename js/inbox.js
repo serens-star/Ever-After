@@ -40,13 +40,13 @@ class InboxPage {
     this.inboxTabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         const targetTab = tab.dataset.tab;
-        
+
         // Update active tab
-        this.inboxTabs.forEach(t => t.classList.remove("active"));
+        this.inboxTabs.forEach((t) => t.classList.remove("active"));
         tab.classList.add("active");
-        
+
         // Show corresponding content
-        this.tabContents.forEach(content => {
+        this.tabContents.forEach((content) => {
           content.classList.remove("active");
           if (content.id === `${targetTab}-content`) {
             content.classList.add("active");
@@ -61,7 +61,7 @@ class InboxPage {
 
   animateTabTransition(tab) {
     const activeContent = document.getElementById(`${tab}-content`);
-    
+
     gsap.fromTo(
       activeContent,
       {
@@ -110,37 +110,53 @@ class InboxPage {
     );
   }
 
-  loadLocationBasedContent() {
-    // Get user's location to show relevant connections
+  async loadLocationBasedContent() {
+    const realUsers = this.getRealUsersForNotifications();
+
+    // Update notification cards with real user data
+    this.updateNotificationCards(realUsers);
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userLat = position.coords.latitude;
           const userLon = position.coords.longitude;
-          
-          // Update distance information for notifications
-          this.updateNotificationDistances(userLat, userLon);
-          
-          // Get location name for personalization
+
+          this.updateNotificationDistances(userLat, userLon, realUsers);
           this.getUserLocationName(userLat, userLon);
         },
         (error) => {
           console.error("Error getting location:", error);
-          // Use default distances if location unavailable
-          this.updateNotificationDistances();
+          this.updateNotificationDistances(null, null, realUsers);
         }
       );
     } else {
-      // Use default distances if geolocation not supported
-      this.updateNotificationDistances();
+      this.updateNotificationDistances(null, null, realUsers);
     }
   }
 
-  updateNotificationDistances(userLat = null, userLon = null) {
-    const distanceElements = document.querySelectorAll(".notification-distance");
-    
-    distanceElements.forEach((element) => {
-      if (userLat && userLon) {
+  updateNotificationDistances(userLat = null, userLon = null, realUsers = []) {
+    const distanceElements = document.querySelectorAll(
+      ".notification-distance"
+    );
+
+    distanceElements.forEach((element, index) => {
+      if (userLat && userLon && realUsers[index]) {
+        // Calculate real distance for actual users
+        const user = realUsers[index];
+        const profileLat =
+          user.coordinates?.lat || this.getCityCoordinates(user.location).lat;
+        const profileLon =
+          user.coordinates?.lon || this.getCityCoordinates(user.location).lon;
+
+        const distance = this.calculateDistance(
+          userLat,
+          userLon,
+          profileLat,
+          profileLon
+        );
+        element.textContent = `${Math.round(distance)} miles away`;
+      } else if (userLat && userLon) {
         // Calculate realistic distances based on user location
         const distance = this.calculateRandomDistance(userLat, userLon);
         element.textContent = `${distance} miles away`;
@@ -155,10 +171,10 @@ class InboxPage {
   calculateRandomDistance(userLat, userLon) {
     // Generate realistic distances within a reasonable range
     const baseDistance = Math.floor(Math.random() * 15) + 1;
-    
+
     // Add some variation based on location (simulated)
     const locationVariation = Math.floor(Math.random() * 5);
-    
+
     return baseDistance + locationVariation;
   }
 
@@ -180,10 +196,10 @@ class InboxPage {
           data.address.town ||
           data.address.village ||
           "your area";
-        
+
         // You could use this to personalize the inbox content
         console.log(`Showing connections near ${city}`);
-        
+
         // Example: Update page title or add location context
         // document.querySelector('.connections-title').textContent = `Connections in ${city}`;
       })
@@ -234,9 +250,9 @@ class InboxPage {
         <time class="message-time">Just now</time>
       </section>
     `;
-    
+
     inboxContent.insertBefore(newMessage, inboxContent.firstChild);
-    
+
     // Animate new message
     gsap.fromTo(
       newMessage,
@@ -254,13 +270,88 @@ class InboxPage {
       }
     );
   }
+
+  //HELPER METHODS:
+
+  getRealUsersForNotifications() {
+    const registeredUsers = JSON.parse(
+      localStorage.getItem("everAfterUsers") || "[]"
+    );
+
+    if (registeredUsers.length > 0) {
+      // Get random users for notifications
+      return registeredUsers
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3)
+        .map((user) => ({
+          name: user.name,
+          location: this.formatLocationName(user.location),
+          coordinates: user.coordinates,
+        }));
+    }
+
+    // Fallback to demo names
+    return [
+      { name: "Alex Morgan", location: "Johannesburg" },
+      { name: "Taylor Kim", location: "Pretoria" },
+      { name: "Jordan Lee", location: "Durban" },
+    ];
+  }
+
+  updateNotificationCards(realUsers) {
+    const notificationCards = document.querySelectorAll(".notification-card");
+    const nameElements = document.querySelectorAll(".notification-name");
+
+    nameElements.forEach((element, index) => {
+      if (realUsers[index]) {
+        element.textContent = realUsers[index].name;
+      }
+    });
+  }
+
+  formatLocationName(location) {
+    const locationMap = {
+      johannesburg: "Johannesburg",
+      pretoria: "Pretoria",
+      durban: "Durban",
+      "east-london": "East London",
+      "cape-town": "Cape Town",
+    };
+    return locationMap[location] || location;
+  }
+
+  getCityCoordinates(location) {
+    const cityCoordinates = {
+      johannesburg: { lat: -26.2041, lon: 28.0473 },
+      pretoria: { lat: -25.7479, lon: 28.2293 },
+      durban: { lat: -29.8587, lon: 31.0218 },
+      "east-london": { lat: -32.9833, lon: 27.8667 },
+      "cape-town": { lat: -33.9249, lon: 18.4241 },
+    };
+    return cityCoordinates[location] || cityCoordinates.johannesburg;
+  }
+
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 3959; // Earth's radius in miles
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    return Math.round(distance);
+  }
 }
 
 // Initialize when DOM is loaded
 let inboxPage;
 document.addEventListener("DOMContentLoaded", () => {
   inboxPage = new InboxPage();
-  
+
   // Demo: Simulate receiving a new message after 5 seconds
   setTimeout(() => {
     inboxPage.simulateNewMessage();

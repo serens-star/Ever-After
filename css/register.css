@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Caveat:wght@400;600&display=swap");
+
+:root {
+  --bg1: #ffedd5;
+  --bg2: #ffd4e2;
+  --accent: #f9b8d3;
+  --text: #5b2431;
+  --button: #f8a8c1;
+  --white: #ffffff;
+  --shadow: rgba(91, 36, 49, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Caveat", cursive;
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.register-header {
+  text-align: center;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom: 2px solid var(--accent);
+}
+
+.register-header h1 {
+  font-family: "Courgette", cursive;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.register-header p {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.register-main {
+  padding: 30px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-section {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
+}
+
+.form-section h2 {
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 8px;
+}
+
+.profile-picture-section {
+  text-align: center;
+}
+
+.profile-picture-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--accent);
+  margin-bottom: 15px;
+}
+
+.upload-btn {
+  background: var(--button);
+  color: var(--text);
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+.form-fieldset {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  font-family: "Caveat", cursive;
+  font-size: 1.2rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--button);
+  transform: scale(1.02);
+  box-shadow: 0 0 10px rgba(249, 184, 211, 0.3);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.submit-btn {
+  background: var(--button);
+  color: var(--text);
+  border: none;
+  border-radius: 25px;
+  padding: 15px 40px;
+  font-family: "Courgette", cursive;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
+}
+
+.submit-btn:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .register-header h1 {
+    font-size: 2rem;
+  }
+
+  .register-main {
+    padding: 20px 15px;
+  }
+
+  .form-section {
+    padding: 20px;
+  }
+
+  .form-section h2 {
+    font-size: 1.3rem;
+  }
+}

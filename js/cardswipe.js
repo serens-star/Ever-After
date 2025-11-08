@@ -68,38 +68,43 @@ class CardSwipe {
     );
   }
 
-  getLocationAndCalculateDistance() {
+  // Function to get user's location and calculate distance
+  async getLocationAndCalculateDistance() {
+    const profile = this.getRandomProfile();
+
+    // Update profile info
+    document.querySelector(
+      ".profile-name"
+    ).textContent = `${profile.name} (${profile.pronouns}), ${profile.age}`;
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const userLat = position.coords.latitude;
           const userLon = position.coords.longitude;
 
-          // For demo purposes, using a fixed location (Johannesburg)
-          const profileLat = -26.2041;
-          const profileLon = 28.0473;
+          // Use profile's actual coordinates
+          const profileLat = profile.coordinates?.lat || -26.2041;
+          const profileLon = profile.coordinates?.lon || 28.0473;
 
-          // Calculate distance
           const distance = this.calculateDistance(
             userLat,
             userLon,
             profileLat,
             profileLon
           );
-
-          // Update UI with distance
           this.distanceText.textContent = `${distance} miles away`;
 
           // Get location name using LocationIQ API
           this.getLocationName(userLat, userLon);
         },
-        (error) => {
+        function (error) {
           console.error("Error getting location:", error);
-          this.distanceText.textContent = "Location unavailable";
+          distanceText.textContent = "Location unavailable";
         }
       );
     } else {
-      this.distanceText.textContent = "Geolocation not supported";
+      distanceText.textContent = "Geolocation not supported";
     }
   }
 
@@ -209,6 +214,27 @@ class CardSwipe {
         }
       },
     });
+  }
+
+  getRandomProfile() {
+    const registeredUsers = JSON.parse(
+      localStorage.getItem("everAfterUsers") || "[]"
+    );
+
+    if (registeredUsers.length > 0) {
+      // Get a random registered user
+      const randomIndex = Math.floor(Math.random() * registeredUsers.length);
+      return registeredUsers[randomIndex];
+    }
+
+    // Fallback to demo profile
+    return {
+      name: "Elaina",
+      age: 23,
+      pronouns: "She/They",
+      location: "Johannesburg",
+      coordinates: { lat: -26.2041, lon: 28.0473 },
+    };
   }
 }
 

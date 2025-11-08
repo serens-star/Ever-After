@@ -8,11 +8,10 @@
   --button: #f8a8c1;
 }
 
-
 /* Logo image styling */
 .logo-img {
   display: block;
-  margin: 3rem 0rem;
+  margin: 2rem 0rem;
   width: 150px;
   height: auto;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
@@ -21,7 +20,7 @@
 
 .logo-image.small {
   width: 150px;
-  margin-bottom: 3rem 0rem;
+  margin-bottom: 2rem 0rem;
 }
 
 @keyframes fadeIn {
@@ -90,9 +89,9 @@ main {
 }
 
 body.signin-page main {
-  background: rgba (255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(12px);
-  padding: 2rem 3rem;
+  padding: 2rem;
   border-radius: 2rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 90%;
@@ -101,7 +100,7 @@ body.signin-page main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: auto;
   padding: 2rem;
 }
 
@@ -116,12 +115,55 @@ body.signin-page main {
   width: 90%;
   max-width: 400px;
   animation-delay: 0.5s;
+  margin-bottom: 1.5rem;
 }
 
 .signin-header,
 #signin-form {
   opacity: 0;
   animation: fadeIn 1s ease forwards;
+}
+
+.signup-section {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  border: 2px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.signup-section p {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: var(--text);
+  font-family: "Caveat", cursive;
+  font-weight: 600;
+}
+
+.signup-link {
+  background: var(--button);
+  color: var(--text);
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-family: "Courgette", cursive;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 15px rgba(249, 184, 211, 0.5);
+}
+
+.signup-link:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+  border-color: var(--text);
+  box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
 }
 
 label {
@@ -138,15 +180,15 @@ input {
   outline: none;
 }
 
-.options {
+.option {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.6rem 0;
-  font-size: 0.8rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
 }
 
-.login-button {
+.login-btn {
   background: var(--button);
   border: none;
   border-radius: 1rem;
@@ -155,52 +197,44 @@ input {
   color: white;
   cursor: pointer;
   transition: transform 0.2s;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
+  font-family: "Caveat", cursive;
+  font-size: 1.3rem;
 }
 
-.login-button:hover {
+.login-btn:hover {
   transform: scale(1.05);
 }
 
-.or {
-  text-align: center;
-  margin: 1rem 0 0.5rem;
-  margin-top: 3rem;
-}
-
-.socials {
-  display: flex;
-  justify-content: space-between;
-}
-
-.apple-btn,
-.google-btn {
-  flex: 1;
-  margin: 1rem;
-  border: none;
-  padding: 0.6rem;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-top: 3rem;
-}
-
-.apple-btn {
-  background: #ccc;
-}
-.google-btn {
-  background: #a4dba3;
-}
 .forgot {
   text-decoration: none;
   color: var(--text);
+  font-size: 0.9rem;
 }
 
 @media (max-width: 600px) {
-  main {
+  body.signin-page main {
     padding: 1.5rem;
+    margin: 1rem;
   }
-  .logo {
-    font-size: 2rem;
+
+  .logo-img {
+    margin: 1rem 0rem;
+    width: 120px;
+  }
+
+  .logo-text.small {
+    font-size: 2.5rem;
+  }
+
+  .signup-section {
+    padding: 15px;
+    margin-top: 1rem;
+  }
+
+  .signup-link {
+    padding: 10px 25px;
+    font-size: 1.2rem;
   }
 }
 

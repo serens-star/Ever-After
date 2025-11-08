@@ -84,13 +84,43 @@ class NearbyProfiles {
   }
 
   async fetchProfiles(criteria) {
-    // Use mock data for now - replace with actual API call
-    const mockProfiles = this.generateMockProfiles(criteria);
+    try {
+      // Get registered users from localStorage
+      const registeredUsers = JSON.parse(
+        localStorage.getItem("everAfterUsers") || "[]"
+      );
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+      if (registeredUsers.length > 0) {
+        // Filter registered users by criteria
+        const filteredUsers = registeredUsers.filter((user) =>
+          this.applyCriteria(user, criteria)
+        );
 
-    return mockProfiles;
+        if (filteredUsers.length > 0) {
+          // Calculate distances for real users
+          const usersWithDistance = await Promise.all(
+            filteredUsers.map(async (user) => {
+              const distance = await this.calculateUserDistance(user);
+              return {
+                ...user,
+                distance: distance,
+                image: user.profilePicture || "assets/Profile_Card_Icon.png",
+                location: this.formatLocationName(user.location),
+              };
+            })
+          );
+          return usersWithDistance;
+        }
+      }
+
+      // Fallback to demo profiles if no registered users
+      console.log("No registered users found, using demo profiles");
+      const demoProfiles = this.generateMockProfiles(criteria);
+      return demoProfiles;
+    } catch (error) {
+      console.error("Error fetching profiles:", error);
+      return this.generateMockProfiles(criteria);
+    }
   }
 
   generateMockProfiles(criteria) {
@@ -270,6 +300,65 @@ class NearbyProfiles {
 
     return true;
   }
+
+  calculateUserDistance(user) {
+    return new Promise((resolve) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userLat = position.coords.latitude;
+            const userLon = position.coords.longitude;
+
+            const profileLat =
+              user.coordinates?.lat ||
+              this.getCityCoordinates(user.location).lat;
+            const profileLon =
+              user.coordinates?.lon ||
+              this.getCityCoordinates(user.location).lon;
+
+            const distance = this.calculateDistance(
+              userLat,
+              userLon,
+              profileLat,
+              profileLon
+            );
+            resolve(distance);
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            resolve(Math.floor(Math.random() * 20) + 1); // Random fallback
+          }
+        );
+      } else {
+        resolve(Math.floor(Math.random() * 20) + 1); // Random fallback
+      }
+    });
+  }
+
+  // Helper method to get city coordinates
+  getCityCoordinates(location) {
+    const cityCoordinates = {
+      johannesburg: { lat: -26.2041, lon: 28.0473 },
+      pretoria: { lat: -25.7479, lon: 28.2293 },
+      durban: { lat: -29.8587, lon: 31.0218 },
+      "east-london": { lat: -32.9833, lon: 27.8667 },
+      "cape-town": { lat: -33.9249, lon: 18.4241 },
+    };
+    return cityCoordinates[location] || cityCoordinates.johannesburg;
+  }
+
+  // Format location name for display
+  formatLocationName(location) {
+    const locationMap = {
+      johannesburg: "Johannesburg",
+      pretoria: "Pretoria",
+      durban: "Durban",
+      "east-london": "East London",
+      "cape-town": "Cape Town",
+    };
+    return locationMap[location] || location;
+  }
+
   displayProfiles(profiles) {
     this.profilesContainer.innerHTML = "";
 
@@ -425,7 +514,7 @@ class NearbyProfiles {
           case "inbox":
             window.location.href = "inbox.html";
             break;
-          case "cardswipe": 
+          case "cardswipe":
             window.location.href = "cardswipe.html";
             break;
           case "nearby":

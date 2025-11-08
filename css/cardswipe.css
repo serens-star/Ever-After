@@ -24,6 +24,32 @@ body {
   padding-bottom: 80px;
 }
 
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.signup-btn {
+    background: var(--button);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-family: "Caveat", cursive;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    white-space: nowrap;
+}
+
+.signup-btn:hover {
+    background: var(--accent);
+    transform: scale(1.05);
+    border-color: var(--text);
+}
+
 .cardswipe-header {
   display: flex;
   justify-content: space-between;
