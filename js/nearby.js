@@ -425,7 +425,7 @@ class NearbyProfiles {
           case "inbox":
             window.location.href = "inbox.html";
             break;
-          case "cardswipe": // Changed from "card-swipe" to "cardswipe"
+          case "cardswipe": 
             window.location.href = "cardswipe.html";
             break;
           case "nearby":

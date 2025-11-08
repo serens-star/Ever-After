@@ -172,19 +172,13 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "index.html";
             break;
           case "matches":
-            window.location.href = "search.html";
-            break;
-          case "likes":
-            window.location.href = "likes.html";
-            break;
-          case "inbox":
-            window.location.href = "inbox.html";
+            window.location.href = "nearby.html";
             break;
           case "profile":
             window.location.href = "profile.html";
             break;
           case "settings":
-            window.location.href = "settings.html";
+            window.location.href = "search-criteria.html";
             break;
           default:
             console.warn("Unknown page:", page);
@@ -211,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
 // --- PROFILE PAGE EDIT FUNCTIONALITY ---
 // Add this to your existing script.js file - replace the entire profile section
 

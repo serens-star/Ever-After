@@ -212,7 +212,7 @@ body {
   backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-around;
-  padding: 15px 0;
+  padding: 12px 0; 
   border-top: 2px solid var(--accent);
   z-index: 1000;
 }
@@ -223,15 +223,29 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 4px; 
   cursor: pointer;
-  padding: 8px 20px;
-  border-radius: 25px;
+  padding: 6px 12px; 
+  border-radius: 20px;
   transition: all 0.3s ease;
   opacity: 0.6;
   font-family: "Caveat", cursive;
-  text-decoration: none; 
-  color: var(--text); 
+  text-decoration: none;
+  color: var(--text);
+  flex: 1; 
+  max-width: 80px; 
+}
+
+.nav-icon {
+  width: 22px; 
+  height: 22px;
+  object-fit: contain;
+}
+
+.nav-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
 .nav-btn.active {
@@ -243,7 +257,7 @@ body {
 .nav-btn:hover {
   opacity: 1;
   transform: translateY(-2px);
-  text-decoration: none; 
+  text-decoration: none;
   color: var(--text);
 }
 

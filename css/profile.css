@@ -23,7 +23,7 @@ body {
   min-height: 100vh;
 }
 
-/* Navbar Styles */
+/* UPDATED Navbar Styles - Centered with Logo */
 .sidebar-nav {
   position: fixed;
   top: 0;
@@ -31,47 +31,73 @@ body {
   width: 200px;
   height: 100vh;
   background: rgba(255, 255, 255, 0.95);
-  padding: 20px;
+  padding: 30px 20px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--accent);
+  width: 100%;
+}
+
+.nav-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 10px;
 }
 
 .sidebar-nav a {
   display: block;
-  padding: 12px 15px;
-  margin: 8px 0;
+  padding: 15px 20px;
+  margin: 12px 0;
   text-decoration: none;
   color: var(--text);
   font-family: "Caveat", cursive;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: 12px;
   transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
 }
 
 .sidebar-nav a:hover,
 .sidebar-nav a.active {
   background: var(--button);
   color: var(--text);
+  transform: translateX(5px);
 }
 
-/* Main Content */
+/* UPDATED Main Content - Better Spacing */
 .profile-main {
   position: relative;
   background: rgba(255, 255, 255, 0.9);
   min-height: 100vh;
-  padding: 20px;
+  padding: 40px;
   margin-left: 200px;
   max-width: calc(100% - 200px);
   box-shadow: 0 0 30px rgba(249, 184, 211, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* View Profile Styles */
+/* UPDATED View Profile Styles - Better Centering */
 .profile-header {
   text-align: center;
-  padding: 30px 0;
+  padding: 40px 0;
   border-bottom: 2px solid var(--accent);
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .profile-picture-large {
@@ -81,7 +107,7 @@ body {
   object-fit: cover;
   border: 4px solid var(--accent);
   box-shadow: 0 8px 25px var(--shadow);
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .profile-name {
@@ -89,7 +115,8 @@ body {
   color: var(--text);
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  line-height: 1.2;
 }
 
 .edit-profile-btn {
@@ -98,7 +125,7 @@ body {
   font-family: "Caveat", cursive;
   border: none;
   border-radius: 25px;
-  padding: 10px 30px;
+  padding: 12px 35px;
   cursor: pointer;
   font-size: 1.3rem;
   font-weight: 700;
@@ -110,71 +137,80 @@ body {
   transform: scale(1.05);
 }
 
+/* UPDATED Profile Content - Better Spacing */
 .profile-content {
   max-width: 600px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .profile-info-section {
   background: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 30px;
+  margin-bottom: 30px;
   border: 1px solid var(--accent);
+  text-align: center;
 }
 
 .section-title {
   font-family: "Courgette", cursive;
   color: var(--text);
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 700;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   border-bottom: 2px solid var(--accent);
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
 .profile-bio {
-  font-size: 1.2rem;
-  line-height: 1.6;
+  font-size: 1.3rem;
+  line-height: 1.7;
   color: var(--text);
+  text-align: center;
+  margin: 0 auto;
 }
 
 .info-grid {
   display: grid;
-  gap: 15px;
+  gap: 20px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .info-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 15px 20px;
   background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid rgba(249, 184, 211, 0.3);
 }
 
 .info-label {
   font-weight: 600;
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .info-value {
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   text-align: right;
 }
 
-/* Edit Profile Styles */
+/* UPDATED Edit Profile Styles - Better Centering */
 .edit-profile-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 0 30px 0;
+  padding: 30px 0 40px 0;
   position: relative;
   border-bottom: 2px solid var(--accent);
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 600px;
 }
 
 .back-btn {
@@ -213,9 +249,10 @@ body {
 .edit-profile-form {
   max-width: 500px;
   margin: 0 auto;
+  width: 100%;
 }
 
-/* Profile Picture Section */
+/* Rest of your existing CSS remains the same... */
 .profile-picture-section {
   text-align: center;
   margin-bottom: 30px;
@@ -254,13 +291,13 @@ body {
   transform: scale(1.05);
 }
 
-/* Form Sections */
 .form-section {
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 25px;
   background: rgba(255, 255, 255, 0.6);
   border-radius: 15px;
   border: 1px solid var(--accent);
+  text-align: center;
 }
 
 .section-heading {
@@ -274,10 +311,10 @@ body {
   padding-bottom: 8px;
 }
 
-/* Form Fields */
 .form-fieldset {
   border: none;
   margin-bottom: 20px;
+  text-align: left;
 }
 
 .form-label {
@@ -317,7 +354,6 @@ body {
   min-height: 100px;
 }
 
-/* Save Button */
 .save-btn {
   background: var(--button);
   color: var(--text);
@@ -340,7 +376,6 @@ body {
   box-shadow: 0 6px 20px rgba(249, 184, 211, 0.7);
 }
 
-/* Utility Classes */
 .hidden {
   display: none !important;
 }
@@ -352,19 +387,26 @@ body {
     height: auto;
     position: static;
     display: flex;
+    flex-direction: row;
     justify-content: space-around;
-    padding: 10px;
+    padding: 15px 10px;
+  }
+
+  .logo-section {
+    display: none;
+  }
+
+  .sidebar-nav a {
+    padding: 10px 12px;
+    font-size: 1rem;
+    margin: 0 2px;
+    width: auto;
   }
 
   .profile-main {
     margin-left: 0;
     max-width: 100%;
-  }
-
-  .sidebar-nav a {
-    padding: 8px 12px;
-    font-size: 1rem;
-    margin: 0 2px;
+    padding: 20px;
   }
 }
 
@@ -382,7 +424,7 @@ body {
   }
 
   .form-section {
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 20px;
   }
 
