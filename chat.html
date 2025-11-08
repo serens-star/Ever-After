@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat - Ever After</title>
+    <link rel="stylesheet" href="css/chat.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="chat-page">
+    <header class="chat-header">
+      <button class="back-btn" onclick="window.history.back()">
+        <img src="assets/Inbox_Icon.png" alt="Back" class="icon" />
+      </button>
+      <div class="chat-partner-info">
+        <img id="partnerAvatar" src="" alt="Profile" class="partner-avatar" />
+        <div class="partner-details">
+          <h2 id="partnerName" class="partner-name"></h2>
+          <span id="partnerStatus" class="partner-status">Online</span>
+        </div>
+      </div>
+      <button class="menu-btn">
+        <img src="assets/menu_icon." alt="Menu" class="icon" />
+      </button>
+    </header>
+
+    <main class="chat-main">
+      <div class="messages-container" id="messagesContainer">
+        <!-- Messages will be loaded here -->
+      </div>
+    </main>
+
+    <footer class="chat-footer">
+      <div class="message-input-container">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type a message..."
+          class="message-input"
+        />
+        <button id="sendButton" class="send-btn">
+          <img src="assets/send_icon.png" alt="Send" class="send-icon" />
+        </button>
+      </div>
+    </footer>
+
+    <script src="js/chat.js"></script>
+  </body>
+</html>

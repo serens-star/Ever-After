@@ -176,9 +176,8 @@ class InboxPage {
       }
     }
 
-    // In a real app, you'd open a chat interface
-    // For now, show a message and simulate opening chat
-    this.simulateChatOpening(matchId);
+    // Redirect to chat page with match ID
+    window.location.href = `chat.html?match=${matchId}`;
   }
 
   simulateChatOpening(matchId) {
