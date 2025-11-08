@@ -867,3 +867,271 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 });
+
+// Your existing script.js code ends here...
+
+// ==================== SCROLL TRIGGER ANIMATIONS FOR PROFILE PAGE ====================
+function initScrollAnimations() {
+  // Check if we're on the profile page and GSAP is loaded
+  if (
+    !document.body.classList.contains("profile-page") ||
+    typeof gsap === "undefined"
+  ) {
+    return;
+  }
+
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Animation for profile header elements
+  const profileHeader = document.querySelector(".profile-header");
+  const profilePicture = document.querySelector(".profile-picture-large");
+  const profileName = document.querySelector(".profile-name");
+  const editButton = document.querySelector(".edit-profile-btn");
+
+  if (profileHeader) {
+    gsap.fromTo(
+      profileHeader,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: profileHeader,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }
+
+  if (profilePicture) {
+    gsap.fromTo(
+      profilePicture,
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "back.out(1.7)",
+        scrollTrigger: {
+          trigger: profilePicture,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }
+
+  if (profileName) {
+    gsap.fromTo(
+      profileName,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: profileName,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }
+
+  if (editButton) {
+    gsap.fromTo(
+      editButton,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 0.4,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: editButton,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  }
+
+  // Animation for profile sections
+  const profileSections = document.querySelectorAll(".profile-info-section");
+
+  profileSections.forEach((section, index) => {
+    gsap.fromTo(
+      section,
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: index * 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+
+    // Animate info grids within sections
+    const infoGrid = section.querySelector(".info-grid");
+    if (infoGrid) {
+      const infoItems = infoGrid.querySelectorAll(".info-item");
+
+      gsap.fromTo(
+        infoItems,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: infoGrid,
+            start: "top 85%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+
+    // Animate bio text
+    const bioText = section.querySelector(".profile-bio");
+    if (bioText) {
+      gsap.fromTo(
+        bioText,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: bioText,
+            start: "top 85%",
+            end: "bottom 20%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+  });
+
+  // Animation for section titles
+  const sectionTitles = document.querySelectorAll(".section-title");
+
+  sectionTitles.forEach((title, index) => {
+    gsap.fromTo(
+      title,
+      { opacity: 0, x: -50 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.7,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: title,
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+  });
+
+  // Refresh ScrollTrigger on page load to ensure proper calculations
+  ScrollTrigger.refresh();
+}
+
+// Alternative CSS-based animations for fallback
+function initCSSAnimations() {
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: "0px 0px -50px 0px",
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("animate-in");
+
+        // If it's an info-grid, animate its children
+        if (entry.target.classList.contains("info-grid")) {
+          const items = entry.target.querySelectorAll(".info-item");
+          items.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+          });
+        }
+      }
+    });
+  }, observerOptions);
+
+  // Observe all animatable elements
+  const elementsToAnimate = document.querySelectorAll(
+    ".profile-header, .profile-picture-large, .profile-name, .edit-profile-btn, .profile-info-section, .info-grid, .section-title"
+  );
+
+  elementsToAnimate.forEach((el) => observer.observe(el));
+}
+
+// Initialize animations when DOM is loaded - ADD THIS TO YOUR EXISTING DOMCONTENTLOADED
+document.addEventListener("DOMContentLoaded", function () {
+  // Your existing DOMContentLoaded code here...
+
+  // Add this animation initialization at the end of your existing DOMContentLoaded function:
+
+  // Try GSAP ScrollTrigger first, fall back to CSS animations
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    initScrollAnimations();
+  } else {
+    initCSSAnimations();
+    console.log("GSAP ScrollTrigger not available, using CSS animations");
+  }
+
+  // Refresh animations when switching between view and edit modes
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  const backToProfileBtn = document.getElementById("backToProfileBtn");
+
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener("click", function () {
+      // Small delay to ensure DOM update
+      setTimeout(() => {
+        if (typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        }
+      }, 100);
+    });
+  }
+
+  if (backToProfileBtn) {
+    backToProfileBtn.addEventListener("click", function () {
+      // Refresh animations when returning to profile view
+      setTimeout(() => {
+        if (typeof ScrollTrigger !== "undefined") {
+          ScrollTrigger.refresh();
+        } else {
+          // Re-initialize CSS animations
+          initCSSAnimations();
+        }
+      }, 100);
+    });
+  }
+});
