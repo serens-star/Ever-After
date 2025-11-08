@@ -12,8 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Sign Up Page
   const signupForm = document.getElementById("signup-form");
-  const emailModal = document.getElementById("emailModal");
-  const okayBtn = document.getElementById("okayBtn");
 
   if (signupForm) {
     signupForm.addEventListener("submit", function (e) {
@@ -53,27 +51,23 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Save user data
+      // Save user data (no email confirmation needed)
       const userData = {
         name: name,
         email: email,
         password: password,
         createdAt: new Date().toISOString(),
-        emailConfirmed: false,
       };
 
       localStorage.setItem("everAfterUser", JSON.stringify(userData));
 
-      // Show email confirmation modal
-      if (emailModal) {
-        emailModal.style.display = "flex";
-      }
+      // Auto-login and redirect
+      localStorage.setItem("everAfterUsername", name);
+      localStorage.setItem("everAfterPassword", password);
+      localStorage.setItem("everAfterKeepLoggedIn", "true");
 
-      // Simulate sending confirmation email
-      console.log("Confirmation email sent to:", email);
-
-      // In a real app, you would actually send an email here
-      simulateEmailConfirmation(email);
+      alert(`Welcome to Ever After, ${name}! Your account has been created.`);
+      window.location.href = "upload.html";
     });
   }
 
@@ -107,22 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
       if (savedUser.name === username && savedUser.password === password) {
-        // Check if email is confirmed (in real app, this would be server-side)
-        if (!savedUser.emailConfirmed) {
-          alert(
-            "Please confirm your email before logging in. Check your inbox for the confirmation email."
-          );
-          return;
-        }
-
         // Save credentials if "Keep me logged in" is checked
         if (keepLoggedIn && keepLoggedIn.checked) {
           localStorage.setItem("everAfterUsername", username);
           localStorage.setItem("everAfterPassword", password);
           localStorage.setItem("everAfterKeepLoggedIn", "true");
         } else {
-          localStorage.removeItem("everAfterUsername");
-          localStorage.removeItem("everAfterPassword");
+          // Still remember for this session, but don't persist
+          localStorage.setItem("everAfterUsername", username);
           localStorage.setItem("everAfterKeepLoggedIn", "false");
         }
 
@@ -138,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("Compatible matches found:", compatibleMatches);
         alert(
-          `Welcome back, ${username}! Found ${compatibleMatches.length} compatible matches for you based on your preferences.`
+          `Welcome back, ${username}! Found ${compatibleMatches.length} compatible matches for you.`
         );
         window.location.href = "upload.html";
       } else {
@@ -155,17 +141,6 @@ document.addEventListener("DOMContentLoaded", function () {
           });
         }
       }
-    });
-  }
-
-  // Modal handlers for signup page
-  if (okayBtn) {
-    okayBtn.addEventListener("click", function () {
-      if (emailModal) {
-        emailModal.style.display = "none";
-      }
-      // Redirect to login page after email confirmation
-      window.location.href = "login.html";
     });
   }
 
@@ -216,9 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Close modals when clicking outside
   window.addEventListener("click", function (e) {
-    if (emailModal && e.target === emailModal) {
-      emailModal.style.display = "none";
-    }
     if (forgotPasswordModal && e.target === forgotPasswordModal) {
       forgotPasswordModal.style.display = "none";
     }
@@ -230,11 +202,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const savedPassword = localStorage.getItem("everAfterPassword");
     const keepLoggedIn = localStorage.getItem("everAfterKeepLoggedIn");
 
-    if (keepLoggedIn === "true" && savedUsername && savedPassword) {
+    if (savedUsername) {
       document.getElementById("username").value = savedUsername;
-      document.getElementById("password").value = savedPassword;
+      if (savedPassword) {
+        document.getElementById("password").value = savedPassword;
+      }
       if (document.getElementById("keepLoggedIn")) {
-        document.getElementById("keepLoggedIn").checked = true;
+        document.getElementById("keepLoggedIn").checked = keepLoggedIn === "true";
       }
     }
   }
@@ -250,19 +224,6 @@ document.addEventListener("DOMContentLoaded", function () {
         field.style.boxShadow = "";
       }, 2000);
     }
-  }
-
-  function simulateEmailConfirmation(email) {
-    // In a real app, this would be handled by your backend
-    // For demo purposes, we'll automatically "confirm" the email after a delay
-    setTimeout(() => {
-      const userData = JSON.parse(
-        localStorage.getItem("everAfterUser") || "{}"
-      );
-      userData.emailConfirmed = true;
-      localStorage.setItem("everAfterUser", JSON.stringify(userData));
-      console.log("Email confirmed for:", email);
-    }, 2000);
   }
 });
 // === END AUTHENTICATION FUNCTIONALITY ===
@@ -816,7 +777,7 @@ document.addEventListener("DOMContentLoaded", () => {
         location: editLocation ? editLocation.value.trim() : "",
         profilePicture: profileImage ? profileImage.src : "",
         lastUpdated: new Date().toISOString(),
-        // Add these preference fields for matching
+        
         seekingRelationshipStyle: editRelationshipStyle
           ? editRelationshipStyle.value
           : "",
