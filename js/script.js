@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = "profile.html";
             break;
           case "settings":
-            window.location.href = "search-criteria.html";
+            window.location.href = "search.html";
             break;
           default:
             console.warn("Unknown page:", page);
