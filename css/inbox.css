@@ -1,0 +1,385 @@
+@import url("https://fonts.googleapis.com/css2?family=Courgette&family=Caveat:wght@400;600&display=swap");
+
+:root {
+  --bg1: #ffedd5;
+  --bg2: #ffd4e2;
+  --accent: #f9b8d3;
+  --text: #5b2431;
+  --button: #f8a8c1;
+  --white: #ffffff;
+  --shadow: rgba(91, 36, 49, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Caveat", cursive;
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+.inbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 2px solid var(--accent);
+}
+
+.inbox-title {
+  font-family: "Courgette", cursive;
+  color: var(--text);
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.settings-btn,
+.matches-btn {
+  background: rgba(249, 184, 211, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.settings-btn:hover,
+.matches-btn:hover {
+  background: rgba(249, 184, 211, 0.5);
+  transform: scale(1.05);
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.matches-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.inbox-main {
+  padding: 20px;
+}
+
+.connections-section {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.connections-title {
+  font-family: "Courgette", cursive;
+  font-size: 1.5rem;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.inbox-nav {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 25px;
+  padding: 8px;
+  margin-bottom: 25px;
+  border: 1px solid var(--accent);
+}
+
+.inbox-tab {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-family: "Caveat", cursive;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  margin: 0 4px;
+}
+
+.inbox-tab.active {
+  background: var(--button);
+  color: var(--text);
+  transform: scale(1.05);
+}
+
+.inbox-tab:hover {
+  background: rgba(249, 184, 211, 0.3);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Message Cards */
+.message-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+
+.message-card.read {
+  background: rgba(255, 255, 255, 0.7);
+  opacity: 0.8;
+}
+
+.message-status {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: transparent;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.message-status.unread {
+  background: var(--accent);
+}
+
+.message-content {
+  flex: 1;
+}
+
+.sender-name {
+  font-family: "Courgette", cursive;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+
+.message-preview {
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.message-time {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Notification Cards */
+.notification-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 4px 15px var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--shadow);
+}
+
+.notification-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-name {
+  font-family: "Courgette", cursive;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.notification-text {
+  font-size: 1.1rem;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 4px;
+  opacity: 0.8;
+}
+
+.notification-distance {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.notification-time {
+  font-size: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 2px solid var(--accent);
+  z-index: 1000;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  opacity: 0.6;
+  font-family: "Caveat", cursive;
+  text-decoration: none;
+  color: var(--text);
+  flex: 1;
+  max-width: 80px;
+}
+
+.nav-btn.active {
+  opacity: 1;
+  background: rgba(249, 184, 211, 0.2);
+  transform: translateY(-2px);
+}
+
+.nav-btn:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.nav-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text);
+}
+
+.empty-state p {
+  font-size: 1.2rem;
+  opacity: 0.7;
+  font-family: "Courgette", cursive;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .inbox-main {
+    padding: 15px;
+  }
+
+  .inbox-title {
+    font-size: 1.5rem;
+  }
+
+  .connections-title {
+    font-size: 1.3rem;
+  }
+
+  .inbox-tab {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+
+  .message-card,
+  .notification-card {
+    padding: 15px;
+  }
+
+  .sender-name,
+  .notification-name {
+    font-size: 1.2rem;
+  }
+
+  .message-preview,
+  .notification-text {
+    font-size: 1rem;
+  }
+
+  .notification-avatar {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 350px) {
+  .inbox-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .inbox-tab {
+    margin: 0;
+  }
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inbox - Ever After</title>
+    <link rel="stylesheet" href="css/inbox.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Courgett&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="inbox-page">
+    <header class="inbox-header">
+      <button class="settings-btn" aria-label="Search criteria settings">
+        <img src="assets/Settings_Icon.png" alt="Settings" class="icon" />
+      </button>
+      <h1 class="inbox-title">Inbox</h1>
+      <button class="matches-btn" aria-label="View matches">
+        <img
+          src="assets/Inbox_Icon.png"
+          alt="Matches"
+          class="icon matches-icon"
+        />
+      </button>
+    </header>
+
+    <main class="inbox-main">
+      <section class="connections-section">
+        <h2 class="connections-title">All Connections</h2>
+
+        <nav class="inbox-nav">
+          <button class="inbox-tab active" data-tab="inbox">Inbox</button>
+          <button class="inbox-tab" data-tab="liked">Liked You</button>
+          <button class="inbox-tab" data-tab="matches">Matches</button>
+        </nav>
+
+        <!-- Inbox Tab Content -->
+        <section class="tab-content active" id="inbox-content">
+          <article class="message-card">
+            <span class="message-status unread"></span>
+            <section class="message-content">
+              <h3 class="sender-name">Alex Morgan</h3>
+              <p class="message-preview">
+                Hey! I noticed we're both interested in hiking. Want to chat?
+              </p>
+              <time class="message-time">10:15</time>
+            </section>
+          </article>
+
+          <article class="message-card read">
+            <span class="message-status"></span>
+            <section class="message-content">
+              <h3 class="sender-name">Taylor Kim</h3>
+              <p class="message-preview">
+                Loved your profile! The photo at the beach is amazing.
+              </p>
+              <time class="message-time">22:37</time>
+            </section>
+          </article>
+
+          <article class="message-card read">
+            <span class="message-status"></span>
+            <section class="message-content">
+              <h3 class="sender-name">Jordan Lee</h3>
+              <p class="message-preview">
+                We matched! Would you like to grab coffee sometime?
+              </p>
+              <time class="message-time">Yesterday</time>
+            </section>
+          </article>
+        </section>
+
+        <!-- Liked You Tab Content -->
+        <section class="tab-content" id="liked-content">
+          <article class="notification-card">
+            <img
+              src="assets/default_user.png"
+              alt="Profile"
+              class="notification-avatar"
+            />
+            <section class="notification-content">
+              <h3 class="notification-name">Sam Rivera</h3>
+              <p class="notification-text">
+                Liked your profile and wants to connect
+              </p>
+              <span class="notification-distance">2 miles away</span>
+            </section>
+            <time class="notification-time">14:13</time>
+          </article>
+
+          <article class="notification-card">
+            <img
+              src="assets/default_user.png"
+              alt="Profile"
+              class="notification-avatar"
+            />
+            <section class="notification-content">
+              <h3 class="notification-name">Casey Smith</h3>
+              <p class="notification-text">
+                Interested in getting to know you better
+              </p>
+              <span class="notification-distance">5 miles away</span>
+            </section>
+            <time class="notification-time">Yesterday</time>
+          </article>
+        </section>
+
+        <!-- Matches Tab Content -->
+        <section class="tab-content" id="matches-content">
+          <article class="notification-card">
+            <img
+              src="assets/default_user.png"
+              alt="Profile"
+              class="notification-avatar"
+            />
+            <section class="notification-content">
+              <h3 class="notification-name">Riley Chen</h3>
+              <p class="notification-text">
+                It's a match! Start a conversation
+              </p>
+              <span class="notification-distance">3 miles away</span>
+            </section>
+            <time class="notification-time">14:13</time>
+          </article>
+
+          <article class="notification-card">
+            <img
+              src="assets/default_user.png"
+              alt="Profile"
+              class="notification-avatar"
+            />
+            <section class="notification-content">
+              <h3 class="notification-name">Morgan Taylor</h3>
+              <p class="notification-text">
+                You both liked each other's profiles
+              </p>
+              <span class="notification-distance">7 miles away</span>
+            </section>
+            <time class="notification-time">2 days ago</time>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn" data-page="nearby">
+        <img src="assets/EverAfter_Logo.png" alt="Matches" class="nav-icon" />
+        <span class="nav-label">Matches</span>
+      </button>
+      <button class="nav-btn" data-page="cardswipe">
+        <img
+          src="assets/Card_Swipe_Icon.png"
+          alt="Card Swipe"
+          class="nav-icon"
+        />
+        <span class="nav-label">Card Swipe</span>
+      </button>
+      <button class="nav-btn active" data-page="inbox">
+        <img src="assets/Inbox_Icon.png" alt="Inbox" class="nav-icon" />
+        <span class="nav-label">Inbox</span>
+      </button>
+      <button class="nav-btn" data-page="profile">
+        <img src="assets/Profile_Icon.png" alt="Profile" class="nav-icon" />
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="js/inbox.js"></script>
+  </body>
+</html>
