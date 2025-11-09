@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
           localStorage.setItem("everAfterPassword", password);
           localStorage.setItem("everAfterKeepLoggedIn", "true");
         } else {
-          // Still remember for this session, but don't persist
+          // Still remember for this session, but don't continue
           localStorage.setItem("everAfterUsername", username);
           localStorage.setItem("everAfterKeepLoggedIn", "false");
         }
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ==================== MATCHING ALGORITHM ====================
 function getCompatibleMatches(userPreferences) {
-  // Sample database of potential matches (in real app, this would come from a server)
+  // Sample database of potential matches 
   const potentialMatches = [
     {
       id: 1,
@@ -303,7 +303,7 @@ function getCompatibleMatches(userPreferences) {
   const compatibleMatches = potentialMatches.filter((match) => {
     let score = 0;
 
-    // Relationship Style Match (40% weight)
+    // Relationship Style Match
     if (
       userPreferences.seekingRelationshipStyle &&
       match.relationshipStyle
@@ -318,7 +318,7 @@ function getCompatibleMatches(userPreferences) {
       score += 20;
     }
 
-    // Relationship Type Match (30% weight)
+    // Relationship Type Match 
     if (
       userPreferences.seekingRelationshipType &&
       match.relationshipType === userPreferences.seekingRelationshipType
@@ -326,7 +326,7 @@ function getCompatibleMatches(userPreferences) {
       score += 30;
     }
 
-    // Location Match (20% weight) - in real app, this would use geolocation
+    // Location Match 
     if (
       userPreferences.preferredLocation &&
       match.location
@@ -336,7 +336,7 @@ function getCompatibleMatches(userPreferences) {
       score += 20;
     }
 
-    // Age compatibility (10% weight) - within 5 years
+    // Age compatibility 
     const userAge = parseInt(userPreferences.age) || 25;
     const matchAge = match.age;
     if (Math.abs(userAge - matchAge) <= 5) {
@@ -344,7 +344,7 @@ function getCompatibleMatches(userPreferences) {
     }
 
     match.compatibilityScore = score;
-    return score >= 30; // Only show matches with at least 30% compatibility
+    return score >= 30; 
   });
 
   // Sort by compatibility score (highest first)
@@ -610,7 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.getItem("everAfterUserProfile") || "{}"
       );
 
-      // Basic fields - use enhanced data as fallback
+      // Basic fields 
       if (editName && (saved.name || enhancedSaved.name))
         editName.value = saved.name || enhancedSaved.name;
       if (editAge && (saved.age || enhancedSaved.age))
@@ -736,7 +736,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Build display bio HTML - ORIGINAL FORMAT
+      
       let bioHTML = bioVal.replace(/\n/g, "<br>");
       if (editLocation && editLocation.value.trim())
         bioHTML += `<br>📍 ${escapeHTML(editLocation.value.trim())}`;
@@ -745,11 +745,11 @@ document.addEventListener("DOMContentLoaded", () => {
           editInterests.value.trim()
         )}`;
 
-      // Update the visual profile immediately - ORIGINAL FUNCTIONALITY
+      // Update the visual profile immediately 
       if (profileName) profileName.textContent = `${nameVal}, ${ageVal}`;
       if (profileBio) profileBio.innerHTML = bioHTML;
 
-      // Save structured data to localStorage (basic profile) - ORIGINAL FORMAT
+      // Save structured data to localStorage 
       const profileData = {
         name: nameVal,
         age: ageVal,
@@ -801,10 +801,10 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Profile updated successfully!");
     }
 
-    // Attach submit handler
+    // submit handler
     editProfileForm.addEventListener("submit", handleSaveSubmit);
 
-    // Attach click handler to save button
+    // Click handler to save button
     if (saveBtn) {
       saveBtn.addEventListener("click", (ev) => {
         ev.preventDefault();
@@ -829,7 +829,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Your existing script.js code ends here...
 
 // ==================== SCROLL TRIGGER ANIMATIONS FOR PROFILE PAGE ====================
 function initScrollAnimations() {
@@ -1018,7 +1017,7 @@ function initScrollAnimations() {
     );
   });
 
-  // Refresh ScrollTrigger on page load to ensure proper calculations
+  // Refresh ScrollTrigger on loading page
   ScrollTrigger.refresh();
 }
 
@@ -1034,7 +1033,6 @@ function initCSSAnimations() {
       if (entry.isIntersecting) {
         entry.target.classList.add("animate-in");
 
-        // If it's an info-grid, animate its children
         if (entry.target.classList.contains("info-grid")) {
           const items = entry.target.querySelectorAll(".info-item");
           items.forEach((item, index) => {
@@ -1053,13 +1051,10 @@ function initCSSAnimations() {
   elementsToAnimate.forEach((el) => observer.observe(el));
 }
 
-// Initialize animations when DOM is loaded - ADD THIS TO YOUR EXISTING DOMCONTENTLOADED
+// Initialize animations when DOM is loaded 
 document.addEventListener("DOMContentLoaded", function () {
-  // Your existing DOMContentLoaded code here...
 
-  // Add this animation initialization at the end of your existing DOMContentLoaded function:
-
-  // Try GSAP ScrollTrigger first, fall back to CSS animations
+  
   if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     initScrollAnimations();
   } else {

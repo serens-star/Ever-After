@@ -37,8 +37,8 @@ class ProfileImages {
   }
 
   imageExists(imagePath) {
-    // Simple check - in real app, you'd want to verify the image actually loads
-    return true; // For now, assume images exist
+    // Simple check 
+    return true; 
   }
 
   getMultipleRandomImages(count) {

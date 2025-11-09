@@ -12,8 +12,8 @@ class CardSwipe {
     this.currentProfiles = [];
     this.currentProfileIndex = 0;
     this.swipesToday = 0;
-    this.maxSwipes = 6; // Configurable limit
-    this.swipeResetTime = 3 * 60 * 1000; // 3 minutes in milliseconds
+    this.maxSwipes = 6; 
+    this.swipeResetTime = 3 * 60 * 1000; 
     this.lastSwipeTime = null;
 
     this.init();
